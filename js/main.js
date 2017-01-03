@@ -4,8 +4,8 @@
     INME.Vars = {
         speed: 1,
         playerKey: 'chicken_1',
-        velocity: -200,
-        gravity: 200,
+        velocity: -750,
+        gravity: 1500,
     }
 
     INME.State = {
@@ -44,6 +44,7 @@
         },
         preload: function () {
             this.game.load.image('loadingbar', 'assets/images/loading/loadingbar.png');
+            this.game.load.image('ground', 'assets/images/ingame/platform.png');
         },
         create: function () {
             this.game.state.start(INME.State.Key.Loading);
@@ -129,44 +130,39 @@
             this.bg = new ParallaxSprite(this.game, 'bg_ingame', 0, 0);
             this.hill1 = new ParallaxSprite(this.game, 'hill1', 0, 276);
             this.hill2 = new ParallaxSprite(this.game, 'hill2', 0, 341);
+            this.platform = game.add.group();
+            this.platform.enableBody = true;
+            var ground = this.platform.create(0, game.world.height - 64, 'ground');
+            ground.scale.setTo(2.4, 2);
+            ground.body.immovable = true; 
             //玩家
-            this.player = this.game.add.sprite(100, this.game.height - 48, INME.Vars.playerKey);
+            this.player = this.game.add.sprite(100, this.game.height - 448, INME.Vars.playerKey);
             this.player.animations.add('run', [5, 6, 7, 8], 10, true);
             this.player.animations.add('up', [4], 10, false);
             this.player.play('run');
-
             this.game.physics.arcade.enable(this.player);
             this.player.body.gravity.y = INME.Vars.gravity;
             this.player.body.collideWorldBounds = true;
-            //事件侦听
-            this.game.input.onTap.add(this.tapHandler);
-            this.game.input.keyboard.addCallbacks(this, this.keydownHandler)
+            //control-keys
+            spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+            upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
         },
         update: function () {
             this.scrollBg();
-
+            // check if player is touching ground
+            game.physics.arcade.collide(this.player, this.platform);
+            if (upArrow.isDown && this.player.body.touching.down) {
+                this.player.body.velocity.y = INME.Vars.velocity;
+            }
+            if (spaceKey.isDown && this.player.body.touching.down) {
+                this.player.body.velocity.y = INME.Vars.velocity;
+            }
         },
         scrollBg: function () {
             this.bg.scroll(-INME.Vars.speed * 0.3);
             this.hill1.scroll(-INME.Vars.speed * 0.5);
             this.hill2.scroll(-INME.Vars.speed);
         },
-        tapHandler: function () {
-            console.log('点击');
-            this.jump();
-        },
-        keydownHandler: function (e) {
-            var code = e.code;
-            if (code === 'Space' || code === 'ArrowUp') {
-                console.log('键盘按下');
-                this.jump();
-            }
-        },
-        jump: function () {
-            this.player.play('up');
-            this.player.body.velocity.y = INME.Vars.velocity;
-        }
-
     }
 
     function ParallaxSprite(game, key, x, y) {
