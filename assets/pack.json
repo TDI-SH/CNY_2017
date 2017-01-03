@@ -47,6 +47,13 @@
             "url": "assets/images/ingame/chicken_1.png",
             "frameWidth": 32,
             "frameHeight": 48
+        },
+        {
+            "type": "spritesheet",
+            "key": "platform",
+            "url": "assets/images/ingame/platform.png",
+            "frameWidth": 400,
+            "frameHeight": 32
         }
     ]
 }
