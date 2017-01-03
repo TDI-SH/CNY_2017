@@ -1,0 +1,52 @@
+{
+    "common": [
+        {
+            "type": "spritesheet",
+            "key": "btnLan",
+            "url": "assets/images/language/btnLan.jpg",
+            "frameWidth": 190,
+            "frameHeight": 40
+        },
+        {
+            "type": "video",
+            "key": "backstory",
+            "urls": "assets/video/backstory.mp4"
+        },
+        {
+            "type": "spritesheet",
+            "key": "btnPlay",
+            "url": "assets/images/startgame/btnPlay.jpg",
+            "frameWidth": 190,
+            "frameHeight": 40
+        },
+        {
+            "type": "spritesheet",
+            "key": "btnHelp",
+            "url": "assets/images/startgame/btnHelp.jpg",
+            "frameWidth": 80,
+            "frameHeight": 40
+        },
+        {
+            "type": "image",
+            "key": "bg_ingame",
+            "url": "assets/images/ingame/bg.jpg"
+        },
+        {
+            "type": "image",
+            "key": "hill1",
+            "url": "assets/images/ingame/hill1.png"
+        },
+        {
+            "type": "image",
+            "key": "hill2",
+            "url": "assets/images/ingame/hill2.png"
+        },
+        {
+            "type": "spritesheet",
+            "key": "chicken_1",
+            "url": "assets/images/ingame/chicken_1.png",
+            "frameWidth": 32,
+            "frameHeight": 48
+        }
+    ]
+}
