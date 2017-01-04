@@ -44,7 +44,6 @@
         },
         preload: function () {
             this.game.load.image('loadingbar', 'assets/images/loading/loadingbar.png');
-            this.game.load.image('ground', 'assets/images/ingame/platform.png');
         },
         create: function () {
             this.game.state.start(INME.State.Key.Loading);
@@ -134,7 +133,7 @@
             this.platform.enableBody = true;
             var ground = this.platform.create(0, game.world.height - 64, 'ground');
             ground.scale.setTo(2.4, 2);
-            ground.body.immovable = true; 
+            ground.body.immovable = true;
             //玩家
             this.player = this.game.add.sprite(100, this.game.height - 448, INME.Vars.playerKey);
             this.player.animations.add('run', [5, 6, 7, 8], 10, true);
@@ -152,9 +151,11 @@
             // check if player is touching ground
             game.physics.arcade.collide(this.player, this.platform);
             if (upArrow.isDown && this.player.body.touching.down) {
+                this.player.play('up');
                 this.player.body.velocity.y = INME.Vars.velocity;
             }
             if (spaceKey.isDown && this.player.body.touching.down) {
+                this.player.play('up');
                 this.player.body.velocity.y = INME.Vars.velocity;
             }
         },

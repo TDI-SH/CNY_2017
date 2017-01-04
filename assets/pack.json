@@ -49,11 +49,9 @@
             "frameHeight": 48
         },
         {
-            "type": "spritesheet",
-            "key": "platform",
-            "url": "assets/images/ingame/platform.png",
-            "frameWidth": 400,
-            "frameHeight": 32
+            "type": "image",
+            "key": "ground",
+            "url": "assets/images/ingame/platform.png"
         }
     ]
 }
