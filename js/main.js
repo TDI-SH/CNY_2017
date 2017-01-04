@@ -20,6 +20,7 @@
             Loading: 'Loading',
             Language: 'Language',
             Story: 'Story',
+            Help: 'Help',
             StartGame: 'StartGame',
             InGame: 'InGame',
             OverGame: 'OverGame',
@@ -46,6 +47,7 @@
                 game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
                 //game.scale.forceOrientation(true, false);
             }
+
         },
         preload: function () {
             this.game.load.image('loadingbar', 'assets/images/loading/loadingbar.png');
@@ -101,6 +103,15 @@
             this.game.state.start(INME.State.Key.StartGame)
         }
     }
+    INME.State.Help = {
+        create: function () {
+            this.game.add.button(10, 10, 'btnClose', this.handleClick, this, 1, 0, 1, 0);
+            this.game.add.text(this.game.width >> 1, this.game.height >> 1, 'i am help screen', { font: 'regular 36pt Microsoft YaHei' }).anchor.set(0.5);
+        },
+        handleClick: function () {
+            this.game.state.start(INME.State.Key.StartGame);
+        }
+    }
     /**
      * state - StartGame
      */
@@ -121,6 +132,7 @@
                     this.game.state.start(INME.State.Key.InGame);
                     break;
                 case 'btnHelp':
+                    this.game.state.start(INME.State.Key.Help);
                     break;
             }
         }
@@ -220,4 +232,11 @@
     document.addEventListener('contextmenu', function (e) {//禁止长按右键或屏幕弹出弹出框
         e.preventDefault();
     });
+
+    window.addEventListener('resize', resizeHandler, false);
+    function resizeHandler() {
+        console.log(window.innerWidth, window.innerHeight);
+    }
+
+
 })();

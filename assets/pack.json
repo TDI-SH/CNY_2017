@@ -37,6 +37,13 @@
             "frameHeight": 40
         },
         {
+            "type": "spritesheet",
+            "key": "btnClose",
+            "url": "assets/images/public/btnClose.jpg",
+            "frameWidth": 80,
+            "frameHeight": 40
+        },
+        {
             "type": "image",
             "key": "bg_ingame",
             "url": "assets/images/ingame/bg.jpg"
