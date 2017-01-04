@@ -38,6 +38,20 @@
         },
         {
             "type": "spritesheet",
+            "key": "chicken_0_select",
+            "url": "assets/images/startgame/chicken_0.jpg",
+            "frameWidth": 200,
+            "frameHeight": 200
+        },
+        {
+            "type": "spritesheet",
+            "key": "chicken_1_select",
+            "url": "assets/images/startgame/chicken_1.jpg",
+            "frameWidth": 200,
+            "frameHeight": 200
+        },
+        {
+            "type": "spritesheet",
             "key": "btnClose",
             "url": "assets/images/public/btnClose.jpg",
             "frameWidth": 80,
