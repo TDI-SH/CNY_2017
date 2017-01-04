@@ -1,6 +1,6 @@
 (function () {
     var INME = INME || {};
-    
+
     var jumpTimer = 0;
     var ez = 8;
     var count = 0;
@@ -184,34 +184,20 @@
                 this.jumpTimer = 1;
                 this.player.body.velocity.y = INME.Vars.velocity;
             } else if ( (upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && (this.jumpTimer !=0)) {
-                    //player is no longer on the ground, but is still holding the jump key
-                    if (this.jumpTimer > 15) { 
-                        // player has been holding jump for over 15 frames, it's time to stop him
-                        this.jumpTimer = 0;
-                    } else { 
-                        // player is allowed to jump higher (not yet 15 frames of jumping)
-                        this.jumpTimer++;
-                        this.player.body.velocity.y = INME.Vars.velocity;
-                    }
-                } else if (this.jumpTimer != 0) { 
-                    //reset this.jumpTimer since the player is no longer holding the jump key
+                //player is no longer on the ground, but is still holding the jump key
+                if (this.jumpTimer > 15) { 
+                    // player has been holding jump for over 15 frames, it's time to stop him
                     this.jumpTimer = 0;
-                } else {
-                    // player is allowed to jump higher (not yet 30 frames of jumping)
+                } else { 
+                    // player is allowed to jump higher (not yet 15 frames of jumping)
                     this.jumpTimer++;
                     this.player.body.velocity.y = INME.Vars.velocity;
                 }
-            } else if (this.jumpTimer != 0) {
+            }
+            else if (this.jumpTimer != 0) { 
                 //reset this.jumpTimer since the player is no longer holding the jump key
                 this.jumpTimer = 0;
-            }
-            // this is the player sprite changing
-            if (!this.player.body.touching.down) {
-                this.player.play('up');
-            }
-            else {
-                this.player.play('run');
-            }
+            }     
         },
         scrollBg: function () {
             this.bg.scroll(-INME.Vars.speed * 0.3);
