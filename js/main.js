@@ -1,11 +1,13 @@
 (function () {
     var INME = INME || {};
-
+    var jumpTimer = 0;
+    
     INME.Vars = {
         speed: 1,
         playerKey: 'chicken_1',
-        velocity: -750,
-        gravity: 1500,
+        velocity: -550,
+        velocityLong: -1550,
+        gravity: 2000,
     }
 
     INME.State = {
@@ -151,15 +153,30 @@
             // check if player is touching ground
             game.physics.arcade.collide(this.player, this.platform);
             // Jump when player is touching ground AND pressing spaceBar, upArrow, or tapping on mobile
-            if ((upArrow.isDown && this.player.body.touching.down) || (spaceBar.isDown && this.player.body.touching.down) || (game.input.pointer1.isDown && this.player.body.touching.down) ) {
-                this.player.body.velocity.y = INME.Vars.velocity;
-            }
+            if ((upArrow.isDown && this.player.body.touching.down) || (spaceBar.isDown && this.player.body.touching.down) || (this.game.input.pointer1.isDown && this.player.body.touching.down) ) {
+                    this.jumpTimer = 1;
+                    this.player.body.velocity.y = INME.Vars.velocity;
+            } else if ( (upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && (this.jumpTimer !=0)) {
+                    //player is no longer on the ground, but is still holding the jump key
+                    if (this.jumpTimer > 15) { // player has been holding jump for over 30 frames, it's time to stop him
+                        this.jumpTimer = 0;
+                    } else { 
+                        // player is allowed to jump higher (not yet 30 frames of jumping)
+                        this.jumpTimer++;
+                        this.player.body.velocity.y = INME.Vars.velocity;
+                    }
+                } else if (this.jumpTimer != 0) { 
+                    //reset this.jumpTimer since the player is no longer holding the jump key
+                    this.jumpTimer = 0;
+                }
+            // this is the player sprite changing
             if (!this.player.body.touching.down) {
                 this.player.play('up');
             }
             else {
                 this.player.play('run');
             }
+            //console.log(this.jumpTimer);
         },
         scrollBg: function () {
             this.bg.scroll(-INME.Vars.speed * 0.3);
