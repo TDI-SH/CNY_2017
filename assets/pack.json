@@ -52,6 +52,13 @@
             "type": "image",
             "key": "ground",
             "url": "assets/images/ingame/platform.png"
+        },
+        {
+            "type": "spritesheet",
+            "key": "obstacle",
+            "url": "assets/images/ingame/gameboy_seize_color_40x60.png",
+            "frameWidth": 40,
+            "frameHeight": 60
         }
     ]
 }

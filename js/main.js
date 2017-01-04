@@ -1,7 +1,8 @@
 (function () {
     var INME = INME || {};
     var jumpTimer = 0;
-    
+    var ez = 8;
+    var count = 0;
     INME.Vars = {
         speed: 1,
         playerKey: 'chicken_1',
@@ -142,24 +143,28 @@
             this.game.physics.arcade.enable(this.player);
             this.player.body.gravity.y = INME.Vars.gravity;
             this.player.body.collideWorldBounds = true;
+            //obstacle
+            this.obstacle = game.add.group();
             //control-keys
             spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
             upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
+            this.dupeObstacle();
         },
         update: function () {
             this.scrollBg();
             // check if player is touching ground
             game.physics.arcade.collide(this.player, this.platform);
             // Jump when player is touching ground AND pressing spaceBar, upArrow, or tapping on mobile
-            if ((upArrow.isDown && this.player.body.touching.down) || (spaceBar.isDown && this.player.body.touching.down) || (this.game.input.pointer1.isDown && this.player.body.touching.down) ) {
-                    this.jumpTimer = 1;
-                    this.player.body.velocity.y = INME.Vars.velocity;
+            if ((upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && this.player.body.touching.down) {
+                this.jumpTimer = 1;
+                this.player.body.velocity.y = INME.Vars.velocity;
             } else if ( (upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && (this.jumpTimer !=0)) {
                     //player is no longer on the ground, but is still holding the jump key
-                    if (this.jumpTimer > 15) { // player has been holding jump for over 30 frames, it's time to stop him
+                    if (this.jumpTimer > 15) { 
+                        // player has been holding jump for over 15 frames, it's time to stop him
                         this.jumpTimer = 0;
                     } else { 
-                        // player is allowed to jump higher (not yet 30 frames of jumping)
+                        // player is allowed to jump higher (not yet 15 frames of jumping)
                         this.jumpTimer++;
                         this.player.body.velocity.y = INME.Vars.velocity;
                     }
@@ -180,8 +185,40 @@
             this.hill1.scroll(-INME.Vars.speed * 0.5);
             this.hill2.scroll(-INME.Vars.speed);
         },
+        //==================================================
+        //===============setting up obstacles===============
+        //==================================================
+        makeObstacle: function(x,y) {
+            this.block = game.add.sprite(x,y,'obstacle', Math.floor(Math.random() * 5));
+            this.block.scale.setTo(0.8, 0.8);
+            this.obstacle.add(this.block);
+            game.physics.arcade.enable(this.block);
+            game.physics.arcade.enable(this.obstacle);
+            this.block.body.velocity.x = -200;
+            this.block.checkWorldBounds = true;
+            this.block.outOfBoundsKill = true;
+            // change existing blocks to be fast
+            if ( count >= ez) { 
+                for(var i = ez-5; i< ez+4; i++){
+                    this.obstacle.hash[i].body.velocity.x = -300;
+                }
+                this.block.body.velocity.x = -300;
+            }
+        },
+        dupeObstacle: function() {
+                // Randomly pick a number between 1 and 5
+            // This will be the hole position
+            var height = Math.floor(Math.random() * 2) + 1;
+            this.score += 1;
+            // Add the 6 obstacles 
+            // With one big hole at position 'hole' and 'hole + 1'
+            for (var i = 1; i < height+1; i++) {
+                this.makeObstacle(960, (game.world.height - 64)-50*i);  
+            }   
+            count++;
+            this.game.time.events.add(this.rnd.between(1000, 3000), this.dupeObstacle, this);        
+        }
     }
-
     function ParallaxSprite(game, key, x, y) {
         this.imageWidth = game.cache.getImage(key).width;
 
@@ -196,7 +233,6 @@
             this.group.position.x = 0;
         }
     }
-
     /**
      * 主入口
      */
