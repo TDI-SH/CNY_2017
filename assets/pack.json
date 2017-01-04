@@ -76,6 +76,13 @@
             "url": "assets/images/ingame/gameboy_seize_color_40x60.png",
             "frameWidth": 40,
             "frameHeight": 60
+        },
+        {
+            "type": "spritesheet",
+            "key": "redPacket",
+            "url": "assets/images/ingame/coin.png",
+            "frameWidth": 32,
+            "frameHeight": 32
         }
     ]
 }
