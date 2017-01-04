@@ -150,13 +150,14 @@
             this.scrollBg();
             // check if player is touching ground
             game.physics.arcade.collide(this.player, this.platform);
-            if (upArrow.isDown && this.player.body.touching.down) {
-                this.player.play('up');
+            if ((upArrow.isDown && this.player.body.touching.down) || (spaceKey.isDown && this.player.body.touching.down) ) {
                 this.player.body.velocity.y = INME.Vars.velocity;
             }
-            if (spaceKey.isDown && this.player.body.touching.down) {
+            if (!this.player.body.touching.down) {
                 this.player.play('up');
-                this.player.body.velocity.y = INME.Vars.velocity;
+            }
+            else {
+                this.player.play('run');
             }
         },
         scrollBg: function () {
