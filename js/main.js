@@ -1,13 +1,17 @@
 (function () {
     var INME = INME || {};
     var jumpTimer = 0;
-    
+
     INME.Vars = {
         speed: 1,
         playerKey: 'chicken_1',
         velocity: -550,
         velocityLong: -1550,
         gravity: 2000,
+    }
+
+    INME.Audio = {
+
     }
 
     INME.State = {
@@ -35,7 +39,6 @@
                 console.log('桌面');
 
                 game.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
-
             }
             else {
                 console.log('手机');
@@ -94,7 +97,8 @@
                 //this.game.state.start(INME.State.Key.StartGame);
             }, this);
 
-            this.game.state.start(INME.State.Key.StartGame)//－－－测试
+            video.volume = 0;//－－－测试
+            this.game.state.start(INME.State.Key.StartGame)
         }
     }
     /**
@@ -104,6 +108,11 @@
         create: function () {
             this.game.add.button(385, 400, 'btnPlay', this.handleClick, this, 1, 0, 1, 0).name = 'btnPlay';
             this.game.add.button(870, 490, 'btnHelp', this.handleClick, this, 1, 0, 1, 0).name = 'btnHelp';
+            //初始化音效
+            INME.Sound = {
+                'bg': this.game.add.audio('bg', 0.5, true),
+                'collision': this.game.add.audio('collision'),
+            }
         },
         handleClick: function (btn) {
             btnName = btn.name;
@@ -123,6 +132,8 @@
      */
     INME.State.InGame = {
         create: function () {
+            //背景音乐
+            INME.Sound.bg.play();
             //物理
             game.physics.startSystem(Phaser.Physics.Arcade);
             //背景
@@ -151,22 +162,22 @@
             // check if player is touching ground
             game.physics.arcade.collide(this.player, this.platform);
             // Jump when player is touching ground AND pressing spaceBar, upArrow, or tapping on mobile
-            if ((upArrow.isDown && this.player.body.touching.down) || (spaceBar.isDown && this.player.body.touching.down) || (this.game.input.pointer1.isDown && this.player.body.touching.down) ) {
-                    this.jumpTimer = 1;
-                    this.player.body.velocity.y = INME.Vars.velocity;
-            } else if ( (upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && (this.jumpTimer !=0)) {
-                    //player is no longer on the ground, but is still holding the jump key
-                    if (this.jumpTimer > 15) { // player has been holding jump for over 30 frames, it's time to stop him
-                        this.jumpTimer = 0;
-                    } else { 
-                        // player is allowed to jump higher (not yet 30 frames of jumping)
-                        this.jumpTimer++;
-                        this.player.body.velocity.y = INME.Vars.velocity;
-                    }
-                } else if (this.jumpTimer != 0) { 
-                    //reset this.jumpTimer since the player is no longer holding the jump key
+            if ((upArrow.isDown && this.player.body.touching.down) || (spaceBar.isDown && this.player.body.touching.down) || (this.game.input.pointer1.isDown && this.player.body.touching.down)) {
+                this.jumpTimer = 1;
+                this.player.body.velocity.y = INME.Vars.velocity;
+            } else if ((upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && (this.jumpTimer != 0)) {
+                //player is no longer on the ground, but is still holding the jump key
+                if (this.jumpTimer > 15) { // player has been holding jump for over 30 frames, it's time to stop him
                     this.jumpTimer = 0;
+                } else {
+                    // player is allowed to jump higher (not yet 30 frames of jumping)
+                    this.jumpTimer++;
+                    this.player.body.velocity.y = INME.Vars.velocity;
                 }
+            } else if (this.jumpTimer != 0) {
+                //reset this.jumpTimer since the player is no longer holding the jump key
+                this.jumpTimer = 0;
+            }
             // this is the player sprite changing
             if (!this.player.body.touching.down) {
                 this.player.play('up');
@@ -205,4 +216,8 @@
         var state = INME.State[key];
         game.state.add(key, state);
     }
+
+    document.addEventListener('contextmenu', function (e) {//禁止长按右键或屏幕弹出弹出框
+        e.preventDefault();
+    });
 })();
