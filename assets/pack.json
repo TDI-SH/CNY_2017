@@ -8,10 +8,10 @@
             "frameHeight": 40
         },
         {
-            "type": "video",
-            "key": "backstory",
-            "urls": "assets/video/backstory.mp4"
-        },
+            "type":"video",
+            "key":"backstory",
+            "urls":"assets/video/backstory.mp4"        
+        },          
         {
             "type": "spritesheet",
             "key": "btnPlay",

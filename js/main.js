@@ -53,12 +53,10 @@
      * state - Loading
      */
     INME.State.Loading = {
-        init: function () {
-            var lb = this.game.add.sprite(0, 268, 'loadingbar');
-
-            this.game.load.setPreloadSprite(lb);
-        },
         preload: function () {
+            var lb = this.game.add.sprite(0, 268, 'loadingbar');
+            this.game.load.setPreloadSprite(lb);
+
             this.game.load.pack('common', 'assets/pack.json');
         },
         create: function () {
@@ -151,7 +149,7 @@
             // check if player is touching ground
             game.physics.arcade.collide(this.player, this.platform);
             // Jump when player is touching ground AND pressing spaceBar, upArrow, or tapping on mobile
-            if ((upArrow.isDown && this.player.body.touching.down) || (spaceBar.isDown && this.player.body.touching.down) || (game.input.pointer1.isDown && this.player.body.touching.down) ) {
+            if ((upArrow.isDown && this.player.body.touching.down) || (spaceBar.isDown && this.player.body.touching.down) || (game.input.pointer1.isDown && this.player.body.touching.down)) {
                 this.player.body.velocity.y = INME.Vars.velocity;
             }
             if (!this.player.body.touching.down) {
