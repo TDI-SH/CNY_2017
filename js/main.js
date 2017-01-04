@@ -55,12 +55,10 @@
      * state - Loading
      */
     INME.State.Loading = {
-        init: function () {
-            var lb = this.game.add.sprite(0, 268, 'loadingbar');
-
-            this.game.load.setPreloadSprite(lb);
-        },
         preload: function () {
+            var lb = this.game.add.sprite(0, 268, 'loadingbar');
+            this.game.load.setPreloadSprite(lb);
+
             this.game.load.pack('common', 'assets/pack.json');
         },
         create: function () {
@@ -176,7 +174,6 @@
             else {
                 this.player.play('run');
             }
-            //console.log(this.jumpTimer);
         },
         scrollBg: function () {
             this.bg.scroll(-INME.Vars.speed * 0.3);
