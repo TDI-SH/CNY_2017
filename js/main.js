@@ -143,14 +143,15 @@
             this.player.body.gravity.y = INME.Vars.gravity;
             this.player.body.collideWorldBounds = true;
             //control-keys
-            spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+            spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
             upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
         },
         update: function () {
             this.scrollBg();
             // check if player is touching ground
             game.physics.arcade.collide(this.player, this.platform);
-            if ((upArrow.isDown && this.player.body.touching.down) || (spaceKey.isDown && this.player.body.touching.down) ) {
+            // Jump when player is touching ground AND pressing spaceBar, upArrow, or tapping on mobile
+            if ((upArrow.isDown && this.player.body.touching.down) || (spaceBar.isDown && this.player.body.touching.down) || (game.input.pointer1.isDown && this.player.body.touching.down) ) {
                 this.player.body.velocity.y = INME.Vars.velocity;
             }
             if (!this.player.body.touching.down) {
