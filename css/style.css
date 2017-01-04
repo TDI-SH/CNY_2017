@@ -4,5 +4,12 @@ html,body,canvas
     padding: 0;    
 }
 body{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select:none;
+
+    -webkit-tap-highlight-color:transparent;
+    
     background-color: #000000;
 }

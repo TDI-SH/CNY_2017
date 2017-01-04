@@ -1,6 +1,16 @@
 {
     "common": [
         {
+            "type": "audio",
+            "key": "bg",
+            "urls": "assets/sound/bg.mp3"
+        },
+        {
+            "type": "audio",
+            "key": "collison",
+            "urls": "assets/sound/collision.mp3"
+        },
+        {
             "type": "spritesheet",
             "key": "btnLan",
             "url": "assets/images/language/btnLan.jpg",
@@ -23,6 +33,13 @@
             "type": "spritesheet",
             "key": "btnHelp",
             "url": "assets/images/startgame/btnHelp.jpg",
+            "frameWidth": 80,
+            "frameHeight": 40
+        },
+        {
+            "type": "spritesheet",
+            "key": "btnClose",
+            "url": "assets/images/public/btnClose.jpg",
             "frameWidth": 80,
             "frameHeight": 40
         },

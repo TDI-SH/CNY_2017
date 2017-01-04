@@ -1,8 +1,10 @@
 (function () {
     var INME = INME || {};
+    
     var jumpTimer = 0;
     var ez = 8;
     var count = 0;
+
     INME.Vars = {
         speed: 1,
         playerKey: 'chicken_1',
@@ -11,12 +13,17 @@
         gravity: 2000,
     }
 
+    INME.Audio = {
+
+    }
+
     INME.State = {
         Key: {
             Boot: 'Boot',
             Loading: 'Loading',
             Language: 'Language',
             Story: 'Story',
+            Help: 'Help',
             StartGame: 'StartGame',
             InGame: 'InGame',
             OverGame: 'OverGame',
@@ -36,7 +43,6 @@
                 console.log('桌面');
 
                 game.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
-
             }
             else {
                 console.log('手机');
@@ -44,6 +50,7 @@
                 game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
                 //game.scale.forceOrientation(true, false);
             }
+
         },
         preload: function () {
             this.game.load.image('loadingbar', 'assets/images/loading/loadingbar.png');
@@ -95,7 +102,17 @@
                 //this.game.state.start(INME.State.Key.StartGame);
             }, this);
 
-            this.game.state.start(INME.State.Key.StartGame)//－－－测试
+            video.volume = 0;//－－－测试
+            this.game.state.start(INME.State.Key.StartGame)
+        }
+    }
+    INME.State.Help = {
+        create: function () {
+            this.game.add.button(10, 10, 'btnClose', this.handleClick, this, 1, 0, 1, 0);
+            this.game.add.text(this.game.width >> 1, this.game.height >> 1, 'i am help screen', { font: 'regular 36pt Microsoft YaHei' }).anchor.set(0.5);
+        },
+        handleClick: function () {
+            this.game.state.start(INME.State.Key.StartGame);
         }
     }
     /**
@@ -105,6 +122,11 @@
         create: function () {
             this.game.add.button(385, 400, 'btnPlay', this.handleClick, this, 1, 0, 1, 0).name = 'btnPlay';
             this.game.add.button(870, 490, 'btnHelp', this.handleClick, this, 1, 0, 1, 0).name = 'btnHelp';
+            //初始化音效
+            INME.Sound = {
+                'bg': this.game.add.audio('bg', 0.5, true),
+                'collision': this.game.add.audio('collision'),
+            }
         },
         handleClick: function (btn) {
             btnName = btn.name;
@@ -113,6 +135,7 @@
                     this.game.state.start(INME.State.Key.InGame);
                     break;
                 case 'btnHelp':
+                    this.game.state.start(INME.State.Key.Help);
                     break;
             }
         }
@@ -124,6 +147,8 @@
      */
     INME.State.InGame = {
         create: function () {
+            //背景音乐
+            INME.Sound.bg.play();
             //物理
             game.physics.startSystem(Phaser.Physics.Arcade);
             //背景
@@ -171,7 +196,15 @@
                 } else if (this.jumpTimer != 0) { 
                     //reset this.jumpTimer since the player is no longer holding the jump key
                     this.jumpTimer = 0;
+                } else {
+                    // player is allowed to jump higher (not yet 30 frames of jumping)
+                    this.jumpTimer++;
+                    this.player.body.velocity.y = INME.Vars.velocity;
                 }
+            } else if (this.jumpTimer != 0) {
+                //reset this.jumpTimer since the player is no longer holding the jump key
+                this.jumpTimer = 0;
+            }
             // this is the player sprite changing
             if (!this.player.body.touching.down) {
                 this.player.play('up');
@@ -241,4 +274,15 @@
         var state = INME.State[key];
         game.state.add(key, state);
     }
+
+    document.addEventListener('contextmenu', function (e) {//禁止长按右键或屏幕弹出弹出框
+        e.preventDefault();
+    });
+
+    window.addEventListener('resize', resizeHandler, false);
+    function resizeHandler() {
+        console.log(window.innerWidth, window.innerHeight);
+    }
+
+
 })();
