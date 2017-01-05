@@ -274,10 +274,6 @@
                 this.makeObstacle(960, (game.world.height - 64) - 50 * i);
             }
             count++;
-
-            this.game.time.events.add(this.rnd.between(1000, 3000), this.dupeObstacle, this);
-        }
-
             this.game.time.events.add(this.rnd.between(1000, 3000), this.dupeObstacle, this);        
         },
         //redpacket
@@ -294,8 +290,8 @@
         },
         //restarts game
         restartGame: function() {
-        game.state.start("main");
-    },
+            game.state.start("main");
+        },
 
     }
     function ParallaxSprite(game, key, x, y) {
