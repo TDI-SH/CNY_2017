@@ -3,13 +3,13 @@
 
     var jumpTimer = 0;
     var difficultyEasy = 8;
-    
+
 
     INME.Vars = {
         speed: 1,
-        playerKey: 'chicken_1',
-        charactorNum: 2,
-        charactorPrefix: 'chicken',
+        characterIndex: 0,
+        characterNum: 2,
+        characterPrefix: 'chicken',
         velocity: -550,
         velocityLong: -1550,
         gravity: 2000,
@@ -125,7 +125,7 @@
             this.game.add.button(385, 400, 'btnPlay', this.handleClick, this, 1, 0, 1, 0).name = 'btnPlay';
             this.game.add.button(870, 490, 'btnHelp', this.handleClick, this, 1, 0, 1, 0).name = 'btnHelp';
             //角色选择
-            var cs = new CharacterSelector(this.game, this.getCSKeys());
+            var cs = new CharacterSelector(this.game, this.getCSKeys(), this.selectCharacter, INME.Vars.characterIndex);
             cs.position.set((this.game.width - cs.width) >> 1, 100);
             //初始化音效
             INME.Sound = {
@@ -135,10 +135,13 @@
         },
         getCSKeys: function () {
             var arr = [];
-            for (var i = 0; i < INME.Vars.charactorNum; i++) {
-                arr.push(INME.Vars.charactorPrefix + '_' + i + '_select');
+            for (var i = 0; i < INME.Vars.characterNum; i++) {
+                arr.push(INME.Vars.characterPrefix + '_' + i + '_select');
             }
             return arr;
+        },
+        selectCharacter: function (index) {
+            INME.Vars.characterIndex = index;
         },
         handleClick: function (btn) {
             btnName = btn.name;
@@ -153,12 +156,15 @@
         }
 
     }
-    function CharacterSelector(game, keys) {
-        var padding = 30;
+    function CharacterSelector(game, keys, callback, index) {
         var x = 0;
+        var padding = 30;
+
+        index = index === undefined ? 0 : index;
 
         var group = game.add.group();
-        group.classType = Phaser.Button;
+        group.inputEnableChildren = true;
+        group.onChildInputDown.add(handleClick);
 
         var len = keys.length;
         for (var i = 0; i < len; i++) {
@@ -166,9 +172,22 @@
             x += (c.width + padding);
         }
 
-        function handleClick(c) {
-            console.log('hahahahhahahhahah');
+        setSprite(group.getChildAt(index), 1);//初始化选择
 
+        function handleClick(sprite, pointer) {
+            var wantIndex = group.getChildIndex(sprite);
+            if (wantIndex !== index) {
+                setSprite(sprite, 1);
+                setSprite(group.getChildAt(index), 0);
+
+                index = wantIndex;
+
+                callback(index);
+            }
+        }
+
+        function setSprite(sprite, frame) {
+            sprite.frame = frame;
         }
 
         return group;
@@ -198,7 +217,7 @@
             //red packet
             this.packet = game.add.group();
             //玩家
-            this.player = this.game.add.sprite(100, this.game.height - 248, INME.Vars.playerKey);
+            this.player = this.game.add.sprite(100, this.game.height - 248, INME.Vars.characterPrefix + '_' + INME.Vars.characterIndex);
             this.player.animations.add('run', [5, 6, 7, 8], 10, true);
             this.player.animations.add('up', [4], 10, false);
             this.player.play('run');
@@ -276,12 +295,12 @@
                 this.makeObstacle(960, (game.world.height - 64) - 50 * i);
             }
             this.game.time.events.add(this.rnd.between(1000, 3000), this.dupeObstacle, this);
-            this.count++;        
+            this.count++;
         },
         //redpacket
-        makeRedPacket: function() {
+        makeRedPacket: function () {
             var redPacket = game.add.sprite(900, this.game.height - 248, 'redPacket');
-            redPacket.animations.add('spin', [0, 1, 2, 3,4,5], 10, true);
+            redPacket.animations.add('spin', [0, 1, 2, 3, 4, 5], 10, true);
             redPacket.play('spin');
             this.packet.add(redPacket);
             game.physics.arcade.enable(redPacket);
@@ -291,11 +310,11 @@
             redPacket.outOfBoundsKill = true;
         },
         //restarts game
-        restartGame: function() {
+        restartGame: function () {
             this.game.state.start(INME.State.Key.StartGame);
         },
     }
-    
+
     function ParallaxSprite(game, key, x, y) {
         this.imageWidth = game.cache.getImage(key).width;
 
