@@ -72,6 +72,11 @@
             this.game.load.pack('common', 'assets/pack.json');
         },
         create: function () {
+            //初始化音效
+            INME.Sound = {
+                'bg': this.game.add.audio('bg', 0.5, true),
+                'collision': this.game.add.audio('collision'),
+            }
             this.game.state.start(INME.State.Key.Language);
         },
     }
@@ -127,11 +132,6 @@
             //角色选择
             var cs = new CharacterSelector(this.game, this.getCSKeys(), this.selectCharacter, INME.Vars.characterIndex);
             cs.position.set((this.game.width - cs.width) >> 1, 100);
-            //初始化音效
-            INME.Sound = {
-                'bg': this.game.add.audio('bg', 0.5, true),
-                'collision': this.game.add.audio('collision'),
-            }
         },
         getCSKeys: function () {
             var arr = [];
@@ -311,6 +311,7 @@
         },
         //restarts game
         restartGame: function () {
+            INME.Sound.bg.stop();
             this.game.state.start(INME.State.Key.StartGame);
         },
     }
