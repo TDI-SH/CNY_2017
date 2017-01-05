@@ -220,6 +220,7 @@
             this.player = this.game.add.sprite(100, this.game.height - 248, INME.Vars.characterPrefix + '_' + INME.Vars.characterIndex);
             this.player.animations.add('run', [5, 6, 7, 8], 10, true);
             this.player.animations.add('up', [4], 10, false);
+            this.player.animations.add('loop', [0,1,2,3,4,5,6,7,8], 10, true);
             this.player.play('run');
             this.game.physics.arcade.enable(this.player);
             this.player.body.gravity.y = INME.Vars.gravity;
@@ -238,7 +239,7 @@
             // check if player is touching ground
             game.physics.arcade.collide(this.player, this.platform);
             //restarts game if touching obstacles
-            game.physics.arcade.collide(this.obstacle, this.player, this.restartGame, null, this);
+            game.physics.arcade.collide(this.obstacle, this.player, this.endGame, null, this);
             // Jump when player is touching ground AND pressing spaceBar, upArrow, or tapping on mobile
             if ((upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && this.player.body.touching.down) {
                 this.jumpTimer = 1;
@@ -258,6 +259,14 @@
                 //reset this.jumpTimer since the player is no longer holding the jump key
                 this.jumpTimer = 0;
             }
+
+            //jump frame and running frame change
+            if (!this.player.body.touching.down) {
+                this.player.play('up');
+            } else {
+                this.player.play('run');
+            }
+
         },
         scrollBg: function () {
             this.bg.scroll(-INME.Vars.speed * 0.3);
@@ -310,9 +319,12 @@
             redPacket.outOfBoundsKill = true;
         },
         //restarts game
-        restartGame: function () {
+        endGame: function() {
             INME.Sound.bg.stop();
             this.game.state.start(INME.State.Key.StartGame);
+        },
+        endGameAnimation: function() {
+            this.player.play('loop');
         },
     }
 
@@ -348,5 +360,4 @@
         console.log(window.innerWidth, window.innerHeight);
     }
 
-    game.state.add("main", INME.State.InGame);
 })();
