@@ -2,8 +2,8 @@
     var INME = INME || {};
 
     var jumpTimer = 0;
-    var ez = 8;
-    var count = 0;
+    var difficultyEasy = 8;
+    
 
     INME.Vars = {
         speed: 1,
@@ -181,6 +181,7 @@
      */
     INME.State.InGame = {
         create: function () {
+            this.count = 0;
             //背景音乐
             INME.Sound.bg.play();
             //物理
@@ -206,6 +207,7 @@
             this.player.body.collideWorldBounds = true;
             //obstacle
             this.obstacle = game.add.group();
+            this.obstacle.enableBody = true;
             //control-keys
             spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
             upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
@@ -217,7 +219,7 @@
             // check if player is touching ground
             game.physics.arcade.collide(this.player, this.platform);
             //restarts game if touching obstacles
-            //game.physics.arcade.overlap(this.player, this.obstacle, this.game.state.start(INME.State.Key.InGame), null, this);
+            game.physics.arcade.collide(this.obstacle, this.player, this.restartGame, null, this);
             // Jump when player is touching ground AND pressing spaceBar, upArrow, or tapping on mobile
             if ((upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && this.player.body.touching.down) {
                 this.jumpTimer = 1;
@@ -256,8 +258,8 @@
             this.block.checkWorldBounds = true;
             this.block.outOfBoundsKill = true;
             // change existing blocks to be fast
-            if (count >= ez) {
-                for (var i = ez - 5; i < ez + 4; i++) {
+            if (this.count >= difficultyEasy) {
+                for (var i = difficultyEasy - 3; i < difficultyEasy + 3; i++) {
                     this.obstacle.hash[i].body.velocity.x = -300;
                 }
                 this.block.body.velocity.x = -300;
@@ -273,27 +275,27 @@
             for (var i = 1; i < height + 1; i++) {
                 this.makeObstacle(960, (game.world.height - 64) - 50 * i);
             }
-            count++;
-            this.game.time.events.add(this.rnd.between(1000, 3000), this.dupeObstacle, this);        
+            this.game.time.events.add(this.rnd.between(1000, 3000), this.dupeObstacle, this);
+            this.count++;        
         },
         //redpacket
         makeRedPacket: function() {
-            this.redPacket = game.add.sprite(900, this.game.height - 248, 'redPacket');
-            this.redPacket.animations.add('spin', [0, 1, 2, 3,4,5], 10, true);
-            this.redPacket.play('spin');
-            this.packet.add(this.redPacket);
-            game.physics.arcade.enable(this.redPacket);
-            this.redPacket.body.velocity.x = -200;
+            var redPacket = game.add.sprite(900, this.game.height - 248, 'redPacket');
+            redPacket.animations.add('spin', [0, 1, 2, 3,4,5], 10, true);
+            redPacket.play('spin');
+            this.packet.add(redPacket);
+            game.physics.arcade.enable(redPacket);
+            redPacket.body.velocity.x = -200;
             this.game.time.events.add(this.rnd.between(1000, 3000), this.makeRedPacket, this);
-            this.redPacket.checkWorldBounds = true;
-            this.redPacket.outOfBoundsKill = true;
+            redPacket.checkWorldBounds = true;
+            redPacket.outOfBoundsKill = true;
         },
         //restarts game
         restartGame: function() {
-            game.state.start("main");
+            this.game.state.start(INME.State.Key.StartGame);
         },
-
     }
+    
     function ParallaxSprite(game, key, x, y) {
         this.imageWidth = game.cache.getImage(key).width;
 
@@ -326,5 +328,5 @@
         console.log(window.innerWidth, window.innerHeight);
     }
 
-
+    game.state.add("main", INME.State.InGame);
 })();
