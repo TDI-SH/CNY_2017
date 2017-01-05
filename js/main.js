@@ -1,208 +1,14 @@
 (function () {
-    var INME = INME || {};
-
     var jumpTimer = 0;
     var difficultyEasy = 8;
-
-
-    INME.Vars = {
-        speed: 1,
-        characterIndex: 0,
-        characterNum: 2,
-        characterPrefix: 'chicken',
-        velocity: -550,
-        velocityLong: -1550,
-        gravity: 2000,
-    }
-
-    INME.Audio = {
-
-    }
-
-    INME.State = {
-        Key: {
-            Boot: 'Boot',
-            Loading: 'Loading',
-            Language: 'Language',
-            Story: 'Story',
-            Help: 'Help',
-            StartGame: 'StartGame',
-            InGame: 'InGame',
-            OverGame: 'OverGame',
-        },
-    }
-
-    /**
-     * state - Boot
-     */
-    INME.State.Boot = {
-        init: function () {
-            this.game.stage.backgroundColor = 0xffffff;
-
-            game.scale.pageAlignHorizontally = true;
-            game.scale.pageAlignVertically = true;
-            if (game.device.desktop) {
-                console.log('桌面');
-
-                game.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
-            }
-            else {
-                console.log('手机');
-
-                game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-                //game.scale.forceOrientation(true, false);
-            }
-
-        },
-        preload: function () {
-            this.game.load.image('loadingbar', 'assets/images/loading/loadingbar.png');
-        },
-        create: function () {
-            this.game.state.start(INME.State.Key.Loading);
-        }
-    }
-    /**
-     * state - Loading
-     */
-    INME.State.Loading = {
-        preload: function () {
-            var lb = this.game.add.sprite(0, 268, 'loadingbar');
-            this.game.load.setPreloadSprite(lb);
-
-            this.game.load.pack('common', 'assets/pack.json');
-        },
-        create: function () {
-            //初始化音效
-            INME.Sound = {
-                'bg': this.game.add.audio('bg', 0.5, true),
-                'collision': this.game.add.audio('collision'),
-            }
-            this.game.state.start(INME.State.Key.Language);
-        },
-    }
-    /**
-     * state - Language
-     */
-    INME.State.Language = {
-        create: function () {
-            this.game.add.button(250, 250, 'btnLan', this.handleClick, this, 1, 0, 1, 0).name = 'btnCh';
-            this.game.add.button(520, 250, 'btnLan', this.handleClick, this, 3, 2, 3, 2).name = 'btnEn';
-
-        },
-        handleClick: function (btn) {
-            btnName = btn.name;
-
-            this.game.state.start(INME.State.Key.Story);
-        }
-    }
-    /**
-     * state - Story
-     */
-    INME.State.Story = {
-        create: function () {
-            var video = this.game.add.video('backstory');
-            video.addToWorld();
-            video.play();
-
-            video.onComplete.addOnce(function () {
-                console.log('backstory ended, enter game');
-                //this.game.state.start(INME.State.Key.StartGame);
-            }, this);
-
-            video.volume = 0;//－－－测试
-            this.game.state.start(INME.State.Key.StartGame)
-        }
-    }
-    INME.State.Help = {
-        create: function () {
-            this.game.add.button(10, 10, 'btnClose', this.handleClick, this, 1, 0, 1, 0);
-            this.game.add.text(this.game.width >> 1, this.game.height >> 1, 'i am help screen', { font: 'regular 36pt Microsoft YaHei' }).anchor.set(0.5);
-        },
-        handleClick: function () {
-            this.game.state.start(INME.State.Key.StartGame);
-        }
-    }
-    /**
-     * state - StartGame
-     */
-    INME.State.StartGame = {
-        create: function () {
-            this.game.add.button(385, 400, 'btnPlay', this.handleClick, this, 1, 0, 1, 0).name = 'btnPlay';
-            this.game.add.button(870, 490, 'btnHelp', this.handleClick, this, 1, 0, 1, 0).name = 'btnHelp';
-            //角色选择
-            var cs = new CharacterSelector(this.game, this.getCSKeys(), this.selectCharacter, INME.Vars.characterIndex);
-            cs.position.set((this.game.width - cs.width) >> 1, 100);
-        },
-        getCSKeys: function () {
-            var arr = [];
-            for (var i = 0; i < INME.Vars.characterNum; i++) {
-                arr.push(INME.Vars.characterPrefix + '_' + i + '_select');
-            }
-            return arr;
-        },
-        selectCharacter: function (index) {
-            INME.Vars.characterIndex = index;
-        },
-        handleClick: function (btn) {
-            btnName = btn.name;
-            switch (btnName) {
-                case 'btnPlay':
-                    this.game.state.start(INME.State.Key.InGame);
-                    break;
-                case 'btnHelp':
-                    this.game.state.start(INME.State.Key.Help);
-                    break;
-            }
-        }
-
-    }
-    function CharacterSelector(game, keys, callback, index) {
-        var x = 0;
-        var padding = 30;
-
-        index = index === undefined ? 0 : index;
-
-        var group = game.add.group();
-        group.inputEnableChildren = true;
-        group.onChildInputDown.add(handleClick);
-
-        var len = keys.length;
-        for (var i = 0; i < len; i++) {
-            var c = group.create(x, 0, keys[i]);
-            x += (c.width + padding);
-        }
-
-        setSprite(group.getChildAt(index), 1);//初始化选择
-
-        function handleClick(sprite, pointer) {
-            var wantIndex = group.getChildIndex(sprite);
-            if (wantIndex !== index) {
-                setSprite(sprite, 1);
-                setSprite(group.getChildAt(index), 0);
-
-                index = wantIndex;
-
-                callback(index);
-            }
-        }
-
-        function setSprite(sprite, frame) {
-            sprite.frame = frame;
-        }
-
-        return group;
-    }
-
     /**
      * state - InGame
      * 使用内置的tileSprite配合tilePosition属性制作背景视差滚动时,个别手机浏览器会比较卡。决定自己实现
      * 
      */
-     //inGame variables
+    //inGame variables
     var scoreText;
     INME.State.InGame = {
-        
-
         create: function () {
             this.count = 0;
             this.score = 0;
@@ -225,7 +31,7 @@
             this.player = this.game.add.sprite(100, this.game.height - 248, INME.Vars.characterPrefix + '_' + INME.Vars.characterIndex);
             this.player.animations.add('run', [5, 6, 7, 8], 10, true);
             this.player.animations.add('up', [4], 10, false);
-            this.player.animations.add('loop', [0,1,2,3,4,5,6,7,8], 10, true);
+            this.player.animations.add('loop', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, true);
             this.player.play('run');
             this.game.physics.arcade.enable(this.player);
             this.player.body.gravity.y = INME.Vars.gravity;
@@ -248,7 +54,7 @@
             var collide = game.physics.arcade.collide(this.player, this.platform);
             console.log(collide);
             //restarts game if touching obstacles
-            game.physics.arcade.collide(this.obstacle, this.player, this.endGame, null, this); 
+            game.physics.arcade.collide(this.obstacle, this.player, this.endGame, null, this);
             // collect packets when overlap
             game.physics.arcade.overlap(this.player, this.packet, this.collectPacket, null, this);
             // Jump when player is touching ground AND pressing spaceBar, upArrow, or tapping on mobile
@@ -329,16 +135,16 @@
             redPacket.outOfBoundsKill = true;
         },
         //restarts game
-        endGame: function() {
+        endGame: function () {
             INME.Sound.bg.stop();
 
             this.game.state.start(INME.State.Key.OverGame);
             // game.state.start('overGame');
         },
-        endGameAnimation: function() {
+        endGameAnimation: function () {
             this.player.play('loop');
         },
-        collectPacket: function(player, packet) {
+        collectPacket: function (player, packet) {
             // Removes the star from the screen
             packet.kill();
             //  Add and update the score
@@ -362,134 +168,6 @@
             this.group.position.x = 0;
         }
     }
-
-
-    // gameover
-    INME.State.OverGame = {
-        preload:function(){
-
-        },
-        create:function(){
-            this.gameOver();
-        },
-        update:function(){
-
-        },
-        gameOver:function(){
-            gameOverGroup = this.game.add.group();
-            gameOverBg = this.add.sprite(0, 0, "msgBg");
-            gameOverBg.anchor.setTo(.5, .5);
-            gameOverGroup.add(gameOverBg);
-
-            var txt = this.game.add.text(0,-80,'GAME OVER',{fontSize:'30px',fill:'#fff'});
-            txt.anchor.setTo(.5,.5);
-            gameOverGroup.add(txt);
-
-            var score = this.game.add.text(0,-50,'SCORE:1000',{fontSize:'24px',fill:'#fff'});
-            score.anchor.setTo(.5,.5);
-            gameOverGroup.add(score);
-
-            var play = this.game.add.button(0,-10,'playBtn',this.playAgain,this);
-            play.anchor.setTo(.5,.5);
-            play.scale.setTo(.7,.7);
-            play.input.useHandCursor = true;
-            gameOverGroup.add(play);
-
-            var submit = this.game.add.button(-80,50,'submit',this.submitScore,this);
-            submit.anchor.setTo(.5,.5);
-            submit.scale.setTo(.7,.7);
-            submit.input.useHandCursor = true;
-            gameOverGroup.add(submit);
-
-            var view = this.game.add.button(80,50,'viewScore',this.viewHightScore,this);
-            view.anchor.setTo(.5,.5);
-            view.scale.setTo(.7,.7);
-            view.input.useHandCursor = true;
-            gameOverGroup.add(view);
-
-
-
-            var shareSina = this.game.add.button(-120,90,'share',function(){
-                this.shareFn('sina');
-            },this);
-            shareSina.anchor.setTo(.5,.5);
-            shareSina.scale.setTo(.7,.7);
-            shareSina.frame = 0;
-            shareSina.input.useHandCursor = true;
-            gameOverGroup.add(shareSina);
-
-            var shareWechat = this.game.add.button(-40,90,'share',function(){
-                this.shareFn('wechat');
-            },this);
-            shareWechat.anchor.setTo(.5,.5);
-            shareWechat.scale.setTo(.7,.7);
-            shareWechat.frame = 1;
-            shareWechat.input.useHandCursor = true;
-            gameOverGroup.add(shareWechat);
-
-            var shareTwitter = this.game.add.button(40,90,'share',function(){
-                this.shareFn('twitter');
-            },this);
-            shareTwitter.anchor.setTo(.5,.5);
-            shareTwitter.scale.setTo(.7,.7);
-            shareTwitter.frame = 2;
-            shareTwitter.input.useHandCursor = true;
-            gameOverGroup.add(shareTwitter);
-
-            var shareFace = this.game.add.button(120,90,'share',function(){
-                this.shareFn('facebook');
-            },this);
-            shareFace.anchor.setTo(.5,.5);
-            shareFace.scale.setTo(.7,.7);
-            shareFace.frame = 3;
-            shareFace.input.useHandCursor = true;
-            gameOverGroup.add(shareFace);
-
-
-            gameOverGroup.position.x = this.game.world.centerX;
-            gameOverGroup.position.y = this.game.world.centerY;
-            gameOverGroup.alpha = 0;
-            this.game.add.tween(gameOverGroup).to({
-                alpha:1
-            },1000,Phaser.Easing.Bounce.Out,true,0,0,false);
-        },
-        playAgain:function(){
-            console.log('play again');
-            this.game.state.start(INME.State.Key.StartGame);
-        },
-        submitScore:function(){
-            console.log('submit');
-            // this.game.state.start('submit');
-        },
-        viewHightScore:function(){
-            console.log('view high score');
-        },
-        shareFn:function(obj){
-            var sinaShareURL = "http://service.weibo.com/share/share.php?";
-            var qqShareURL = "http://share.v.t.qq.com/index.php?c=share&a=index&";
-            var host_url = document.location;
-            var title = 'share test';
-            var pic = '';
-            if(obj=="sina"){
-                _URL=sinaShareURL+"url="+host_url+"&title="+title+"&pic="+pic;
-                window.open(_URL);
-            }else if(obj=="qq"){
-                _URL=qqShareURL+"url="+host_url+"&title="+title+"&pic="+pic;
-                window.open(_URL);
-            }else if(obj=="wechat"){
-                console.log('wechat');
-            }else if(obj=="facebook"){
-                console.log('facebook');
-            }else if(obj =='twitter'){
-                console.log('twitter');
-            }
-            
-        }
-    }
-
-
-
-
 
     /**
      * 主入口
