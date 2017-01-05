@@ -198,9 +198,14 @@
      * 使用内置的tileSprite配合tilePosition属性制作背景视差滚动时,个别手机浏览器会比较卡。决定自己实现
      * 
      */
+     //inGame variables
+    var scoreText;
     INME.State.InGame = {
+        
+
         create: function () {
             this.count = 0;
+            this.score = 0;
             //背景音乐
             INME.Sound.bg.play();
             //物理
@@ -233,15 +238,21 @@
             upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
             this.dupeObstacle();
             this.makeRedPacket();
+            //score       
+            scoreText = this.game.add.text(game.world.width - 160, 16, 'score: 0', { font: "20px Arial", fill: '#000' });
         },
         update: function () {
             this.scrollBg();
             // check if player is touching ground
-            game.physics.arcade.collide(this.player, this.platform);
+            //game.physics.arcade.collide(this.player, this.platform);
+            var collide = game.physics.arcade.collide(this.player, this.platform);
+            console.log(collide);
             //restarts game if touching obstacles
-            game.physics.arcade.collide(this.obstacle, this.player, this.endGame, null, this);
+            game.physics.arcade.collide(this.obstacle, this.player, this.endGame, null, this); 
+            // collect packets when overlap
+            game.physics.arcade.overlap(this.player, this.packet, this.collectPacket, null, this);
             // Jump when player is touching ground AND pressing spaceBar, upArrow, or tapping on mobile
-            if ((upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && this.player.body.touching.down) {
+            if ((upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && collide) {
                 this.jumpTimer = 1;
                 this.player.body.velocity.y = INME.Vars.velocity;
             } else if ((upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && (this.jumpTimer != 0)) {
@@ -297,7 +308,6 @@
             // Randomly pick a number between 1 and 5
             // This will be the hole position
             var height = Math.floor(Math.random() * 2) + 1;
-            this.score += 1;
             // Add the 6 obstacles 
             // With one big hole at position 'hole' and 'hole + 1'
             for (var i = 1; i < height + 1; i++) {
@@ -328,6 +338,14 @@
         endGameAnimation: function() {
             this.player.play('loop');
         },
+        collectPacket: function(player, packet) {
+            // Removes the star from the screen
+            packet.kill();
+            //  Add and update the score
+            this.score += 1;
+            scoreText.text = 'score: ' + this.score;
+            console.log(scoreText.text);
+        }
     }
 
     function ParallaxSprite(game, key, x, y) {
