@@ -150,6 +150,7 @@
             //  Add and update the score
             this.score += 1;
             scoreText.text = 'score: ' + this.score;
+            INME.Vars.score = scoreText.text;
             console.log(scoreText.text);
         }
     }

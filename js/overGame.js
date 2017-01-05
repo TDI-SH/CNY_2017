@@ -20,7 +20,7 @@
             txt.anchor.setTo(.5, .5);
             gameOverGroup.add(txt);
 
-            var score = this.game.add.text(0, -50, 'SCORE:1000', { fontSize: '24px', fill: '#fff' });
+            var score = this.game.add.text(0, -50, 'SCORE:'+INME.Vars.score, { fontSize: '24px', fill: '#fff' });
             score.anchor.setTo(.5, .5);
             gameOverGroup.add(score);
 

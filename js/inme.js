@@ -7,6 +7,7 @@ var INME = INME || {};
         characterPrefix: 'chicken',
         velocity: -550,
         gravity: 2000,
+        score: 0
     };
 
     INME.State = {
