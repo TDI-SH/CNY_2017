@@ -101,15 +101,11 @@
         },
         shareFn: function (obj) {
             var sinaShareURL = "http://service.weibo.com/share/share.php?";
-            var qqShareURL = "http://share.v.t.qq.com/index.php?c=share&a=index&";
             var host_url = document.location;
             var title = 'share test';
             var pic = '';
             if (obj == "sina") {
                 _URL = sinaShareURL + "url=" + host_url + "&title=" + title + "&pic=" + pic;
-                window.open(_URL);
-            } else if (obj == "qq") {
-                _URL = qqShareURL + "url=" + host_url + "&title=" + title + "&pic=" + pic;
                 window.open(_URL);
             } else if (obj == "wechat") {
                 console.log('wechat');
