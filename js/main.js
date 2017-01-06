@@ -1,17 +1,26 @@
 (function () {
     var jumpTimer = 0;
-    var difficultyEasy = 8;
+    var scoreText;
+    var difficulty = [5,10,30,40,50];
+    var speed = [-220, -250, -300, -350, -450];
+
+    // var difficulty = {
+    //     score: [10,20,30,40,50],
+    //     velocity: [-200, -250, -300, -350, -400],
+    // };    
     /**
      * state - InGame
      * 使用内置的tileSprite配合tilePosition属性制作背景视差滚动时,个别手机浏览器会比较卡。决定自己实现
      * 
-     */
+     **/
     //inGame variables
-    var scoreText;
+    
+
     INME.State.InGame = {
         create: function () {
             this.count = 0;
             this.score = 0;
+            this.i = 0;
             //背景音乐
             INME.Sound.bg.play();
             //物理
@@ -29,9 +38,10 @@
             this.packet = game.add.group();
             //玩家
             this.player = this.game.add.sprite(100, this.game.height - 248, INME.Vars.characterPrefix + '_' + INME.Vars.characterIndex);
-            this.player.animations.add('run', [5, 6, 7, 8], 10, true);
-            this.player.animations.add('up', [4], 10, false);
-            this.player.animations.add('loop', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, true);
+            this.player.scale.setTo(1.3, 1.3);
+            this.player.animations.add('run', [0, 1, 2], 10, true);
+            this.player.animations.add('up', [0, 1, 2], 10, true);
+            //this.player.animations.add('loop', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, true);
             this.player.play('run');
             this.game.physics.arcade.enable(this.player);
             this.player.body.gravity.y = INME.Vars.gravity;
@@ -52,10 +62,9 @@
             // check if player is touching ground
             //game.physics.arcade.collide(this.player, this.platform);
             var collide = game.physics.arcade.collide(this.player, this.platform);
-            console.log(collide);
             //restarts game if touching obstacles
             game.physics.arcade.collide(this.obstacle, this.player, this.endGame, null, this);
-            // collect packets when overlap
+            // collect packet when overlap
             game.physics.arcade.overlap(this.player, this.packet, this.collectPacket, null, this);
             // Jump when player is touching ground AND pressing spaceBar, upArrow, or tapping on mobile
             if ((upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && collide) {
@@ -94,21 +103,21 @@
         //===============setting up obstacles===============
         //==================================================
         makeObstacle: function (x, y) {
-            this.block = game.add.sprite(x, y, 'obstacle', Math.floor(Math.random() * 5));
-            this.block.scale.setTo(0.8, 0.8);
-            this.obstacle.add(this.block);
-            game.physics.arcade.enable(this.block);
+            var block = game.add.sprite(x, y, 'obstacle', Math.floor(Math.random() * 5));
+            block.scale.setTo(0.8, 0.8);
+            this.obstacle.add(block);
+            game.physics.arcade.enable(block);
             game.physics.arcade.enable(this.obstacle);
-            this.block.body.velocity.x = -200;
-            this.block.checkWorldBounds = true;
-            this.block.outOfBoundsKill = true;
+            block.body.velocity.x = -200;
+            block.checkWorldBounds = true;
+            block.outOfBoundsKill = true;
             // change existing blocks to be fast
-            if (this.count >= difficultyEasy) {
-                for (var i = difficultyEasy - 3; i < difficultyEasy + 3; i++) {
-                    this.obstacle.hash[i].body.velocity.x = -300;
-                }
-                this.block.body.velocity.x = -300;
-            }
+            // =======================
+            // make function for these
+            // =======================  
+            this.levelChange(this.obstacle);
+            
+            //console.log(block.body.velocity.x);
         },
         dupeObstacle: function () {
             // Randomly pick a number between 1 and 5
@@ -119,27 +128,50 @@
             for (var i = 1; i < height + 1; i++) {
                 this.makeObstacle(960, (game.world.height - 64) - 50 * i);
             }
-            this.game.time.events.add(this.rnd.between(1000, 3000), this.dupeObstacle, this);
+            this.obsTimer = this.game.time.events.add(this.rnd.between(1000, 3000), this.dupeObstacle, this);
             this.count++;
         },
         //redpacket
         makeRedPacket: function () {
             var redPacket = game.add.sprite(900, this.game.height - 248, 'redPacket');
-            redPacket.animations.add('spin', [0, 1, 2, 3, 4, 5], 10, true);
+            redPacket.scale.setTo(0.35, 0.35);
+            redPacket.animations.add('spin', [0, 1, 2, 3, 4, 5,6,7,8,9,10,11], 10, true);
             redPacket.play('spin');
             this.packet.add(redPacket);
             game.physics.arcade.enable(redPacket);
             redPacket.body.velocity.x = -200;
-            this.game.time.events.add(this.rnd.between(1000, 3000), this.makeRedPacket, this);
+            this.packetTimer = this.game.time.events.add(this.rnd.between(1000, 3000), this.makeRedPacket, this);
+            //console.log(this.game.time.events);
             redPacket.checkWorldBounds = true;
             redPacket.outOfBoundsKill = true;
+            this.levelChange(this.packet);
         },
         //restarts game
         endGame: function () {
             INME.Sound.bg.stop();
-
-            this.game.state.start(INME.State.Key.OverGame);
+            this.input.disabled = true;
+            this.game.time.removeAll();
+            this.game.time.events.add(1000, this.gameOver, this);
+            
+            this.player.body.gravity.y = 0;
+            this.player.body.velocity.y = 0; 
+            this.player.body.velocity.x = 0;
+            // =======================
+            // make function for these
+            // =======================  
+            this.obstacle.children.forEach(function(child){ 
+                child.body.gravity.y = 0;
+                child.body.gravity.x = 0;
+                child.body.velocity.y = 0;
+                child.body.velocity.x = 0;
+            });
+            this.packet.children.forEach(function(child){ 
+                child.body.velocity.x = 0;
+            });
             // game.state.start('overGame');
+        },
+        gameOver: function() {
+            this.game.state.start(INME.State.Key.OverGame);
         },
         endGameAnimation: function () {
             this.player.play('loop');
@@ -152,6 +184,16 @@
             scoreText.text = 'score: ' + this.score;
             INME.Vars.score = scoreText.text;
             console.log(scoreText.text);
+        },
+        levelChange: function (parent) {
+            
+            if (this.score >= difficulty[this.i]) {
+                parent.children.forEach(function(child){
+                    child.body.velocity.x = speed[this.i];
+                },this);
+                this.i++;
+            }
+            console.log(difficulty[this.i]);
         }
     }
 
@@ -169,7 +211,6 @@
             this.group.position.x = 0;
         }
     }
-
     /**
      * 主入口
      */

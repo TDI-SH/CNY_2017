@@ -81,9 +81,9 @@
         {
             "type": "spritesheet",
             "key": "chicken_0",
-            "url": "assets/images/ingame/chicken_0.png",
-            "frameWidth": 32,
-            "frameHeight": 48
+            "url": "assets/images/ingame/chiken_2.png",
+            "frameWidth": 54,
+            "frameHeight": 52
         },
         {
             "type": "spritesheet",
@@ -107,9 +107,9 @@
         {
             "type": "spritesheet",
             "key": "redPacket",
-            "url": "assets/images/ingame/coin.png",
-            "frameWidth": 32,
-            "frameHeight": 32
+            "url": "assets/images/ingame/hongbao.png",
+            "frameWidth": 132,
+            "frameHeight": 132
         },
         {
             "type": "spritesheet",
@@ -137,6 +137,13 @@
             "type": "image",
             "key": "viewScore",
             "url": "assets/images/gameover/viewHightScore.png"
+        },
+        {
+            "type": "spritesheet",
+            "key": "fredChicken",
+            "url": "assets/images/ingame/chiken.png",
+            "frameWidth": 982,
+            "frameHeight": 982
         }
     ]
 }
