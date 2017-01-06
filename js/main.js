@@ -1,7 +1,7 @@
 (function () {
     var jumpTimer = 0;
     var scoreText;
-    var difficulty = [5,10,30,40,50];
+    var difficulty = [5, 10, 30, 40, 50];
     var speed = [-220, -250, -300, -350, -450];
 
     // var difficulty = {
@@ -14,7 +14,7 @@
      * 
      **/
     //inGame variables
-    
+
 
     INME.State.InGame = {
         create: function () {
@@ -26,9 +26,12 @@
             //物理
             game.physics.startSystem(Phaser.Physics.Arcade);
             //背景
-            this.bg = new ParallaxSprite(this.game, 'bg_ingame', 0, 0);
-            this.hill1 = new ParallaxSprite(this.game, 'hill1', 0, 276);
-            this.hill2 = new ParallaxSprite(this.game, 'hill2', 0, 341);
+            this.game.add.image(0, 0, 'bg_ingame');
+            this.cloud1 = new ParallaxSprite(this.game, 'cloud1');
+            this.hill = new ParallaxSprite(this.game, 'hill');
+            this.city = new ParallaxSprite(this.game, 'city');
+            this.cloud2 = new ParallaxSprite(this.game, 'cloud2');
+
             this.platform = game.add.group();
             this.platform.enableBody = true;
             var ground = this.platform.create(0, game.world.height - 64, 'ground');
@@ -95,9 +98,10 @@
 
         },
         scrollBg: function () {
-            this.bg.scroll(-INME.Vars.speed * 0.3);
-            this.hill1.scroll(-INME.Vars.speed * 0.5);
-            this.hill2.scroll(-INME.Vars.speed);
+            this.cloud1.scroll(-INME.Vars.speed * 0.3);
+            this.cloud2.scroll(-INME.Vars.speed * 0.3);
+            this.hill.scroll(-INME.Vars.speed * 0.5);
+            this.city.scroll(-INME.Vars.speed);
         },
         //==================================================
         //===============setting up obstacles===============
@@ -116,7 +120,7 @@
             // make function for these
             // =======================  
             this.levelChange(this.obstacle);
-            
+
             //console.log(block.body.velocity.x);
         },
         dupeObstacle: function () {
@@ -135,7 +139,7 @@
         makeRedPacket: function () {
             var redPacket = game.add.sprite(900, this.game.height - 248, 'redPacket');
             redPacket.scale.setTo(0.35, 0.35);
-            redPacket.animations.add('spin', [0, 1, 2, 3, 4, 5,6,7,8,9,10,11], 10, true);
+            redPacket.animations.add('spin', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 10, true);
             redPacket.play('spin');
             this.packet.add(redPacket);
             game.physics.arcade.enable(redPacket);
@@ -152,25 +156,25 @@
             this.input.disabled = true;
             this.game.time.removeAll();
             this.game.time.events.add(1000, this.gameOver, this);
-            
+
             this.player.body.gravity.y = 0;
-            this.player.body.velocity.y = 0; 
+            this.player.body.velocity.y = 0;
             this.player.body.velocity.x = 0;
             // =======================
             // make function for these
             // =======================  
-            this.obstacle.children.forEach(function(child){ 
+            this.obstacle.children.forEach(function (child) {
                 child.body.gravity.y = 0;
                 child.body.gravity.x = 0;
                 child.body.velocity.y = 0;
                 child.body.velocity.x = 0;
             });
-            this.packet.children.forEach(function(child){ 
+            this.packet.children.forEach(function (child) {
                 child.body.velocity.x = 0;
             });
             // game.state.start('overGame');
         },
-        gameOver: function() {
+        gameOver: function () {
             this.game.state.start(INME.State.Key.OverGame);
         },
         endGameAnimation: function () {
@@ -186,11 +190,11 @@
             console.log(scoreText.text);
         },
         levelChange: function (parent) {
-            
+
             if (this.score >= difficulty[this.i]) {
-                parent.children.forEach(function(child){
+                parent.children.forEach(function (child) {
                     child.body.velocity.x = speed[this.i];
-                },this);
+                }, this);
                 this.i++;
             }
             console.log(difficulty[this.i]);
@@ -198,6 +202,9 @@
     }
 
     function ParallaxSprite(game, key, x, y) {
+        x = x === undefined ? 0 : x;
+        y = y === undefined ? 0 : y;
+
         this.imageWidth = game.cache.getImage(key).width;
 
         this.group = game.add.group();

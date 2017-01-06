@@ -58,6 +58,13 @@
         },
         {
             "type": "spritesheet",
+            "key": "helpIntro",
+            "url": "assets/images/help/helpIntro.jpg",
+            "frameWidth": 480,
+            "frameHeight": 360
+        },
+        {
+            "type": "spritesheet",
             "key": "btnClose",
             "url": "assets/images/public/btnClose.jpg",
             "frameWidth": 80,
@@ -66,17 +73,27 @@
         {
             "type": "image",
             "key": "bg_ingame",
-            "url": "assets/images/ingame/bg.jpg"
+            "url": "assets/images/ingame/bg.png"
         },
         {
             "type": "image",
-            "key": "hill1",
-            "url": "assets/images/ingame/hill1.png"
+            "key": "cloud1",
+            "url": "assets/images/ingame/cloud1.png"
         },
         {
             "type": "image",
-            "key": "hill2",
-            "url": "assets/images/ingame/hill2.png"
+            "key": "hill",
+            "url": "assets/images/ingame/hill.png"
+        },
+        {
+            "type": "image",
+            "key": "city",
+            "url": "assets/images/ingame/city.png"
+        },
+        {
+            "type": "image",
+            "key": "cloud2",
+            "url": "assets/images/ingame/cloud2.png"
         },
         {
             "type": "spritesheet",

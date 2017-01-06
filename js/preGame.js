@@ -96,11 +96,55 @@
      */
     INME.State.Help = {
         create: function () {
-            this.game.add.button(10, 10, 'btnClose', this.handleClick, this, 1, 0, 1, 0);
-            this.game.add.text(this.game.width >> 1, this.game.height >> 1, 'i am help screen', { font: 'regular 36pt Microsoft YaHei' }).anchor.set(0.5);
+            var num = 3;
+            var id = 0;
+            var imgs = [];
+
+            this.game.add.button(10, 10, 'btnClose', this.handleClick, this, 1, 0, 1, 0).name = 'btnClose';
+
+            var btnNext = new INME.Button(this.game, this.handleClick, this, 'btnLan', INME.getCopy('next'), 28);
+            btnNext.name = 'btnNext';
+            btnNext.position.set(615, 470);
+
+            var btnPre = new INME.Button(this.game, this.handleClick, this, 'btnLan', INME.getCopy('pre'), 28);
+            btnPre.name = 'btnPre';
+            btnPre.position.set(345, 470);
+
+            var x = 240;
+            var y = 40;
+            for (var i = 0; i < num; i++) {
+                var img = this.game.add.image(x, y, 'helpIntro', i);
+                imgs.push(img);
+                img.alpha = 0;
+            }
+
+            imgs[id].alpha = 1;//初始化            
         },
-        handleClick: function () {
-            this.game.state.start(INME.State.Key.StartGame);
+        handleClick: function (btn) {
+            switch (btn.name) {
+                case 'btnClose':
+                    this.game.state.start(INME.State.Key.StartGame);
+                    break;
+                case 'btnNext':
+                    var newId = id + 1;
+                    if (newId >= num)
+                        newId = num - 1;
+
+                    switchInto(newId, id);
+                    break;
+                case 'btnPre':
+                    var newId = id - 1;
+                    if (newId < 0)
+                        newId = 0;
+
+                    switchInto(newId, id);
+                    break;
+            }
+        },
+        switchInto: function (newId, oldId) {
+            if (newId !== oldId) {
+
+            }
         }
     }
     /**

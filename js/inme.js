@@ -40,6 +40,16 @@ INME = (function () {
             'sc': '分数',
             'tc': '分數',
             'en': 'Score'
+        },
+        'next': {
+            'sc': '下一步',
+            'tc': '下一步',
+            'en': 'Next'
+        },
+        'pre': {
+            'sc': '上一步',
+            'tc': '上一步',
+            'en': 'Preview'
         }
     }
 
@@ -81,7 +91,7 @@ INME = (function () {
     }
 
     /**
-     * 返回对应语言版本的文字的BitmapText
+     * 返回对应语言版本的文字
      */
     function getCopy(key) {
         return copy[key][Vars.language];
@@ -94,6 +104,43 @@ INME = (function () {
         getCopy: getCopy,
         getCopyBT: getCopyBT,
         Button: Button,
+    }
+})();
+
+INME.cookie = (function () {
+    function get(name) {
+        var cookieName = encodeURIComponent(name) + '=';
+        var cookieStart = document.cookie.indexOf(cookieName);
+        var cookieValue;
+        if (cookieStart > -1) {
+            var cookieEnd = document.cookie.indexOf(';', cookieStart);
+            if (cookieEnd === -1) {
+                cookieEnd = document.cookie.length;
+            }
+            cookieValue = decodeURIComponent(document.cookie.substring(cookieStart + cookieName.length, cookieEnd));
+        }
+        return cookieValue;
+    }
+    function set(name, value, expires, path, domain, secure) {
+        var cookieText = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+        if (expires instanceof Date) {
+            cookieText += ';expires=' + expires.toGMTString();
+        }
+        if (path) {
+            cookieText += ';path=' + path;
+        }
+        if (domain) {
+            cookieText += ';domain' + domain;
+        }
+        if (secure) {
+            cookieText += ';secure'
+        }
+
+        document.cookie = cookieText;
+    }
+    return {
+        set: set,
+        get: get,
     }
 })();
 
