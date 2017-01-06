@@ -96,9 +96,10 @@
      */
     INME.State.Help = {
         create: function () {
-            var num = 3;
-            var id = 0;
-            var imgs = [];
+
+            this.imgs = [];
+            this.num = 3;
+            this.id = 0;
 
             this.game.add.button(10, 10, 'btnClose', this.handleClick, this, 1, 0, 1, 0).name = 'btnClose';
 
@@ -112,13 +113,13 @@
 
             var x = 240;
             var y = 40;
-            for (var i = 0; i < num; i++) {
+            for (var i = 0; i < this.num; i++) {
                 var img = this.game.add.image(x, y, 'helpIntro', i);
-                imgs.push(img);
+                this.imgs.push(img);
                 img.alpha = 0;
             }
 
-            imgs[id].alpha = 1;//初始化            
+            this.imgs[this.id].alpha = 1;//初始化            
         },
         handleClick: function (btn) {
             switch (btn.name) {
@@ -126,24 +127,36 @@
                     this.game.state.start(INME.State.Key.StartGame);
                     break;
                 case 'btnNext':
-                    var newId = id + 1;
-                    if (newId >= num)
-                        newId = num - 1;
+                    var newId = this.id + 1;
+                    if (newId >= this.num)
+                        newId = this.num - 1;
 
-                    switchInto(newId, id);
+                    this.switchInto(newId);
                     break;
                 case 'btnPre':
-                    var newId = id - 1;
+                    var newId = this.id - 1;
                     if (newId < 0)
                         newId = 0;
 
-                    switchInto(newId, id);
+                    this.switchInto(newId);
                     break;
             }
         },
-        switchInto: function (newId, oldId) {
-            if (newId !== oldId) {
+        switchInto: function (newId) {
+            if (newId !== this.id) {
 
+                console.log(newId, this.id);
+
+                var oldImg = this.imgs[this.id];
+                var newImg = this.imgs[newId];
+
+
+                newImg.alpha = 0;
+                this.game.add.tween(newImg).to({ alpha: 1 }, 500, 'Linear', true);
+
+                this.game.add.tween(oldImg).to({ alpha: 0 }, 500, 'Linear', true);
+
+                this.id = newId;
             }
         }
     }
