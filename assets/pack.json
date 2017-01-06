@@ -1,6 +1,12 @@
 {
     "common": [
         {
+            "type": "bitmapFont",
+            "key": "copy",
+            "textureURL": "assets/copy/copy.png",
+            "atlasURL": "assets/copy/copy.fnt"
+        },
+        {
             "type": "audio",
             "key": "bg",
             "urls": "assets/sound/bg.mp3"

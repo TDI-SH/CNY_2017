@@ -52,16 +52,27 @@
      */
     INME.State.Language = {
         create: function () {
-            this.game.add.button(250, 250, 'btnLan', this.handleClick, this, 1, 0, 1, 0).name = 'btnCh';
-            this.game.add.button(520, 250, 'btnLan', this.handleClick, this, 3, 2, 3, 2).name = 'btnEn';
-
+            var lans = INME.Languages;
+            var x = this.game.width >> 1;
+            var padding = 100;
+            var y = 150;
+            for (var lan in lans) {
+                var text = lans[lan];
+                var btn = new INME.Button(this.game, this.handleClick, this, 'btnLan', text, 28);
+                btn.name = lan;
+                btn.x = x;
+                btn.y = y;
+                y += padding;
+            }
         },
         handleClick: function (btn) {
-            btnName = btn.name;
-
+            var lan = btn.name;
+            INME.Vars.language = lan;
             this.game.state.start(INME.State.Key.Story);
         }
     }
+
+
     /**
      * state - Story
      */
@@ -80,6 +91,9 @@
             this.game.state.start(INME.State.Key.StartGame)
         }
     }
+    /**
+     * state - Help
+     */
     INME.State.Help = {
         create: function () {
             this.game.add.button(10, 10, 'btnClose', this.handleClick, this, 1, 0, 1, 0);
@@ -94,7 +108,10 @@
      */
     INME.State.StartGame = {
         create: function () {
-            this.game.add.button(385, 400, 'btnPlay', this.handleClick, this, 1, 0, 1, 0).name = 'btnPlay';
+            var btnPlay = new INME.Button(this.game, this.handleClick, this, 'btnLan', INME.getCopy('play'), 28);
+            btnPlay.name = 'btnPlay';
+            btnPlay.position.set(480, 420);
+
             this.game.add.button(870, 490, 'btnHelp', this.handleClick, this, 1, 0, 1, 0).name = 'btnHelp';
             //角色选择
             var cs = new CharacterSelector(this.game, this.getCSKeys(), this.selectCharacter, INME.Vars.characterIndex);
