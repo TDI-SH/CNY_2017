@@ -37,9 +37,9 @@ INME = (function () {
             'en': 'play'
         },
         'score': {
-            'sc': '分数',
-            'tc': '分數',
-            'en': 'score'
+            'sc': '分数:',
+            'tc': '分數:',
+            'en': 'Score:'
         },
         'next': {
             'sc': '下一步',
@@ -90,7 +90,7 @@ INME = (function () {
         console.log(text);
         return game.add.bitmapText(x, y, Vars.copyFontname, text, size);
     }
-    
+
     /**
      * 返回对应语言版本的文字
      */

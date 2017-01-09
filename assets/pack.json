@@ -1,6 +1,18 @@
 {
     "common": [
         {
+            "type": "atlasJSONHash",
+            "key": "images",
+            "textureURL": "assets/images.png",
+            "atlasURL": "assets/images.json"
+        },
+        {
+            "type": "bitmapFont",
+            "key": "copy",
+            "textureURL": "assets/copy/copy.png",
+            "atlasURL": "assets/copy/copy.fnt"
+        },
+        {
             "type": "bitmapFont",
             "key": "copy",
             "textureURL": "assets/copy/copy.png",
