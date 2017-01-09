@@ -37,14 +37,7 @@
             this.packet = game.add.group();
             this.packet.enableBody = true;
             //玩家
-            this.player = this.game.add.sprite(100, this.game.height - 248, INME.Vars.characterPrefix + '_' + INME.Vars.characterIndex);
-            this.player.animations.add('run', [0, 1, 2], 10, true);
-            this.player.animations.add('up', [0, 1, 2], 10, true);
-            //this.player.animations.add('loop', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, true);
-            this.player.play('run');
-            this.game.physics.arcade.enable(this.player);
-            this.player.body.gravity.y = playerGravity;
-            this.player.body.collideWorldBounds = true;
+            this.makePlayer();
             //obstacle
             this.obstacle = game.add.group();
             this.obstacle.enableBody = true;
@@ -98,6 +91,20 @@
             this.cloud2.scroll(speed * 0.005);
             this.hill.scroll(speed * 0.008);
             this.city.scroll(speed * 0.01);
+        },
+        //设置player
+        makePlayer: function () {
+            var prefix = 'characters/chicken_' + INME.Vars.characterIndex + '/';
+            console.log(Phaser.Animation.generateFrameNames(prefix, 0, 2));
+            console.log(Phaser.Animation.generateFrameNames(prefix, 3, 4));
+            this.player = this.game.add.sprite(100, this.game.height - 180, 'images', prefix + '5');
+            this.player.animations.add('run', Phaser.Animation.generateFrameNames(prefix, 0, 2), 10, true);
+            this.player.animations.add('up', Phaser.Animation.generateFrameNames(prefix, 3, 3), 2, true);
+            this.player.animations.add('dead', Phaser.Animation.generateFrameNames(prefix, 5, 5), 10, true);
+            this.player.play('run');
+            this.game.physics.arcade.enable(this.player);
+            this.player.body.gravity.y = playerGravity;
+            this.player.body.collideWorldBounds = true;
         },
         //产生障碍物
         makeObstacle: function () {
@@ -168,6 +175,7 @@
         //游戏结束
         endGame: function () {
             this.game.paused = true;
+            this.player.play('dead');
             setTimeout(function () {
                 this.game.paused = false;
                 this.game.state.start(INME.State.Key.OverGame);

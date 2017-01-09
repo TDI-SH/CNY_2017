@@ -1,8 +1,56 @@
 {"frames": {
 
+"characters/chicken_0/0":
+{
+	"frame": {"x":870,"y":684,"w":57,"h":65},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":3,"w":57,"h":65},
+	"sourceSize": {"w":57,"h":70}
+},
+"characters/chicken_0/1":
+{
+	"frame": {"x":2006,"y":63,"w":39,"h":69},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":9,"y":1,"w":39,"h":69},
+	"sourceSize": {"w":57,"h":70}
+},
+"characters/chicken_0/2":
+{
+	"frame": {"x":2005,"y":134,"w":36,"h":70},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":0,"w":36,"h":70},
+	"sourceSize": {"w":57,"h":70}
+},
+"characters/chicken_0/3":
+{
+	"frame": {"x":795,"y":848,"w":57,"h":69},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":57,"h":69},
+	"sourceSize": {"w":57,"h":70}
+},
+"characters/chicken_0/4":
+{
+	"frame": {"x":1993,"y":929,"w":52,"h":67},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":0,"w":52,"h":67},
+	"sourceSize": {"w":57,"h":70}
+},
+"characters/chicken_0/5":
+{
+	"frame": {"x":737,"y":855,"w":56,"h":66},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":2,"w":56,"h":66},
+	"sourceSize": {"w":57,"h":70}
+},
 "gameover/MenuPlay":
 {
-	"frame": {"x":977,"y":738,"w":152,"h":51},
+	"frame": {"x":1201,"y":684,"w":152,"h":51},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":152,"h":51},
@@ -26,7 +74,7 @@
 },
 "gameover/SubmitBtn":
 {
-	"frame": {"x":1131,"y":737,"w":198,"h":39},
+	"frame": {"x":854,"y":828,"w":198,"h":39},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":198,"h":39},
@@ -34,7 +82,7 @@
 },
 "gameover/viewHightScore":
 {
-	"frame": {"x":992,"y":684,"w":152,"h":51},
+	"frame": {"x":1355,"y":684,"w":152,"h":51},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":0,"w":152,"h":51},
@@ -66,7 +114,7 @@
 },
 "ingame/chicken_1":
 {
-	"frame": {"x":977,"y":791,"w":284,"h":43},
+	"frame": {"x":1509,"y":684,"w":284,"h":43},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":2,"y":5,"w":284,"h":43},
@@ -74,7 +122,7 @@
 },
 "ingame/chiken":
 {
-	"frame": {"x":870,"y":684,"w":120,"h":52},
+	"frame": {"x":1079,"y":684,"w":120,"h":52},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":0,"w":120,"h":52},
@@ -82,7 +130,7 @@
 },
 "ingame/chiken_2":
 {
-	"frame": {"x":827,"y":766,"w":148,"h":52},
+	"frame": {"x":929,"y":684,"w":148,"h":52},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":2,"y":0,"w":148,"h":52},
@@ -146,7 +194,7 @@
 },
 "ingame/obstacle":
 {
-	"frame": {"x":1993,"y":929,"w":50,"h":50},
+	"frame": {"x":1993,"y":998,"w":50,"h":50},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
@@ -154,7 +202,7 @@
 },
 "ingame/platform":
 {
-	"frame": {"x":737,"y":855,"w":960,"h":60},
+	"frame": {"x":827,"y":766,"w":960,"h":60},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":960,"h":60},
@@ -210,7 +258,7 @@
 },
 "obstacles/obstacle_4":
 {
-	"frame": {"x":1993,"y":981,"w":43,"h":100},
+	"frame": {"x":1993,"y":1050,"w":43,"h":100},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":43,"h":100},
@@ -279,6 +327,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:8b0a81a00bc018837295cfdad298257a:f1b0799d891037b8eb5a42d0ca024d30:9be8c185d95a5be4a06ec0067a3d8380$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ffc64f1c6c924b999f0a3b55fb99e253:a15bd7388137f9395e513ab75dcdfa6a:9be8c185d95a5be4a06ec0067a3d8380$"
 }
 }
