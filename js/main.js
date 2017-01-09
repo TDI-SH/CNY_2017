@@ -3,7 +3,6 @@
     var scoreText;
     var difficulty = [5, 10, 30, 40, 50];
     var speed = [-220, -250, -300, -350, -450];
-
     // var difficulty = {
     //     score: [10,20,30,40,50],
     //     velocity: [-200, -250, -300, -350, -400],
@@ -14,10 +13,12 @@
      * 
      **/
     //inGame variables
-
+    console.log(INME.Vars.copyFontname);
 
     INME.State.InGame = {
+
         create: function () {
+            
             this.count = 0;
             this.score = 0;
             this.i = 0;
@@ -25,6 +26,7 @@
             INME.Sound.bg.play();
             //物理
             game.physics.startSystem(Phaser.Physics.Arcade);
+
             //背景
             this.game.add.image(0, 0, 'bg_ingame');
             this.cloud1 = new ParallaxSprite(this.game, 'cloud1');
@@ -41,7 +43,6 @@
             this.packet = game.add.group();
             //玩家
             this.player = this.game.add.sprite(100, this.game.height - 248, INME.Vars.characterPrefix + '_' + INME.Vars.characterIndex);
-            this.player.scale.setTo(1.3, 1.3);
             this.player.animations.add('run', [0, 1, 2], 10, true);
             this.player.animations.add('up', [0, 1, 2], 10, true);
             //this.player.animations.add('loop', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, true);
@@ -58,7 +59,9 @@
             this.dupeObstacle();
             this.makeRedPacket();
             //score       
-            scoreText = this.game.add.text(game.world.width - 160, 16, 'score: 0', { font: "20px Arial", fill: '#000' });
+            //scoreText = this.game.add.text(game.world.width - 160, 16, 'score: 0', { font: "20px Arial", fill: '#000' });
+            scoreBoard = this.add.bitmapText(game.world.width - 140, 16, INME.Vars.copyFontname, INME.getCopy('score'), 25);
+            //game.add.bitmapText(game.world.width - 160, 16);
         },
         update: function () {
             this.scrollBg();
@@ -185,9 +188,8 @@
             packet.kill();
             //  Add and update the score
             this.score += 1;
-            scoreText.text = 'score: ' + this.score;
-            INME.Vars.score = scoreText.text;
-            console.log(scoreText.text);
+            scoreBoard.text = INME.getCopy('score')+ ": " + this.score;
+
         },
         levelChange: function (parent) {
 
@@ -198,7 +200,7 @@
                 this.i++;
             }
             console.log(difficulty[this.i]);
-        }
+        },
     }
 
     function ParallaxSprite(game, key, x, y) {

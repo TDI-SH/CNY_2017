@@ -63,12 +63,14 @@
                 btn.x = x;
                 btn.y = y;
                 y += padding;
+                console.log(text);
             }
         },
         handleClick: function (btn) {
             var lan = btn.name;
             INME.Vars.language = lan;
             this.game.state.start(INME.State.Key.Story);
+            console.log(INME.Vars.language);
         }
     }
 

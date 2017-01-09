@@ -39,7 +39,7 @@ INME = (function () {
         'score': {
             'sc': '分数',
             'tc': '分數',
-            'en': 'Score'
+            'en': 'score'
         },
         'next': {
             'sc': '下一步',
@@ -52,7 +52,7 @@ INME = (function () {
             'en': 'Preview'
         }
     }
-
+    //console.log(getCopy(lan));
     /**
      * 自定义按钮:背景＋文字
      * @param {function} callback - 点击按钮时的回调函数
@@ -87,16 +87,16 @@ INME = (function () {
      */
     function getCopyBT(game, x, y, key, size) {
         var text = getCopy(key);
+        console.log(text);
         return game.add.bitmapText(x, y, Vars.copyFontname, text, size);
     }
-
+    
     /**
      * 返回对应语言版本的文字
      */
     function getCopy(key) {
         return copy[key][Vars.language];
     }
-
     return {
         Vars: Vars,
         State: State,
