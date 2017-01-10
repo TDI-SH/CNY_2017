@@ -6,12 +6,14 @@
     }
     var speed = difficulty.speeds[0];
     var groundH = 60;
-    var velocity = -550;
+    var playerVelocity = -550;
     var playerGravity = 2000;
+
     var obstacleNum = 7;
     /**
      * state - InGame
      **/
+
     INME.State.InGame = {
 
         create: function () {
@@ -48,43 +50,41 @@
         },
         update: function () {
             this.scrollBg();
-            // check if player is touching ground
-            //game.physics.arcade.collide(this.player, this.platform);
-            var collide = game.physics.arcade.collide(this.player, this.ground);
-            //restarts game if touching obstacles
-            game.physics.arcade.collide(this.obstacle, this.player, this.endGame, null, this);
-            // collect packet when overlap
-            game.physics.arcade.overlap(this.player, this.packet, this.collectPacket, null, this);
-            // Jump when player is touching ground AND pressing spaceBar, upArrow, or tapping on mobile
-            if ((upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && collide) {
+            //检测player与障碍物和红包碰撞
+            var playerCollideObstacle = this.game.physics.arcade.collide(this.obstacle, this.player, this.endGame, null, this);
+            this.game.physics.arcade.overlap(this.player, this.packet, this.collectPacket, null, this);
+            //跳
+            var playerCollideGround = this.game.physics.arcade.collide(this.player, this.ground);
+            var pressUp = upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown;
+
+            if (pressUp && playerCollideGround) {
                 this.jumpTimer = 1;
-                this.player.body.velocity.y = INME.Vars.velocity;
-            } else if ((upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown) && (this.jumpTimer != 0)) {
-                //player is no longer on the ground, but is still holding the jump key
+                this.player.body.velocity.y = playerVelocity;
+            } else if (pressUp && (this.jumpTimer != 0)) {
                 if (this.jumpTimer > 15) {
-                    // player has been holding jump for over 15 frames, it's time to stop him
                     this.jumpTimer = 0;
                 } else {
-                    // player is allowed to jump higher (not yet 15 frames of jumping)
                     this.jumpTimer++;
-                    this.player.body.velocity.y = INME.Vars.velocity;
+                    this.player.body.velocity.y = playerVelocity;
                 }
             }
             else if (this.jumpTimer != 0) {
-                //reset this.jumpTimer since the player is no longer holding the jump key
                 this.jumpTimer = 0;
             }
-
-            //jump frame and running frame change
-            if (!this.player.body.touching.down) {
-                this.player.play('up');
-            } else {
+            //设置player的动画   
+            if (playerCollideGround) {//跑
                 this.player.play('run');
             }
-
-            //console.log(this.player.body.speed);
-            console.log(this.player.body.acceleration);
-            console.log(this.player.y);
+            if (pressUp && playerCollideGround) {//跳起
+                //console.log('up', this.player.deltaY);
+                this.player.play('up');
+            }
+            if (this.player.deltaY > 0) {//落下---仅通过此项检测目前并不完美                
+                this.player.play('down');
+            }
+            if (playerCollideObstacle) {//挂掉        
+                this.player.play('dead');
+            }
 
         },
         scrollBg: function () {
@@ -97,12 +97,17 @@
         makePlayer: function () {
             var prefix = 'characters/chicken_' + INME.Vars.characterIndex + '/';
             var playerX = 100;
+            var frameRate = 10;
+
             this.player = this.game.add.sprite(0, 0, 'images', prefix + '5');
             this.player.position.set(playerX, this.game.height - groundH - this.player.height);
-            this.player.animations.add('run', Phaser.Animation.generateFrameNames(prefix, 0, 2), 10, true);
-            this.player.animations.add('up', Phaser.Animation.generateFrameNames(prefix, 3, 3), 2, true);
-            this.player.animations.add('dead', Phaser.Animation.generateFrameNames(prefix, 5, 5), 10, true);
+
+            this.player.animations.add('run', Phaser.Animation.generateFrameNames(prefix, 0, 2), frameRate, true);
+            this.player.animations.add('up', Phaser.Animation.generateFrameNames(prefix, 3, 3), frameRate, true);
+            this.player.animations.add('down', Phaser.Animation.generateFrameNames(prefix, 4, 4), frameRate, false);
+            this.player.animations.add('dead', Phaser.Animation.generateFrameNames(prefix, 5, 5), frameRate, true);
             this.player.play('run');
+
             this.game.physics.arcade.enable(this.player);
             this.player.body.gravity.y = playerGravity;
             this.player.body.collideWorldBounds = true;
@@ -176,7 +181,6 @@
         //游戏结束
         endGame: function () {
             this.game.paused = true;
-            this.player.play('dead');
             setTimeout(function () {
                 this.game.paused = false;
                 this.game.state.start(INME.State.Key.OverGame);
