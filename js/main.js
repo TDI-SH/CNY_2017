@@ -10,18 +10,22 @@
     var playerGravity = 2000;
 
     var obstacleNum = 7;
+    var debug = true;
     /**
      * state - InGame
      **/
-
     INME.State.InGame = {
-
         create: function () {
             this.score = 0;
+            isDead = false;
+            playerCollideGround = true;
             //背景音乐
             INME.Sound.bg.play();
-            //物理
-            game.physics.startSystem(Phaser.Physics.Arcade);
+            //物理引擎，需要多边形碰撞所以从Arcade切换成了P2
+            this.game.physics.startSystem(Phaser.Physics.P2JS);
+            this.game.physics.p2.gravity.y = playerGravity;
+            this.game.physics.p2.setImpactEvents(true);
+            //this.game.physics.p2.updateBoundsCollisionGroup();
             //背景
             this.game.add.image(0, 0, 'bg_ingame');
             this.cloud1 = new ParallaxSprite(this.game, 'cloud1');
@@ -29,19 +33,15 @@
             this.city = new ParallaxSprite(this.game, 'city');
             this.cloud2 = new ParallaxSprite(this.game, 'cloud2');
             //地面
-            this.ground = this.game.add.sprite(0, game.world.height - groundH, 'ground');
-            this.game.physics.arcade.enable(this.ground);
-            this.ground.body.immovable = true;
+            this.makeGround();
+            //障碍物
+            this.obstacle = this.game.physics.p2.createCollisionGroup();
+            this.makeObstacle();
+            //红包
+            this.packet = this.game.physics.p2.createCollisionGroup();
+            this.makeRedPacket();
             //玩家
             this.makePlayer();
-            //obstacle
-            this.obstacle = game.add.group();
-            this.obstacle.enableBody = true;
-            this.makeObstacle();
-            //red packet
-            this.packet = game.add.group();
-            this.packet.enableBody = true;
-            this.makeRedPacket();
             //score       
             this.scoreBoard = this.add.bitmapText(game.world.width - 140, 16, INME.Vars.copyFontname, INME.getCopy('score') + '0', 25);
             //control-keys
@@ -50,11 +50,12 @@
         },
         update: function () {
             this.scrollBg();
-            //检测player与障碍物和红包碰撞
-            var playerCollideObstacle = this.game.physics.arcade.collide(this.obstacle, this.player, this.endGame, null, this);
-            this.game.physics.arcade.overlap(this.player, this.packet, this.collectPacket, null, this);
+            //player与障碍物碰撞
+            var playerCollideObstacle = this.player.body.collides(this.obstacle, this.endGame);
+            //player与红包碰撞
+            this.player.body.collides(this.packet, this.collectPacket);
             //跳
-            var playerCollideGround = this.game.physics.arcade.collide(this.player, this.ground);
+            var playerCollideGround = true;
             var pressUp = upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown;
 
             if (pressUp && playerCollideGround) {
@@ -85,13 +86,23 @@
             if (playerCollideObstacle) {//挂掉        
                 this.player.play('dead');
             }
-
         },
         scrollBg: function () {
             this.cloud1.scroll(speed * 0.005);
             this.cloud2.scroll(speed * 0.005);
             this.hill.scroll(speed * 0.008);
             this.city.scroll(speed * 0.01);
+        },
+        //设置地面
+        makeGround: function () {
+            this.ground = this.game.physics.p2.createCollisionGroup();
+
+            var g = this.game.add.sprite(this.game.width * 0.5, game.world.height - groundH * 0.5, 'ground');
+            this.game.physics.p2.enable(g, debug);
+
+            g.body.setCollisionGroup(this.ground);
+            g.body.kinematic = true;
+            //g.body.mass = 0;
         },
         //设置player
         makePlayer: function () {
@@ -108,23 +119,35 @@
             this.player.animations.add('dead', Phaser.Animation.generateFrameNames(prefix, 5, 5), frameRate, true);
             this.player.play('run');
 
-            this.game.physics.arcade.enable(this.player);
-            this.player.body.gravity.y = playerGravity;
+            this.game.physics.p2.enable(this.player, debug);
             this.player.body.collideWorldBounds = true;
+
+            //player的碰撞
+            this.player.body.collides(this.obstacle, this.endGame);
+            this.player.body.collides(this.packet, this.collectPacket);
+            this.player.body.collides(this.ground, this.playerCollideGround);
+        },
+        playerCollideGround: function () {
+            console.log('hahahahahh');
         },
         //产生障碍物
         makeObstacle: function () {
             var i = Math.random() * obstacleNum | 0;
-            var key = 'obstacles/obstacle_' + i;
+            var obstacleId = 'obstacle_' + i;
+            var key = 'obstacles/' + obstacleId;
             var block = this.game.add.sprite(this.game.width, 0, 'images', key);
             block.position.set(this.game.width, this.game.height - block.height - groundH);
 
             block.checkWorldBounds = true;
             block.outOfBoundsKill = true;
 
-            this.obstacle.add(block);
+            this.game.physics.p2.enable(block, debug);
+            block.body.clearShapes();//清除默认的矩形碰撞
+            block.body.loadPolygon("physics", obstacleId);
+
+            block.body.setCollisionGroup(this.obstacle);
             block.body.velocity.x = speed;
-            block.body.immovable = true;
+            block.body.kinematic = true;
 
             this.game.time.events.add(this.rnd.between(1000, 3000), this.makeObstacle, this);
         },
@@ -132,15 +155,16 @@
         makeRedPacket: function () {
             var redPacket = game.add.sprite(900, this.game.height - 248, 'images', 'redPacket/012');
             redPacket.scale.setTo(0.35, 0.35);
-            redPacket.animations.add('spin', Phaser.Animation.generateFrameNames('redPacket/', 1, 12,'',3), 10, true);
+            redPacket.animations.add('spin', Phaser.Animation.generateFrameNames('redPacket/', 1, 12, '', 3), 10, true);
             redPacket.play('spin');
 
             redPacket.checkWorldBounds = true;
             redPacket.outOfBoundsKill = true;
 
-            this.packet.add(redPacket);
+            this.game.physics.p2.enable(redPacket, debug);
+            redPacket.body.setCollisionGroup(this.packet);
             redPacket.body.velocity.x = speed;
-            redPacket.body.immovable = true;
+            redPacket.body.kinematic = true;
 
             this.game.time.events.add(this.rnd.between(1000, 3000), this.makeRedPacket, this);
         },
@@ -178,6 +202,7 @@
         },
         //游戏结束
         endGame: function () {
+            console.log('gameover');
             this.game.paused = true;
             setTimeout(function () {
                 this.game.paused = false;
