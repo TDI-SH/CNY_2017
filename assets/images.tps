@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.3.1</string>
         <key>fileName</key>
-        <string>/Users/RWU/CNY_2017/assets/images.tps</string>
+        <string>/Users/lucasyang/Documents/CNY_2017/assets/images.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -294,6 +294,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">images/ingame/boom.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>301,43,602,86</rect>
+                <key>scale9Paddings</key>
+                <rect>301,43,602,86</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">images/ingame/chicken_0.png</key>
             <key type="filename">images/ingame/chicken_1.png</key>
             <struct type="IndividualSpriteSettings">
@@ -350,32 +363,6 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">images/ingame/coin.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>48,8,96,16</rect>
-                <key>scale9Paddings</key>
-                <rect>48,8,96,16</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">images/ingame/gameboy_seize_color_40x60.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>50,15,101,30</rect>
-                <key>scale9Paddings</key>
-                <rect>50,15,101,30</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">images/ingame/hongbao.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -386,19 +373,6 @@
                 <rect>396,33,792,66</rect>
                 <key>scale9Paddings</key>
                 <rect>396,33,792,66</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">images/ingame/obstacle.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>13,13,25,25</rect>
-                <key>scale9Paddings</key>
-                <rect>13,13,25,25</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

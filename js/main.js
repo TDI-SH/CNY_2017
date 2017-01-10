@@ -130,9 +130,9 @@
         },
         //产生红包
         makeRedPacket: function () {
-            var redPacket = game.add.sprite(900, this.game.height - 248, 'redPacket');
+            var redPacket = game.add.sprite(900, this.game.height - 248, 'images', 'redPacket/012');
             redPacket.scale.setTo(0.35, 0.35);
-            redPacket.animations.add('spin', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 10, true);
+            redPacket.animations.add('spin', Phaser.Animation.generateFrameNames('redPacket/', 1, 12,'',3), 10, true);
             redPacket.play('spin');
 
             redPacket.checkWorldBounds = true;
@@ -148,7 +148,6 @@
         collectPacket: function (player, packet) {
             packet.kill();
             this.score += 1;
-
             this.scoreBoard.text = INME.getCopy('score') + this.score;
             INME.Vars.score = this.score;
 
@@ -165,7 +164,6 @@
                         this.speedUp();
                         break;//跳出整个循环
                     }
-
                 }
             }
         },
