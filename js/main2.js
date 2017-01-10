@@ -1,20 +1,17 @@
 (function () {
-    var jumpTimer = 0;
     var scoreText;
     var difficulty = {//按照分数划分难度等级,不同难度对应不同速度
         scores: [5, 10, 30, 40, 50],
         speeds: [-220, -250, -300, -350, -450]
     }
-    //var difficulty = [5, 10, 30, 40, 50];
-    //var speeds = [-220, -250, -300, -350, -450];
-    var speed = -220;
+    var speed = difficulty.speeds[0];
     var groundH = 60;
     var velocity = -550;
     var playerGravity = 2000;
     var obstacleNum = 7;
     /**
      * state - InGame
-     **/
+     **/    
     INME.State.InGame = {
 
         create: function () {
@@ -33,21 +30,21 @@
             this.ground = this.game.add.sprite(0, game.world.height - groundH, 'ground');
             this.game.physics.arcade.enable(this.ground);
             this.ground.body.immovable = true;
-            //red packet
-            this.packet = game.add.group();
-            this.packet.enableBody = true;
             //玩家
             this.makePlayer();
             //obstacle
             this.obstacle = game.add.group();
             this.obstacle.enableBody = true;
-            //control-keys
-            spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-            upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
             this.makeObstacle();
+            //red packet
+            this.packet = game.add.group();
+            this.packet.enableBody = true;
             this.makeRedPacket();
             //score       
             this.scoreBoard = this.add.bitmapText(game.world.width - 140, 16, INME.Vars.copyFontname, INME.getCopy('score') + '0', 25);
+            //control-keys
+            spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+            upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
         },
         update: function () {
             this.scrollBg();
@@ -85,6 +82,10 @@
                 this.player.play('run');
             }
 
+            //console.log(this.player.body.speed);
+            console.log(this.player.body.acceleration);
+            console.log(this.player.y);
+
         },
         scrollBg: function () {
             this.cloud1.scroll(speed * 0.005);
@@ -95,9 +96,9 @@
         //设置player
         makePlayer: function () {
             var prefix = 'characters/chicken_' + INME.Vars.characterIndex + '/';
-            console.log(Phaser.Animation.generateFrameNames(prefix, 0, 2));
-            console.log(Phaser.Animation.generateFrameNames(prefix, 3, 4));
-            this.player = this.game.add.sprite(100, this.game.height - 180, 'images', prefix + '5');
+            var playerX = 100;
+            this.player = this.game.add.sprite(0, 0, 'images', prefix + '5');
+            this.player.position.set(playerX, this.game.height - groundH - this.player.height);
             this.player.animations.add('run', Phaser.Animation.generateFrameNames(prefix, 0, 2), 10, true);
             this.player.animations.add('up', Phaser.Animation.generateFrameNames(prefix, 3, 3), 2, true);
             this.player.animations.add('dead', Phaser.Animation.generateFrameNames(prefix, 5, 5), 10, true);
