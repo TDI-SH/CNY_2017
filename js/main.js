@@ -10,7 +10,7 @@
     var playerGravity = 2000;
 
     var obstacleNum = 7;
-    var debug = true;
+    var debug = false;
     /**
      * state - InGame
      **/
@@ -25,13 +25,14 @@
             this.game.physics.startSystem(Phaser.Physics.P2JS);
             this.game.physics.p2.gravity.y = playerGravity;
             this.game.physics.p2.setImpactEvents(true);
-            //this.game.physics.p2.updateBoundsCollisionGroup();
             //背景
             this.game.add.image(0, 0, 'bg_ingame');
             this.cloud1 = new ParallaxSprite(this.game, 'cloud1');
             this.hill = new ParallaxSprite(this.game, 'hill');
             this.city = new ParallaxSprite(this.game, 'city');
             this.cloud2 = new ParallaxSprite(this.game, 'cloud2');
+            //玩家
+            this.makePlayer();
             //地面
             this.makeGround();
             //障碍物
@@ -40,24 +41,20 @@
             //红包
             this.packet = this.game.physics.p2.createCollisionGroup();
             this.makeRedPacket();
-            //玩家
-            this.makePlayer();
-            //score       
+            //分数      
             this.scoreBoard = this.add.bitmapText(game.world.width - 140, 16, INME.Vars.copyFontname, INME.getCopy('score') + '0', 25);
-            //control-keys
+            //控制键
             spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
             upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
+            //player的碰撞
+            this.player.body.collides(this.obstacle, this.endGame, this);
+            this.player.body.collides(this.packet, this.collectPacket, this);
+            this.player.body.collides(this.ground, this.playerCollideGround, this);
         },
         update: function () {
             this.scrollBg();
-            //player与障碍物碰撞
-            var playerCollideObstacle = this.player.body.collides(this.obstacle, this.endGame);
-            //player与红包碰撞
-            this.player.body.collides(this.packet, this.collectPacket);
-            //跳
-            var playerCollideGround = true;
+            //跳            
             var pressUp = upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown;
-
             if (pressUp && playerCollideGround) {
                 this.jumpTimer = 1;
                 this.player.body.velocity.y = playerVelocity;
@@ -83,7 +80,7 @@
             if (this.player.deltaY > 0) {//落下---仅通过此项检测目前并不完美                
                 this.player.play('down');
             }
-            if (playerCollideObstacle) {//挂掉        
+            if (isDead) {//挂掉        
                 this.player.play('dead');
             }
         },
@@ -102,7 +99,7 @@
 
             g.body.setCollisionGroup(this.ground);
             g.body.kinematic = true;
-            //g.body.mass = 0;
+            g.body.collides(this.playerCG, this.playerCollideGround, this);
         },
         //设置player
         makePlayer: function () {
@@ -110,25 +107,27 @@
             var playerX = 100;
             var frameRate = 10;
 
-            this.player = this.game.add.sprite(0, 0, 'images', prefix + '5');
-            this.player.position.set(playerX, this.game.height - groundH - this.player.height);
+            this.playerCG = this.game.physics.p2.createCollisionGroup();
 
-            this.player.animations.add('run', Phaser.Animation.generateFrameNames(prefix, 0, 2), frameRate, true);
-            this.player.animations.add('up', Phaser.Animation.generateFrameNames(prefix, 3, 3), frameRate, true);
-            this.player.animations.add('down', Phaser.Animation.generateFrameNames(prefix, 4, 4), frameRate, false);
-            this.player.animations.add('dead', Phaser.Animation.generateFrameNames(prefix, 5, 5), frameRate, true);
-            this.player.play('run');
+            var player = this.game.add.sprite(0, 0, 'images', prefix + '5');
+            player.name = 'player';
+            player.position.set(playerX, this.game.height - groundH - player.height * 0.5);
 
-            this.game.physics.p2.enable(this.player, debug);
-            this.player.body.collideWorldBounds = true;
+            player.animations.add('run', Phaser.Animation.generateFrameNames(prefix, 0, 2), frameRate, true);
+            player.animations.add('up', Phaser.Animation.generateFrameNames(prefix, 3, 3), frameRate, true);
+            player.animations.add('down', Phaser.Animation.generateFrameNames(prefix, 4, 4), frameRate, false);
+            player.animations.add('dead', Phaser.Animation.generateFrameNames(prefix, 5, 5), frameRate, true);
+            player.play('run');
 
-            //player的碰撞
-            this.player.body.collides(this.obstacle, this.endGame);
-            this.player.body.collides(this.packet, this.collectPacket);
-            this.player.body.collides(this.ground, this.playerCollideGround);
+
+            this.game.physics.p2.enable(player, debug);
+            player.body.setCollisionGroup(this.playerCG);
+            player.body.fixedRotation = true;
+            //player.body.collideWorldBounds = true;
+            this.player = player;
         },
         playerCollideGround: function () {
-            console.log('hahahahahh');
+            playerCollideGround = true;
         },
         //产生障碍物
         makeObstacle: function () {
@@ -146,8 +145,9 @@
             block.body.loadPolygon("physics", obstacleId);
 
             block.body.setCollisionGroup(this.obstacle);
-            block.body.velocity.x = speed;
             block.body.kinematic = true;
+            block.body.collides(this.playerCG, this.endGame, this);
+            block.body.velocity.x = speed;
 
             this.game.time.events.add(this.rnd.between(1000, 3000), this.makeObstacle, this);
         },
@@ -163,18 +163,26 @@
 
             this.game.physics.p2.enable(redPacket, debug);
             redPacket.body.setCollisionGroup(this.packet);
-            redPacket.body.velocity.x = speed;
             redPacket.body.kinematic = true;
+            redPacket.body.collides(this.playerCG, this.collectPacket, this);
+            redPacket.body.velocity.x = speed;
+
 
             this.game.time.events.add(this.rnd.between(1000, 3000), this.makeRedPacket, this);
         },
         //收集红包
-        collectPacket: function (player, packet) {
+        collectPacket: function (body1, body2) {
+            var packet;
+            console.log(body1.sprite.name, body2.sprite.name);
+            if (body1.sprite.name !== 'player')
+                packet = body1.sprite;
+            if (body2.sprite.name !== 'player')
+                packet = body2.sprite;
+
             packet.kill();
             this.score += 1;
             this.scoreBoard.text = INME.getCopy('score') + this.score;
             INME.Vars.score = this.score;
-
             this.levelChange();
         },
         //根据分数判断是否升级难度
@@ -202,7 +210,7 @@
         },
         //游戏结束
         endGame: function () {
-            console.log('gameover');
+            isDead = true;
             this.game.paused = true;
             setTimeout(function () {
                 this.game.paused = false;
