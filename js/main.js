@@ -10,7 +10,7 @@
     var playerGravity = 2000;
 
     var obstacleNum = 7;
-    var debug = false;
+    var debug = true;
     /**
      * state - InGame
      **/
@@ -24,7 +24,7 @@
             //物理引擎，需要多边形碰撞所以从Arcade切换成了P2
             this.game.physics.startSystem(Phaser.Physics.P2JS);
             this.game.physics.p2.gravity.y = playerGravity;
-            this.game.physics.p2.setImpactEvents(true);
+            this.game.physics.p2.setImpactEvents(true);//碰撞时的回调函数派发开启
             //背景
             this.game.add.image(0, 0, 'bg_ingame');
             this.cloud1 = new ParallaxSprite(this.game, 'cloud1');
@@ -99,7 +99,7 @@
 
             g.body.setCollisionGroup(this.ground);
             g.body.kinematic = true;
-            g.body.collides(this.playerCG, this.playerCollideGround, this);
+            g.body.collides(this.playerCG);//地面碰撞player的回调函数不需要重复定义
         },
         //设置player
         makePlayer: function () {
@@ -122,7 +122,8 @@
 
             this.game.physics.p2.enable(player, debug);
             player.body.setCollisionGroup(this.playerCG);
-            player.body.fixedRotation = true;
+            player.body.fixedRotation = true
+
             //player.body.collideWorldBounds = true;
             this.player = player;
         },
@@ -134,8 +135,9 @@
             var i = Math.random() * obstacleNum | 0;
             var obstacleId = 'obstacle_' + i;
             var key = 'obstacles/' + obstacleId;
-            var block = this.game.add.sprite(this.game.width, 0, 'images', key);
-            block.position.set(this.game.width, this.game.height - block.height - groundH);
+            var block = this.game.add.sprite(0, 0, 'images', key);
+            block.name = obstacleId;
+            block.position.set(this.game.width + block.width * 0.5, this.game.height - groundH - block.height * 0.5);
 
             block.checkWorldBounds = true;
             block.outOfBoundsKill = true;
@@ -146,16 +148,19 @@
 
             block.body.setCollisionGroup(this.obstacle);
             block.body.kinematic = true;
-            block.body.collides(this.playerCG, this.endGame, this);
+            block.body.collides(this.playerCG);//障碍物碰撞player的回调函数不需要重复定义
             block.body.velocity.x = speed;
 
             this.game.time.events.add(this.rnd.between(1000, 3000), this.makeObstacle, this);
         },
         //产生红包
         makeRedPacket: function () {
-            var redPacket = game.add.sprite(900, this.game.height - 248, 'images', 'redPacket/012');
-            redPacket.scale.setTo(0.35, 0.35);
+            var redPacket = this.game.add.sprite(0, 0, 'images', 'redPacket/012');
+            redPacket.position.set(this.game.width, 289);
+
+            //redPacket.scale.setTo(0.35, 0.35);
             redPacket.animations.add('spin', Phaser.Animation.generateFrameNames('redPacket/', 1, 12, '', 3), 10, true);
+            redPacket.name = 'redPacket';
             redPacket.play('spin');
 
             redPacket.checkWorldBounds = true;
@@ -164,21 +169,15 @@
             this.game.physics.p2.enable(redPacket, debug);
             redPacket.body.setCollisionGroup(this.packet);
             redPacket.body.kinematic = true;
-            redPacket.body.collides(this.playerCG, this.collectPacket, this);
+            redPacket.body.collides(this.playerCG);//红包碰撞player的回调函数不需要重复定义
             redPacket.body.velocity.x = speed;
-
 
             this.game.time.events.add(this.rnd.between(1000, 3000), this.makeRedPacket, this);
         },
         //收集红包
-        collectPacket: function (body1, body2) {
-            var packet;
-            console.log(body1.sprite.name, body2.sprite.name);
-            if (body1.sprite.name !== 'player')
-                packet = body1.sprite;
-            if (body2.sprite.name !== 'player')
-                packet = body2.sprite;
-
+        collectPacket: function (playerBody, packetBody) {//player碰撞红包时，可能存在多个碰撞点碰撞，所以回调函数可能触发多次
+            console.log(playerBody.sprite.name, packetBody.sprite.name);
+            var packet = packetBody.sprite;
             packet.kill();
             this.score += 1;
             this.scoreBoard.text = INME.getCopy('score') + this.score;
@@ -209,7 +208,8 @@
             }
         },
         //游戏结束
-        endGame: function () {
+        endGame: function (playerBody, obstacleBody) {
+            console.log('gameover', playerBody.sprite.name, obstacleBody.sprite.name);
             isDead = true;
             this.game.paused = true;
             setTimeout(function () {
