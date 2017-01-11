@@ -8,9 +8,11 @@
     var groundH = 60;
     var playerVelocity = -550;
     var playerGravity = 2000;
+    
+    var playerX = 100;
 
     var obstacleNum = 7;
-    var debug = true;
+    var debug = false;
     var Type = {
         Player: 'Player',
         Obstacle: 'Obstacle',
@@ -22,6 +24,7 @@
      **/
     INME.State.InGame = {
         create: function () {
+            this.boomArr = [];
             this.score = 0;
             isDead = false;
             playerCollideGround = true;
@@ -106,6 +109,12 @@
             if (isDead) {//挂掉        
                 this.player.play('dead');
             }
+            if (this.boomArr.length !== 0 && (this.boomArr[0].x <= playerX)) {
+                console.log(this.boomArr);
+                this.boomArr[0].destroy();
+                this.boomArr.shift();
+                this.boomEffect(); 
+            } 
         },
         scrollBg: function () {
             this.cloud1.scroll(speed * 0.005);
@@ -128,7 +137,7 @@
         //设置player
         makePlayer: function () {
             var prefix = 'characters/chicken_' + INME.Vars.characterIndex + '/';
-            var playerX = 100;
+            
             var frameRate = 10;
 
             this.playerCG = this.game.physics.p2.createCollisionGroup();
@@ -177,6 +186,10 @@
             block.body.kinematic = true;
             block.body.collides(this.playerCG);//障碍物碰撞player的回调函数不需要重复定义
             block.body.velocity.x = speed;
+            //check for boom
+            if( key === 'obstacles/obstacle_4') {
+                this.boomArr.push(block);
+            }
 
             this.game.time.events.add(this.rnd.between(1000, 3000), this.makeObstacle, this);
         },
@@ -244,7 +257,6 @@
         //游戏结束
         endGame: function (playerBody, obstacleBody) {
             //console.log('gameover', playerBody.sprite.name, obstacleBody.sprite.name);
-
             if (obstacleBody.hasCollided == undefined) {
                 isDead = true;
                 this.game.paused = true;
@@ -256,6 +268,21 @@
                 obstacleBody.hasCollided = true;
             }
         },
+        killElement: function(element) {
+            element.destroy();
+        },
+        boomEffect: function() {
+            var boom = game.add.sprite(playerX, this.game.height - groundH - this.player.height, 'images', 'boom/0');
+            //boom.scale.setTo(0.35, 0.35);
+            boom.animations.add('boomshakalaka', Phaser.Animation.generateFrameNames('boom/', 1, 7,'',1), 10, true);
+            boom.play('boomshakalaka');
+
+            boom.checkWorldBounds = true;
+            boom.outOfBoundsKill = true;
+            this.game.physics.p2.enable(boom);
+            boom.body.kinematic = true;
+            boom.body.velocity.x = speed;
+        }
     }
 
     function ParallaxSprite(game, key, x, y) {
