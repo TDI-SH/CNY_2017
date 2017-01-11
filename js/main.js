@@ -1,24 +1,57 @@
 (function () {
-    var scoreText;
     var difficulty = {//按照分数划分难度等级,不同难度对应不同速度
         scores: [5, 10, 30, 40, 50],
         speeds: [-220, -250, -300, -350, -450]
     }
     var speed = difficulty.speeds[0];
+    var debug = false;
+    var playerX = 100;
     var groundH = 60;
+    var obstacleNum = 7;
     var playerVelocity = -550;
     var playerGravity = 2000;
-    
-    var playerX = 100;
 
-    var obstacleNum = 7;
-    var debug = false;
     var Type = {
         Player: 'Player',
         Obstacle: 'Obstacle',
         RedPacket: 'RedPacket',
         Ground: 'Ground',
     }
+    var ObstacleType = {
+        Dead: 'Dead',
+        MinusScore: 'MinusScore',
+    }
+    var obstacleVars = {
+        'obstacle_0': {
+            'obstacleType': ObstacleType.Dead,
+            'position': 'ground',
+        },
+        'obstacle_1': {
+            'obstacleType': ObstacleType.Dead,
+            'position': 'ground',
+        },
+        'obstacle_2': {
+            'obstacleType': ObstacleType.Dead,
+            'position': 'ground',
+        },
+        'obstacle_3': {
+            'obstacleType': ObstacleType.Dead,
+            'position': 'sky',
+        },
+        'obstacle_4': {
+            'obstacleType': ObstacleType.Dead,
+            'position': 'sky',
+        },
+        'obstacle_5': {
+            'obstacleType': ObstacleType.MinusScore,
+            'position': 'ground',
+        },
+        'obstacle_6': {
+            'obstacleType': ObstacleType.MinusScore,
+            'position': 'ground',
+        },
+    }
+
     /**
      * state - InGame
      **/
@@ -34,7 +67,7 @@
             this.game.physics.startSystem(Phaser.Physics.P2JS);
             this.game.physics.p2.gravity.y = playerGravity;
             this.game.physics.p2.setImpactEvents(true);//开启碰撞时回调函数派发
-            this.game.physics.p2.setPostBroadphaseCallback(this.overlap, this);//借此模拟player和红包的overlap
+            this.game.physics.p2.setPostBroadphaseCallback(this.overlap, this);//借此模拟overlap
             //背景
             this.game.add.image(0, 0, 'bg_ingame');
             this.cloud1 = new ParallaxSprite(this.game, 'cloud1');
@@ -63,18 +96,27 @@
 
         },
         overlap: function (body1, body2) {
-            var sprite1Name = body1.sprite.name;
-            var sprite2Name = body2.sprite.name;
-            if (sprite1Name === 'redPacket' && sprite2Name === 'player') {
-                console.log('player-redPacket', sprite1Name, sprite2Name);
+            var type1 = body1.sprite.type;
+            var type2 = body2.sprite.type;
+            //player与红包
+            if (type1 === Type.RedPacket && type2 === Type.Player) {
                 this.collectPacket(body2, body1);
                 return false;
             }
-            else if (sprite1Name === 'player' && sprite2Name === 'redPacket') {
-                console.log('player-redPacket', sprite1Name, sprite2Name);
+            else if (type1 === Type.Player && type2 === Type.RedPacket) {
                 this.collectPacket(body1, body2);
                 return false;
             }
+            //player与减分类型的障碍物
+            if (body1.sprite.obstacleType === ObstacleType.MinusScore && type2 === Type.Player) {
+                this.endGame(body2, body1);
+                return false;
+            }
+            else if (type1 === Type.Player && body2.sprite.obstacleType === ObstacleType.MinusScore) {
+                this.endGame(body1, body2);
+                return false;
+            }
+
             return true;
         },
         update: function () {
@@ -109,12 +151,14 @@
             if (isDead) {//挂掉        
                 this.player.play('dead');
             }
+
+
             if (this.boomArr.length !== 0 && (this.boomArr[0].x <= playerX)) {
                 console.log(this.boomArr);
                 this.boomArr[0].destroy();
                 this.boomArr.shift();
-                this.boomEffect(); 
-            } 
+                this.boomEffect();
+            }
         },
         scrollBg: function () {
             this.cloud1.scroll(speed * 0.005);
@@ -127,7 +171,6 @@
             this.ground = this.game.physics.p2.createCollisionGroup();
 
             var g = this.game.add.sprite(this.game.width * 0.5, game.world.height - groundH * 0.5, 'ground');
-            g.name = 'ground';
             this.game.physics.p2.enable(g, debug);
 
             g.body.setCollisionGroup(this.ground);
@@ -137,13 +180,13 @@
         //设置player
         makePlayer: function () {
             var prefix = 'characters/chicken_' + INME.Vars.characterIndex + '/';
-            
+
             var frameRate = 10;
 
             this.playerCG = this.game.physics.p2.createCollisionGroup();
 
             var player = this.game.add.sprite(0, 0, 'images', prefix + '5');
-            player.name = 'player';
+            player.type = Type.Player;
             player.position.set(playerX, this.game.height - groundH - player.height * 0.5);
 
             player.animations.add('run', Phaser.Animation.generateFrameNames(prefix, 0, 2), frameRate, true);
@@ -152,16 +195,13 @@
             player.animations.add('dead', Phaser.Animation.generateFrameNames(prefix, 5, 5), frameRate, true);
             player.play('run');
 
-
             this.game.physics.p2.enable(player, debug);
             player.body.clearShapes();
-            player.body.addRectangle(player.width * 0.8, player.height, 0, 0);
+            player.body.addRectangle(player.width * 0.8, player.height);
             player.body.setCollisionGroup(this.playerCG);
-            player.body.fixedRotation = true
+            player.body.fixedRotation = true;
 
-            //player.body.collideWorldBounds = true;
             this.player = player;
-
         },
         playerCollideGround: function () {
             playerCollideGround = true;
@@ -171,35 +211,45 @@
             var i = Math.random() * obstacleNum | 0;
             var obstacleId = 'obstacle_' + i;
             var key = 'obstacles/' + obstacleId;
-            var block = this.game.add.sprite(0, 0, 'images', key);
-            block.name = obstacleId;
-            block.position.set(this.game.width + block.width * 0.5, this.game.height - groundH - block.height * 0.5);
+            var obstacle = this.game.add.sprite(0, 0, 'images', key);
+            this.setObstacle(obstacle, obstacleId);
 
-            block.checkWorldBounds = true;
-            block.outOfBoundsKill = true;
+            this.game.physics.p2.enable(obstacle, debug);
+            obstacle.body.clearShapes();//清除默认的矩形碰撞
+            obstacle.body.loadPolygon("physics", obstacleId);
 
-            this.game.physics.p2.enable(block, debug);
-            block.body.clearShapes();//清除默认的矩形碰撞
-            block.body.loadPolygon("physics", obstacleId);
-
-            block.body.setCollisionGroup(this.obstacle);
-            block.body.kinematic = true;
-            block.body.collides(this.playerCG);//障碍物碰撞player的回调函数不需要重复定义
-            block.body.velocity.x = speed;
+            obstacle.body.setCollisionGroup(this.obstacle);
+            obstacle.body.kinematic = true;
+            obstacle.body.collides(this.playerCG);//障碍物碰撞player的回调函数不需要重复定义
+            obstacle.body.velocity.x = speed;
             //check for boom
-            if( key === 'obstacles/obstacle_4') {
-                this.boomArr.push(block);
+            if (key === 'obstacles/obstacle_4') {
+                this.boomArr.push(obstacle);
             }
 
             this.game.time.events.add(this.rnd.between(1000, 3000), this.makeObstacle, this);
         },
+        setObstacle: function (obstacle, id) {
+            var vars = obstacleVars[id];
+            obstacle.type = Type.Obstacle;
+            obstacle.obstacleType = vars.obstacleType;
+
+            var y = this.game.height - groundH - obstacle.height * 0.5;
+            if (vars.position === 'sky')
+                y = this.game.height - groundH - obstacle.height * 0.5 - 120;
+            obstacle.position.set(this.game.width + obstacle.width * 0.5, y);
+
+            obstacle.checkWorldBounds = true;
+            obstacle.outOfBoundsKill = true;
+        },
+
         //产生红包
         makeRedPacket: function () {
             var redPacket = this.game.add.sprite(0, 0, 'images', 'redPacket/012');
             redPacket.position.set(this.game.width, 289);
             redPacket.scale.set(0.35, 0.35);
             redPacket.animations.add('spin', Phaser.Animation.generateFrameNames('redPacket/', 1, 12, '', 3), 10, true);
-            redPacket.name = 'redPacket';
+            redPacket.type = Type.RedPacket;
             redPacket.play('spin');
 
             redPacket.checkWorldBounds = true;
@@ -215,21 +265,24 @@
         },
         //收集红包
         collectPacket: function (playerBody, packetBody) {//player碰撞红包时，可能存在多个碰撞点碰撞，所以回调函数可能触发多次
-            //console.log(playerBody.sprite.name, packetBody.sprite.name);
             if (packetBody.hasCollided === undefined) {
                 var packet = packetBody.sprite;
                 packetBody.destroy();
                 packet.kill();//packet.destory()无法调用？
 
-                this.score += 1;
-                this.scoreBoard.text = INME.getCopy('score') + this.score;
-                INME.Vars.score = this.score;
-
+                this.updateScore(this.score + 1);
                 this.levelChange();
 
                 packetBody.hasCollided = true;
             }
-
+        },
+        //更新分数
+        updateScore: function (value) {
+            if(value<0)
+                value=0;
+            this.scoreBoard.text = INME.getCopy('score') + value;
+            INME.Vars.score = value;
+            this.score = value;
         },
         //根据分数判断是否升级难度
         levelChange: function () {
@@ -247,34 +300,34 @@
         },
         //将所有红包和障碍物的移动速度设置为新的speed
         speedUp: function () {
-            this.packet.children.forEach(speedUpObj);
-            this.obstacle.children.forEach(speedUpObj);
-
-            function speedUpObj(obj) {
-                obj.body.velocity.x = speed;
-            }
+            this.game.world.children.forEach(function (child) {
+                if (child.type === Type.Obstacle || child.type === Type.RedPacket) {
+                    if (child.body)
+                        child.body.velocity.x = speed;
+                }
+            });
         },
         //游戏结束
         endGame: function (playerBody, obstacleBody) {
-            //console.log('gameover', playerBody.sprite.name, obstacleBody.sprite.name);
             if (obstacleBody.hasCollided == undefined) {
-                isDead = true;
-                this.game.paused = true;
-                setTimeout(function () {
-                    this.game.paused = false;
-                    this.game.state.start(INME.State.Key.OverGame);
-                }.bind(this), 1000)
-
+                if (obstacleBody.sprite.obstacleType === ObstacleType.MinusScore) {
+                    this.updateScore(this.score - 1);
+                }
+                else {
+                    isDead = true;
+                    this.game.paused = true;
+                    this.player.play('dead');
+                    setTimeout(function () {
+                        this.game.paused = false;
+                        this.game.state.start(INME.State.Key.OverGame);
+                    }.bind(this), 1000);
+                }
                 obstacleBody.hasCollided = true;
             }
         },
-        killElement: function(element) {
-            element.destroy();
-        },
-        boomEffect: function() {
+        boomEffect: function () {
             var boom = game.add.sprite(playerX, this.game.height - groundH - this.player.height, 'images', 'boom/0');
-            //boom.scale.setTo(0.35, 0.35);
-            boom.animations.add('boomshakalaka', Phaser.Animation.generateFrameNames('boom/', 1, 7,'',1), 10, true);
+            boom.animations.add('boomshakalaka', Phaser.Animation.generateFrameNames('boom/', 1, 7, '', 1), 10, true);
             boom.play('boomshakalaka');
 
             boom.checkWorldBounds = true;
