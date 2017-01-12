@@ -1,13 +1,13 @@
 (function () {
     var difficulty = {//按照分数划分难度等级,不同难度对应不同速度
-        scores: [5, 10, 30, 40, 50],
-        speeds: [-220, -250, -300, -350, -450]
+        scores: [25, 50, 75, 100, 150],
+        speeds: [-300, -325, -350, -400, -450]
     }
     var debug = false;
     var playerX = 100;
     var groundH = 60;
     var playerVelocity = -550;
-    var playerGravity = 2000;
+    var worldGravity = 2000;
 
     var Type = {
         Player: 'Player',
@@ -72,15 +72,14 @@
             INME.Sound.bg.play();
             //物理引擎，需要多边形碰撞所以从Arcade切换成了P2
             this.game.physics.startSystem(Phaser.Physics.P2JS);
-            this.game.physics.p2.gravity.y = playerGravity;
+            this.game.physics.p2.gravity.y = worldGravity;
             this.game.physics.p2.setImpactEvents(true);//开启碰撞时回调函数派发
             this.game.physics.p2.setPostBroadphaseCallback(this.overlap, this);//借此模拟overlap
             //背景
-            this.game.add.image(0, 0, 'bg_ingame');
-            this.cloud1 = new ParallaxSprite(this.game, 'cloud1');
-            this.hill = new ParallaxSprite(this.game, 'hill');
-            this.city = new ParallaxSprite(this.game, 'city');
-            this.cloud2 = new ParallaxSprite(this.game, 'cloud2');
+            this.game.add.image(0, 0, 'images', 'ingame/bg');
+            this.cloud = new ParallaxSprite(this.game, 'images', 'ingame/cloud');
+            this.hill = new ParallaxSprite(this.game, 'images', 'ingame/hill');
+            this.city = new ParallaxSprite(this.game, 'images', 'ingame/city');
             //玩家
             this.makePlayer();
             //地面
@@ -90,8 +89,8 @@
             this.makeObstacle();
             //红包
             this.makeRedPacket();
-            //分数      
-            this.scoreBoard = this.add.bitmapText(game.world.width - 140, 16, INME.Vars.copyFontname, INME.getCopy('score') + '0', 25);
+            //分数条
+            this.makeScoreBoard();
             //控制键
             spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
             upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
@@ -149,7 +148,7 @@
             if (pressUp) {//跳起
                 this.player.play('up');
             }
-            if (this.player.deltaY > 0) {//落下---仅通过此项检测目前并不完美                
+            if (this.player.deltaY > 0) {//落下              
                 this.player.play('down');
             }
             if (isDead) {//挂掉        
@@ -161,17 +160,37 @@
         //检查
         check: function () {
             this.game.world.children.forEach(function (child) {
-                if (child.obstacleId === 'obstacle_4' && child.x < playerX) {
+                if (child.obstacleId === 'obstacle_4' && child.x < playerX && child.hasMiss === undefined) {//展示爆竹动画
                     child.play('miss');
+                    child.body.destroy();//销毁body，避免继续移动
+                    child.animations.currentAnim.onComplete.add(this.aniEndDestory, this, 0, child);
+
+                    child.hasMiss = true;
                 }
-            })
+
+                var type = child.type;//销毁---debug为true时，world.children有额外数据             
+                if (type === Type.Obstacle || type === Type.RedPacket) {
+                    if (child.x < (-child.width)) {
+                        child.body.destroy();
+                        child.destroy();
+                    }
+                }
+            }, this)
         },
         //背景滚动        
         scrollBg: function () {
-            this.cloud1.scroll(speed * 0.005);
-            this.cloud2.scroll(speed * 0.005);
+            this.cloud.scroll(speed * 0.005);
             this.hill.scroll(speed * 0.008);
             this.city.scroll(speed * 0.01);
+        },
+        //分数条
+        makeScoreBoard: function () {
+            var right = 20;
+            var top = 20;
+            var scoreBoard = this.add.bitmapText(0, 0, INME.Vars.copyFontname, INME.getCopy('score') + '0', 25);
+            scoreBoard.anchor.set(1, 0);
+            scoreBoard.position.set(this.game.width - right, top);
+            this.scoreBoard = scoreBoard;
         },
         //设置地面
         makeGround: function () {
@@ -268,19 +287,16 @@
                 y = this.game.height - groundH - obstacle.height * 0.5 - 120;
             obstacle.position.set(this.game.width + obstacle.width * 0.5, y);
 
-            obstacle.checkWorldBounds = true;
-            obstacle.outOfBoundsKill = true;
         },
         //产生红包
         makeRedPacket: function () {
-            var redPacket = this.game.add.sprite(0, 0, 'images', 'redpacket/2');
-            redPacket.position.set(this.game.width, 289);
-            redPacket.animations.add('spin', Phaser.Animation.generateFrameNames('redpacket/', 0, 11), 10, true);
+            var y = 290;
+            var redPacket = this.game.add.sprite(0, 0, 'images', 'redpacket/spin/2');
+            redPacket.position.set(this.game.width, y);
+            redPacket.animations.add('drop', Phaser.Animation.generateFrameNames('redpacket/drop/', 0, 15), 20, false);
+            redPacket.animations.add('spin', Phaser.Animation.generateFrameNames('redpacket/spin/', 0, 11), 10, true);
             redPacket.type = Type.RedPacket;
             redPacket.play('spin');
-
-            redPacket.checkWorldBounds = true;
-            redPacket.outOfBoundsKill = true;
 
             this.game.physics.p2.enable(redPacket, debug);
             redPacket.body.kinematic = true;
@@ -292,14 +308,20 @@
         collectPacket: function (playerBody, packetBody) {//player碰撞红包时，可能存在多个碰撞点碰撞，所以回调函数可能触发多次
             if (packetBody.hasCollided === undefined) {
                 var packet = packetBody.sprite;
-                packetBody.destroy();
-                packet.kill();//packet.destory()无法调用？
+                packetBody.destroy();//销毁body，避免继续移动
+                packet.x = this.player.x;//红包动画对齐player
+                packet.play('drop');
+                packet.animations.currentAnim.onComplete.add(this.aniEndDestory, this, 0, packet);
 
                 this.updateScore('add');
                 this.levelChange();
 
                 packetBody.hasCollided = true;
             }
+        },
+        //动画结束销毁对象
+        aniEndDestory: function (obj) {
+            obj.destroy();
         },
         //更新分数
         updateScore: function (method) {
@@ -357,30 +379,20 @@
                 }
                 obstacleBody.hasCollided = true;
             }
-        },
-        boomEffect: function () {
-            var boom = game.add.sprite(playerX, this.game.height - groundH - this.player.height, 'images', 'boom/0');
-            boom.animations.add('boomshakalaka', Phaser.Animation.generateFrameNames('boom/', 1, 7, '', 1), 10, true);
-            boom.play('boomshakalaka');
-
-            boom.checkWorldBounds = true;
-            boom.outOfBoundsKill = true;
-            this.game.physics.p2.enable(boom);
-            boom.body.kinematic = true;
-            boom.body.velocity.x = speed;
         }
     }
 
-    function ParallaxSprite(game, key, x, y) {
+    function ParallaxSprite(game, key, frame, x, y) {
         x = x === undefined ? 0 : x;
         y = y === undefined ? 0 : y;
 
-        this.imageWidth = game.cache.getImage(key).width;
-
         this.group = game.add.group();
-        this.group.create(0, 0, key);
-        this.group.create(this.imageWidth, 0, key);
+        var sp = this.group.create(0, 0, key, frame);
+        var imageWidth = sp.width;
+        this.group.create(imageWidth, 0, key, frame);
         this.group.position.set(x, y);
+
+        this.imageWidth = imageWidth;
     }
     ParallaxSprite.prototype.scroll = function (speed) {
         this.group.position.x += speed;

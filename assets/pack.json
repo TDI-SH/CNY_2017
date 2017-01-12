@@ -89,31 +89,6 @@
         },
         {
             "type": "image",
-            "key": "bg_ingame",
-            "url": "assets/images/ingame/bg.png"
-        },
-        {
-            "type": "image",
-            "key": "cloud1",
-            "url": "assets/images/ingame/cloud1.png"
-        },
-        {
-            "type": "image",
-            "key": "hill",
-            "url": "assets/images/ingame/hill.png"
-        },
-        {
-            "type": "image",
-            "key": "city",
-            "url": "assets/images/ingame/city.png"
-        },
-        {
-            "type": "image",
-            "key": "cloud2",
-            "url": "assets/images/ingame/cloud2.png"
-        },
-        {
-            "type": "image",
             "key": "ground",
             "url": "assets/images/ingame/platform.png"
         },
