@@ -3,7 +3,6 @@
         scores: [5, 10, 30, 40, 50],
         speeds: [-220, -250, -300, -350, -450]
     }
-    var speed = difficulty.speeds[0];
     var debug = false;
     var playerX = 100;
     var groundH = 60;
@@ -65,9 +64,10 @@
      **/
     INME.State.InGame = {
         create: function () {
-            this.score = 0;
+            score = 0;
             isDead = false;
             playerCollideGround = true;
+            speed = difficulty.speeds[0];
             //背景音乐
             INME.Sound.bg.play();
             //物理引擎，需要多边形碰撞所以从Arcade切换成了P2
@@ -86,10 +86,9 @@
             //地面
             this.makeGround();
             //障碍物
-            this.obstacle = this.game.physics.p2.createCollisionGroup();
+            this.obstacleCG = this.game.physics.p2.createCollisionGroup();
             this.makeObstacle();
             //红包
-            this.packet = this.game.physics.p2.createCollisionGroup();
             this.makeRedPacket();
             //分数      
             this.scoreBoard = this.add.bitmapText(game.world.width - 140, 16, INME.Vars.copyFontname, INME.getCopy('score') + '0', 25);
@@ -97,10 +96,8 @@
             spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
             upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
             //player的碰撞
-            this.player.body.collides(this.ground, this.playerCollideGround, this);
-            this.player.body.collides(this.obstacle, this.endGame, this);
-            //this.player.body.collides(this.packet, this.collectPacket, this);
-
+            this.player.body.collides(this.groundCG, this.playerCollideGround, this);
+            this.player.body.collides(this.obstacleCG, this.endGame, this);
         },
         overlap: function (body1, body2) {
             var type1 = body1.sprite.type;
@@ -149,7 +146,7 @@
             if (playerCollideGround) {//跑
                 this.player.play('run');
             }
-            if (pressUp && playerCollideGround) {//跳起
+            if (pressUp) {//跳起
                 this.player.play('up');
             }
             if (this.player.deltaY > 0) {//落下---仅通过此项检测目前并不完美                
@@ -178,12 +175,12 @@
         },
         //设置地面
         makeGround: function () {
-            this.ground = this.game.physics.p2.createCollisionGroup();
+            this.groundCG = this.game.physics.p2.createCollisionGroup();
 
             var g = this.game.add.sprite(this.game.width * 0.5, game.world.height - groundH * 0.5, 'ground');
             this.game.physics.p2.enable(g, debug);
 
-            g.body.setCollisionGroup(this.ground);
+            g.body.setCollisionGroup(this.groundCG);
             g.body.kinematic = true;
             g.body.collides(this.playerCG);//地面碰撞player的回调函数不需要重复定义
         },
@@ -238,7 +235,7 @@
             obstacle.body.clearShapes();//清除默认的矩形碰撞
             obstacle.body.loadPolygon("physics", obstacleId);
 
-            obstacle.body.setCollisionGroup(this.obstacle);
+            obstacle.body.setCollisionGroup(this.obstacleCG);
             obstacle.body.kinematic = true;
             obstacle.body.collides(this.playerCG);//障碍物碰撞player的回调函数不需要重复定义
             obstacle.body.velocity.x = speed;
@@ -286,9 +283,7 @@
             redPacket.outOfBoundsKill = true;
 
             this.game.physics.p2.enable(redPacket, debug);
-            redPacket.body.setCollisionGroup(this.packet);
             redPacket.body.kinematic = true;
-            //redPacket.body.collides(this.playerCG);//红包碰撞player的回调函数不需要重复定义
             redPacket.body.velocity.x = speed;
 
             this.game.time.events.add(this.rnd.between(1000, 3000), this.makeRedPacket, this);
@@ -300,26 +295,34 @@
                 packetBody.destroy();
                 packet.kill();//packet.destory()无法调用？
 
-                this.updateScore(this.score + 1);
+                this.updateScore('add');
                 this.levelChange();
 
                 packetBody.hasCollided = true;
             }
         },
         //更新分数
-        updateScore: function (value) {
-            if (value < 0)
-                value = 0;
-            this.scoreBoard.text = INME.getCopy('score') + value;
-            INME.Vars.score = value;
-            this.score = value;
+        updateScore: function (method) {
+            var unit = 10;
+            switch (method) {
+                case 'minus':
+                    score -= unit;
+                    break;
+                default:
+                    score += unit;
+                    break;
+            }
+            if (score < 0)
+                score = 0;
+            this.scoreBoard.text = INME.getCopy('score') + score;
+            INME.Vars.score = score;
         },
         //根据分数判断是否升级难度
         levelChange: function () {
             var len = difficulty.scores.length - 1;
             if (speed !== difficulty.speeds[len]) {//当前速度未达到最快速度
                 for (var i = len; i >= 0; i--) {
-                    if (this.score > difficulty.scores[i]) {
+                    if (score > difficulty.scores[i]) {
                         speed = difficulty.speeds[i];
                         console.log('当前速度', speed);
                         this.speedUp();
@@ -341,7 +344,7 @@
         endGame: function (playerBody, obstacleBody) {
             if (obstacleBody.hasCollided == undefined) {
                 if (obstacleBody.sprite.obstacleType === ObstacleType.MinusScore) {
-                    this.updateScore(this.score - 1);
+                    this.updateScore('minus');
                 }
                 else {
                     isDead = true;
