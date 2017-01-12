@@ -247,6 +247,61 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">images/characters/chicken_1/0.png</key>
+            <key type="filename">images/characters/chicken_1/1.png</key>
+            <key type="filename">images/characters/chicken_1/2.png</key>
+            <key type="filename">images/characters/chicken_1/3.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>64,125,127,250</rect>
+                <key>scale9Paddings</key>
+                <rect>64,125,127,250</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/characters/chicken_1/4.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>101,125,202,250</rect>
+                <key>scale9Paddings</key>
+                <rect>101,125,202,250</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/characters/chicken_1/5.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>89,125,178,250</rect>
+                <key>scale9Paddings</key>
+                <rect>89,125,178,250</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/characters/chicken_1/6.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>64,125,128,250</rect>
+                <key>scale9Paddings</key>
+                <rect>64,125,128,250</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">images/gameover/MenuPlay.png</key>
             <key type="filename">images/gameover/viewHightScore.png</key>
             <struct type="IndividualSpriteSettings">
@@ -323,46 +378,6 @@
                 <rect>240,135,480,270</rect>
                 <key>scale9Paddings</key>
                 <rect>240,135,480,270</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">images/ingame/chicken_0.png</key>
-            <key type="filename">images/ingame/chicken_1.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>72,12,144,24</rect>
-                <key>scale9Paddings</key>
-                <rect>72,12,144,24</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">images/ingame/chiken.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>31,13,61,26</rect>
-                <key>scale9Paddings</key>
-                <rect>31,13,61,26</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">images/ingame/chiken_2.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>41,13,81,26</rect>
-                <key>scale9Paddings</key>
-                <rect>41,13,81,26</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -527,27 +542,27 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">images/redPacket/001.png</key>
-            <key type="filename">images/redPacket/002.png</key>
-            <key type="filename">images/redPacket/003.png</key>
-            <key type="filename">images/redPacket/004.png</key>
-            <key type="filename">images/redPacket/005.png</key>
-            <key type="filename">images/redPacket/006.png</key>
-            <key type="filename">images/redPacket/007.png</key>
-            <key type="filename">images/redPacket/008.png</key>
-            <key type="filename">images/redPacket/009.png</key>
-            <key type="filename">images/redPacket/010.png</key>
-            <key type="filename">images/redPacket/011.png</key>
-            <key type="filename">images/redPacket/012.png</key>
+            <key type="filename">images/redpacket/0.png</key>
+            <key type="filename">images/redpacket/1.png</key>
+            <key type="filename">images/redpacket/10.png</key>
+            <key type="filename">images/redpacket/11.png</key>
+            <key type="filename">images/redpacket/2.png</key>
+            <key type="filename">images/redpacket/3.png</key>
+            <key type="filename">images/redpacket/4.png</key>
+            <key type="filename">images/redpacket/5.png</key>
+            <key type="filename">images/redpacket/6.png</key>
+            <key type="filename">images/redpacket/7.png</key>
+            <key type="filename">images/redpacket/8.png</key>
+            <key type="filename">images/redpacket/9.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>33,33,65,65</rect>
+                <rect>10,15,19,30</rect>
                 <key>scale9Paddings</key>
-                <rect>33,33,65,65</rect>
+                <rect>10,15,19,30</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

@@ -7,7 +7,6 @@
     var debug = false;
     var playerX = 100;
     var groundH = 60;
-    var obstacleNum = 7;
     var playerVelocity = -550;
     var playerGravity = 2000;
 
@@ -21,43 +20,51 @@
         Dead: 'Dead',
         MinusScore: 'MinusScore',
     }
-    var obstacleVars = {
-        'obstacle_0': {
+    var obstacleVars = [
+        {
             'obstacleType': ObstacleType.Dead,
             'position': 'ground',
         },
-        'obstacle_1': {
+        {
             'obstacleType': ObstacleType.Dead,
             'position': 'ground',
         },
-        'obstacle_2': {
+        {
             'obstacleType': ObstacleType.Dead,
             'position': 'ground',
         },
-        'obstacle_3': {
-            'obstacleType': ObstacleType.Dead,
-            'position': 'sky',
-        },
-        'obstacle_4': {
+        {
             'obstacleType': ObstacleType.Dead,
             'position': 'sky',
         },
-        'obstacle_5': {
+        {
+            'obstacleType': ObstacleType.Dead,
+            'position': 'sky',
+            'animations': {
+                'miss': {
+                    'prefix': 'boom/',
+                    'start': 0,
+                    'stop': 7,
+                    'frameRate': 10,
+                    'loop': false
+                }
+            }
+        },
+        {
             'obstacleType': ObstacleType.MinusScore,
             'position': 'ground',
         },
-        'obstacle_6': {
+        {
             'obstacleType': ObstacleType.MinusScore,
             'position': 'ground',
         },
-    }
+    ]
 
     /**
      * state - InGame
      **/
     INME.State.InGame = {
         create: function () {
-            this.boomArr = [];
             this.score = 0;
             isDead = false;
             playerCollideGround = true;
@@ -121,7 +128,7 @@
         },
         update: function () {
             this.scrollBg();
-            //跳            
+            //跳       
             var pressUp = upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown;
             if (pressUp && playerCollideGround) {
                 playerCollideGround = false;
@@ -152,14 +159,17 @@
                 this.player.play('dead');
             }
 
-
-            if (this.boomArr.length !== 0 && (this.boomArr[0].x <= playerX)) {
-                console.log(this.boomArr);
-                this.boomArr[0].destroy();
-                this.boomArr.shift();
-                this.boomEffect();
-            }
+            this.check();
         },
+        //检查
+        check: function () {
+            this.game.world.children.forEach(function (child) {
+                if (child.obstacleId === 'obstacle_4' && child.x < playerX) {
+                    child.play('miss');
+                }
+            })
+        },
+        //背景滚动        
         scrollBg: function () {
             this.cloud1.scroll(speed * 0.005);
             this.cloud2.scroll(speed * 0.005);
@@ -179,40 +189,50 @@
         },
         //设置player
         makePlayer: function () {
-            var prefix = 'characters/chicken_' + INME.Vars.characterIndex + '/';
-
-            var frameRate = 10;
-
             this.playerCG = this.game.physics.p2.createCollisionGroup();
 
-            var player = this.game.add.sprite(0, 0, 'images', prefix + '5');
+            var frameRate = 10;
+            var prefix = 'characters/chicken_' + INME.Vars.characterIndex + '/';
+            var last = this.getPlayerAniLastFrame(INME.Vars.characterIndex);
+
+            var player = this.game.add.sprite(0, 0, 'images', prefix + '4');
             player.type = Type.Player;
             player.position.set(playerX, this.game.height - groundH - player.height * 0.5);
 
-            player.animations.add('run', Phaser.Animation.generateFrameNames(prefix, 0, 2), frameRate, true);
-            player.animations.add('up', Phaser.Animation.generateFrameNames(prefix, 3, 3), frameRate, true);
-            player.animations.add('down', Phaser.Animation.generateFrameNames(prefix, 4, 4), frameRate, false);
-            player.animations.add('dead', Phaser.Animation.generateFrameNames(prefix, 5, 5), frameRate, true);
+            player.animations.add('run', Phaser.Animation.generateFrameNames(prefix, 0, last - 3), frameRate, true);
+            player.animations.add('up', Phaser.Animation.generateFrameNames(prefix, last - 2, last - 2), frameRate, false);
+            player.animations.add('down', Phaser.Animation.generateFrameNames(prefix, last - 1, last - 1), frameRate, false);
+            player.animations.add('dead', Phaser.Animation.generateFrameNames(prefix, last, last), frameRate, false);
             player.play('run');
 
             this.game.physics.p2.enable(player, debug);
             player.body.clearShapes();
-            player.body.addRectangle(player.width * 0.8, player.height);
+            player.body.addRectangle(player.width * 0.8, player.height);//目前角色的碰撞矩形不一样？
             player.body.setCollisionGroup(this.playerCG);
             player.body.fixedRotation = true;
 
             this.player = player;
         },
+        getPlayerAniLastFrame: function setPlayerAni(id) {
+            switch (id) {
+                case 0:
+                    return 5;
+                case 1:
+                    return 6;
+            }
+        },
+        //player与地面碰撞的回调函数
         playerCollideGround: function () {
             playerCollideGround = true;
         },
         //产生障碍物
         makeObstacle: function () {
-            var i = Math.random() * obstacleNum | 0;
-            var obstacleId = 'obstacle_' + i;
-            var key = 'obstacles/' + obstacleId;
-            var obstacle = this.game.add.sprite(0, 0, 'images', key);
-            this.setObstacle(obstacle, obstacleId);
+            var len = obstacleVars.length;
+            var id = Math.random() * len | 0;
+            var obstacleId = 'obstacle_' + id;
+
+            var obstacle = this.produceObstacle(id);
+            this.setObstacle(obstacle, id);
 
             this.game.physics.p2.enable(obstacle, debug);
             obstacle.body.clearShapes();//清除默认的矩形碰撞
@@ -222,17 +242,29 @@
             obstacle.body.kinematic = true;
             obstacle.body.collides(this.playerCG);//障碍物碰撞player的回调函数不需要重复定义
             obstacle.body.velocity.x = speed;
-            //check for boom
-            if (key === 'obstacles/obstacle_4') {
-                this.boomArr.push(obstacle);
-            }
 
             this.game.time.events.add(this.rnd.between(1000, 3000), this.makeObstacle, this);
+        },
+        produceObstacle: function (id) {
+            var key = 'obstacles/obstacle_' + id;
+            var obstacle = this.game.add.sprite(0, 0, 'images', key);
+
+            var vars = obstacleVars[id];
+            var animations = vars.animations;
+            if (animations) {
+                for (var aniName in animations) {
+                    var aniVars = animations[aniName]
+                    obstacle.animations.add(aniName, Phaser.Animation.generateFrameNames(aniVars.prefix, aniVars.start, aniVars.stop), aniVars.frameRate, aniVars.loop);
+                }
+            }
+
+            return obstacle;
         },
         setObstacle: function (obstacle, id) {
             var vars = obstacleVars[id];
             obstacle.type = Type.Obstacle;
             obstacle.obstacleType = vars.obstacleType;
+            obstacle.obstacleId = 'obstacle_' + id;
 
             var y = this.game.height - groundH - obstacle.height * 0.5;
             if (vars.position === 'sky')
@@ -242,13 +274,11 @@
             obstacle.checkWorldBounds = true;
             obstacle.outOfBoundsKill = true;
         },
-
         //产生红包
         makeRedPacket: function () {
-            var redPacket = this.game.add.sprite(0, 0, 'images', 'redPacket/012');
+            var redPacket = this.game.add.sprite(0, 0, 'images', 'redpacket/2');
             redPacket.position.set(this.game.width, 289);
-            redPacket.scale.set(0.35, 0.35);
-            redPacket.animations.add('spin', Phaser.Animation.generateFrameNames('redPacket/', 1, 12, '', 3), 10, true);
+            redPacket.animations.add('spin', Phaser.Animation.generateFrameNames('redpacket/', 0, 11), 10, true);
             redPacket.type = Type.RedPacket;
             redPacket.play('spin');
 
@@ -278,8 +308,8 @@
         },
         //更新分数
         updateScore: function (value) {
-            if(value<0)
-                value=0;
+            if (value < 0)
+                value = 0;
             this.scoreBoard.text = INME.getCopy('score') + value;
             INME.Vars.score = value;
             this.score = value;

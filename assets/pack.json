@@ -113,20 +113,6 @@
             "url": "assets/images/ingame/cloud2.png"
         },
         {
-            "type": "spritesheet",
-            "key": "chicken_0",
-            "url": "assets/images/ingame/chiken_2.png",
-            "frameWidth": 54,
-            "frameHeight": 52
-        },
-        {
-            "type": "spritesheet",
-            "key": "chicken_1",
-            "url": "assets/images/ingame/chicken_1.png",
-            "frameWidth": 32,
-            "frameHeight": 48
-        },
-        {
             "type": "image",
             "key": "ground",
             "url": "assets/images/ingame/platform.png"
@@ -157,13 +143,6 @@
             "type": "image",
             "key": "viewScore",
             "url": "assets/images/gameover/viewHightScore.png"
-        },
-        {
-            "type": "spritesheet",
-            "key": "fredChicken",
-            "url": "assets/images/ingame/chiken.png",
-            "frameWidth": 982,
-            "frameHeight": 982
         }
     ]
 }
