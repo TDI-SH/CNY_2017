@@ -382,8 +382,7 @@
                 <false/>
             </struct>
             <key type="filename">images/ingame/city.png</key>
-            <key type="filename">images/ingame/cloud1.png</key>
-            <key type="filename">images/ingame/cloud2.png</key>
+            <key type="filename">images/ingame/cloud.png</key>
             <key type="filename">images/ingame/hill.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -542,18 +541,46 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">images/redpacket/0.png</key>
-            <key type="filename">images/redpacket/1.png</key>
-            <key type="filename">images/redpacket/10.png</key>
-            <key type="filename">images/redpacket/11.png</key>
-            <key type="filename">images/redpacket/2.png</key>
-            <key type="filename">images/redpacket/3.png</key>
-            <key type="filename">images/redpacket/4.png</key>
-            <key type="filename">images/redpacket/5.png</key>
-            <key type="filename">images/redpacket/6.png</key>
-            <key type="filename">images/redpacket/7.png</key>
-            <key type="filename">images/redpacket/8.png</key>
-            <key type="filename">images/redpacket/9.png</key>
+            <key type="filename">images/redpacket/drop/0.png</key>
+            <key type="filename">images/redpacket/drop/1.png</key>
+            <key type="filename">images/redpacket/drop/10.png</key>
+            <key type="filename">images/redpacket/drop/11.png</key>
+            <key type="filename">images/redpacket/drop/12.png</key>
+            <key type="filename">images/redpacket/drop/13.png</key>
+            <key type="filename">images/redpacket/drop/14.png</key>
+            <key type="filename">images/redpacket/drop/15.png</key>
+            <key type="filename">images/redpacket/drop/2.png</key>
+            <key type="filename">images/redpacket/drop/3.png</key>
+            <key type="filename">images/redpacket/drop/4.png</key>
+            <key type="filename">images/redpacket/drop/5.png</key>
+            <key type="filename">images/redpacket/drop/6.png</key>
+            <key type="filename">images/redpacket/drop/7.png</key>
+            <key type="filename">images/redpacket/drop/8.png</key>
+            <key type="filename">images/redpacket/drop/9.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>25,25,50,50</rect>
+                <key>scale9Paddings</key>
+                <rect>25,25,50,50</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/redpacket/spin/0.png</key>
+            <key type="filename">images/redpacket/spin/1.png</key>
+            <key type="filename">images/redpacket/spin/10.png</key>
+            <key type="filename">images/redpacket/spin/11.png</key>
+            <key type="filename">images/redpacket/spin/2.png</key>
+            <key type="filename">images/redpacket/spin/3.png</key>
+            <key type="filename">images/redpacket/spin/4.png</key>
+            <key type="filename">images/redpacket/spin/5.png</key>
+            <key type="filename">images/redpacket/spin/6.png</key>
+            <key type="filename">images/redpacket/spin/7.png</key>
+            <key type="filename">images/redpacket/spin/8.png</key>
+            <key type="filename">images/redpacket/spin/9.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
