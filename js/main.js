@@ -3,10 +3,10 @@
         scores: [25, 50, 75, 100, 150],
         speeds: [-300, -325, -350, -400, -450]
     }
-    var debug = true;
+    var debug = false;
     var playerX = 100;
     var groundH = 60;
-    var playerVelocity = -550;
+    var playerVelocity = -590;
     var worldGravity = 2000;
 
     var Type = {
@@ -97,11 +97,11 @@
             //分数条
             this.makeScoreBoard();
             //控制键
+            this.game.input.keyboard.reset(true);
             spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
             upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
             //double jump callbacks
-            spaceBar.onDown.add(this.verifyJump, this);
-            upArrow.onDown.add(this.verifyJump, this);
+            this.game.input.keyboard.addCallbacks(this, this.handleKeyboard);
             this.game.input.onDown.add(this.verifyJump, this);
             //player的碰撞
             this.player.body.collides(this.groundCG, this.playerCollideGround, this);
@@ -360,12 +360,12 @@
             }
         },
         //double jump
-        verifyJump: function(){
+        verifyJump: function(){    
             if(jumpCount > 0){
                 this.player.body.velocity.y = playerVelocity;
                 jumpCount--;
                 playerCollideGround = false;
-            }
+            }    
         },
         //将所有红包和障碍物的移动速度设置为新的speed
         speedUp: function () {
@@ -375,6 +375,15 @@
                         child.body.velocity.x = speed;
                 }
             });
+        },
+        handleKeyboard: function(e){
+            switch (e.key) {
+                case " ":
+                case "ArrowUp":
+                    this.verifyJump();
+                    break;
+            }
+            console.log(e.key);
         },
         //游戏结束
         endGame: function (playerBody, obstacleBody) {
