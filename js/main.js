@@ -3,7 +3,7 @@
         scores: [25, 50, 75, 100, 150],
         speeds: [-300, -325, -350, -400, -450]
     }
-    var debug = false;
+    var debug = true;
     var playerX = 100;
     var groundH = 60;
     var playerVelocity = -550;
@@ -56,6 +56,10 @@
         {
             'obstacleType': ObstacleType.MinusScore,
             'position': 'ground',
+        },
+        {
+            'obstacleType': ObstacleType.Dead,
+            'position': 'bottom',
         },
     ]
 
@@ -160,7 +164,7 @@
         //检查
         check: function () {
             this.game.world.children.forEach(function (child) {
-                if (child.obstacleId === 'obstacle_4' && child.x < playerX && child.hasMiss === undefined) {//展示爆竹动画
+                if (child.animations && child.animations.getAnimation('miss') && child.x < playerX && child.hasMiss === undefined) {//展示爆竹动画
                     child.play('miss');
                     child.body.destroy();//销毁body，避免继续移动
                     child.animations.currentAnim.onComplete.add(this.aniEndDestory, this, 0, child);
@@ -223,7 +227,7 @@
 
             this.game.physics.p2.enable(player, debug);
             player.body.clearShapes();
-            player.body.addRectangle(player.width * 0.8, player.height);//目前角色的碰撞矩形不一样？
+            player.body.addRectangle(player.width * 0.7, player.height);//目前角色的碰撞矩形不一样？
             player.body.setCollisionGroup(this.playerCG);
             player.body.fixedRotation = true;
 
@@ -251,7 +255,7 @@
             this.setObstacle(obstacle, id);
 
             this.game.physics.p2.enable(obstacle, debug);
-            obstacle.body.clearShapes();//清除默认的矩形碰撞
+            obstacle.body.clearShapes();//清除默认的碰撞矩形
             obstacle.body.loadPolygon("physics", obstacleId);
 
             obstacle.body.setCollisionGroup(this.obstacleCG);
@@ -280,13 +284,20 @@
             var vars = obstacleVars[id];
             obstacle.type = Type.Obstacle;
             obstacle.obstacleType = vars.obstacleType;
-            obstacle.obstacleId = 'obstacle_' + id;
 
-            var y = this.game.height - groundH - obstacle.height * 0.5;
-            if (vars.position === 'sky')
-                y = this.game.height - groundH - obstacle.height * 0.5 - 120;
+            var y;
+            switch (vars.position) {
+                case 'sky':
+                    y = this.game.height - groundH - obstacle.height * 0.5 - 120;
+                    break;
+                case 'ground':
+                    y = this.game.height - groundH - obstacle.height * 0.5;
+                    break;
+                case 'bottom':
+                    y = this.game.height - groundH + obstacle.height * 0.5;
+                    break;
+            }
             obstacle.position.set(this.game.width + obstacle.width * 0.5, y);
-
         },
         //产生红包
         makeRedPacket: function () {
