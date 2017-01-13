@@ -98,6 +98,10 @@
             //控制键
             spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
             upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
+            //double jump callbacks
+            spaceBar.onDown.add(this.verifyJump, this);
+            upArrow.onDown.add(this.verifyJump, this);
+            this.game.input.onDown.add(this.verifyJump, this);
             //player的碰撞
             this.player.body.collides(this.groundCG, this.playerCollideGround, this);
             this.player.body.collides(this.obstacleCG, this.endGame, this);
@@ -130,21 +134,11 @@
             this.scrollBg();
             //跳       
             var pressUp = upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown;
-            if (pressUp && playerCollideGround) {
-                playerCollideGround = false;
-                this.jumpTimer = 1;
-                this.player.body.velocity.y = playerVelocity;
-            } else if (pressUp && (this.jumpTimer != 0)) {
-                if (this.jumpTimer > 15) {
-                    this.jumpTimer = 0;
-                } else {
-                    this.jumpTimer++;
-                    this.player.body.velocity.y = playerVelocity;
-                }
+            
+            if(playerCollideGround){
+                this.jumpCount = 2;
             }
-            else if (this.jumpTimer != 0) {
-                this.jumpTimer = 0;
-            }
+
             //设置player的动画   
             if (playerCollideGround) {//跑
                 this.player.play('run');
@@ -362,6 +356,14 @@
                         break;//跳出整个循环
                     }
                 }
+            }
+        },
+        //double jump
+        verifyJump: function(){
+            if(this.jumpCount > 0){
+                this.player.body.velocity.y = playerVelocity;
+                this.jumpCount--;
+                playerCollideGround = false;
             }
         },
         //将所有红包和障碍物的移动速度设置为新的speed
