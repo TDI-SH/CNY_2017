@@ -68,6 +68,7 @@
      **/
     INME.State.InGame = {
         create: function () {
+            jumpCount = 2;
             score = 0;
             isDead = false;
             playerCollideGround = true;
@@ -131,28 +132,9 @@
             return true;
         },
         update: function () {
-            this.scrollBg();
-            //跳       
-            var pressUp = upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown;
-            
-            if(playerCollideGround){
-                this.jumpCount = 2;
-            }
-
-            //设置player的动画   
-            if (playerCollideGround) {//跑
-                this.player.play('run');
-            }
-            if (pressUp) {//跳起
-                this.player.play('up');
-            }
-            if (this.player.deltaY > 0) {//落下              
-                this.player.play('down');
-            }
-            if (isDead) {//挂掉        
-                this.player.play('dead');
-            }
-
+            this.scrollBg();       
+            //设置player的动画
+            this.updatePlayerAnimation();   
             this.check();
         },
         //检查
@@ -227,6 +209,22 @@
 
             this.player = player;
         },
+        //设置player animation
+        updatePlayerAnimation: function() {
+            var pressUp = upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown;
+            if (playerCollideGround) {//跑
+                this.player.play('run');
+            }
+            if (pressUp) {//跳起
+                this.player.play('up');
+            }
+            if (this.player.deltaY > 0) {//落下              
+                this.player.play('down');
+            }
+            if (isDead) {//挂掉        
+                this.player.play('dead');
+            }
+        },
         getPlayerAniLastFrame: function setPlayerAni(id) {
             switch (id) {
                 case 0:
@@ -238,6 +236,9 @@
         //player与地面碰撞的回调函数
         playerCollideGround: function () {
             playerCollideGround = true;
+            if(playerCollideGround){
+                jumpCount = 2;
+            }
         },
         //产生障碍物
         makeObstacle: function () {
@@ -360,9 +361,9 @@
         },
         //double jump
         verifyJump: function(){
-            if(this.jumpCount > 0){
+            if(jumpCount > 0){
                 this.player.body.velocity.y = playerVelocity;
-                this.jumpCount--;
+                jumpCount--;
                 playerCollideGround = false;
             }
         },
