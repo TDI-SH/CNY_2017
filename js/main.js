@@ -6,7 +6,7 @@
     var debug = false;
     var playerX = 100;
     var groundH = 60;
-    var playerVelocity = -590;
+    var playerVelocity = -650;
     var worldGravity = 2000;
 
     var Type = {
@@ -105,7 +105,7 @@
             this.game.input.onDown.add(this.verifyJump, this);
             //player的碰撞
             this.player.body.collides(this.groundCG, this.playerCollideGround, this);
-            this.player.body.collides(this.obstacleCG, this.endGame, this);
+            this.player.body.collides(this.obstacleCG, this.playerCollideObstacle, this);
         },
         overlap: function (body1, body2) {
             var type1 = body1.sprite.type;
@@ -121,21 +121,38 @@
             }
             //player与减分类型的障碍物
             if (body1.sprite.obstacleType === ObstacleType.MinusScore && type2 === Type.Player) {
-                this.endGame(body2, body1);
+                this.playerCollideObstacle(body2, body1);
                 return false;
             }
             else if (type1 === Type.Player && body2.sprite.obstacleType === ObstacleType.MinusScore) {
-                this.endGame(body1, body2);
+                this.playerCollideObstacle(body1, body2);
                 return false;
             }
 
             return true;
         },
         update: function () {
-            this.scrollBg();       
-            //设置player的动画
-            this.updatePlayerAnimation();   
+            this.scrollBg();
+
+            this.updatePlayerAnimation();
+
             this.check();
+        },
+        //更新player的动画
+        updatePlayerAnimation: function () {
+            var pressUp = upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown;
+            if (playerCollideGround) {//跑
+                this.player.play('run');
+            }
+            if (pressUp) {//跳起
+                this.player.play('up');
+            }
+            if (this.player.deltaY > 0) {//落下              
+                this.player.play('down');
+            }
+            if (isDead) {//挂掉        
+                this.player.play('dead');
+            }
         },
         //检查
         check: function () {
@@ -209,22 +226,6 @@
 
             this.player = player;
         },
-        //设置player animation
-        updatePlayerAnimation: function() {
-            var pressUp = upArrow.isDown || spaceBar.isDown || this.game.input.pointer1.isDown;
-            if (playerCollideGround) {//跑
-                this.player.play('run');
-            }
-            if (pressUp) {//跳起
-                this.player.play('up');
-            }
-            if (this.player.deltaY > 0) {//落下              
-                this.player.play('down');
-            }
-            if (isDead) {//挂掉        
-                this.player.play('dead');
-            }
-        },
         getPlayerAniLastFrame: function setPlayerAni(id) {
             switch (id) {
                 case 0:
@@ -236,7 +237,7 @@
         //player与地面碰撞的回调函数
         playerCollideGround: function () {
             playerCollideGround = true;
-            if(playerCollideGround){
+            if (playerCollideGround) {
                 jumpCount = 2;
             }
         },
@@ -314,6 +315,7 @@
         collectPacket: function (playerBody, packetBody) {//player碰撞红包时，可能存在多个碰撞点碰撞，所以回调函数可能触发多次
             if (packetBody.hasCollided === undefined) {
                 var packet = packetBody.sprite;
+                INME.Sound.getpacket.play();
                 packetBody.destroy();//销毁body，避免继续移动
                 packet.x = this.player.x;//红包动画对齐player
                 packet.play('drop');
@@ -360,12 +362,20 @@
             }
         },
         //double jump
-        verifyJump: function(){    
-            if(jumpCount > 0){
+        verifyJump: function () {
+            if (jumpCount > 0) {
                 this.player.body.velocity.y = playerVelocity;
                 jumpCount--;
                 playerCollideGround = false;
-            }    
+            }
+        },
+        handleKeyboard: function (e) {
+            switch (e.key) {
+                case " ":
+                case "ArrowUp":
+                    this.verifyJump();
+                    break;
+            }
         },
         //将所有红包和障碍物的移动速度设置为新的speed
         speedUp: function () {
@@ -376,23 +386,17 @@
                 }
             });
         },
-        handleKeyboard: function(e){
-            switch (e.key) {
-                case " ":
-                case "ArrowUp":
-                    this.verifyJump();
-                    break;
-            }
-            console.log(e.key);
-        },
         //游戏结束
-        endGame: function (playerBody, obstacleBody) {
+        playerCollideObstacle: function (playerBody, obstacleBody) {
             if (obstacleBody.hasCollided == undefined) {
                 if (obstacleBody.sprite.obstacleType === ObstacleType.MinusScore) {
                     this.updateScore('minus');
                 }
                 else {
                     isDead = true;
+                    this.game.sound.muteOnPause = false;//避免游戏暂停，挂掉的音效被暂停,不起作用
+                    INME.Sound.bg.stop();
+                    INME.Sound.dead.play();
                     this.game.paused = true;
                     this.player.play('dead');
                     setTimeout(function () {

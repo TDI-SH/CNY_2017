@@ -18,20 +18,19 @@
             "atlasURL": "assets/copy/copy.fnt"
         },
         {
-            "type": "bitmapFont",
-            "key": "copy",
-            "textureURL": "assets/copy/copy.png",
-            "atlasURL": "assets/copy/copy.fnt"
-        },
-        {
             "type": "audio",
             "key": "bg",
             "urls": "assets/sound/bg.mp3"
         },
         {
             "type": "audio",
-            "key": "collison",
-            "urls": "assets/sound/collision.mp3"
+            "key": "getpacket",
+            "urls": "assets/sound/getpacket.mp3"
+        },
+        {
+            "type": "audio",
+            "key": "dead",
+            "urls": "assets/sound/dead.wav"
         },
         {
             "type": "spritesheet",

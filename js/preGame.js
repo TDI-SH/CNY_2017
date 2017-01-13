@@ -41,8 +41,9 @@
         create: function () {
             //初始化音效
             INME.Sound = {
-                'bg': this.game.add.audio('bg', 0.5, true),
-                'collision': this.game.add.audio('collision'),
+                'bg': this.game.add.audio('bg', 1, true),
+                'getpacket': this.game.add.audio('getpacket'),
+                'dead': this.game.add.audio('dead'),
             }
             this.game.state.start(INME.State.Key.Language);
         },
