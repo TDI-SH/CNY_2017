@@ -5,25 +5,23 @@
     }
     var debug = false;
     var playerX = 100;
+    var groundH = 60;
+    var playerVelocity = -680;
+    var worldGravity = 2000;
 
     var spawnX = 1100;
     var spawnDisVar = {//可以spawn的距离范围
-        min: 300,
-        max: 350,
+        min: 350,
+        max: 450,
     }
     var packetYArr = [//红包y轴位置的可取值
-        300,
-        350
+        290,
+        325
     ]
     var obstacleSkyYArr = [//空中障碍物y轴位置的可取值
         280,
         300,
     ]
-
-
-    var groundH = 60;
-    var playerVelocity = -650;
-    var worldGravity = 2000;
 
     var Type = {
         Player: 'Player',
@@ -169,20 +167,17 @@
             }
         },
         spawnObj: function () {
-            this.randomSpawnDis();
-            var id = (Math.random() * obstacleVars.length) | 0;
+            spawnDis = Phaser.Math.between(spawnDisVar.min, spawnDisVar.max);
 
+            var id = (Math.random() * obstacleVars.length) | 0;
             if (obstacleVars[id].position === 'sky') {//障碍物在空中时,将红包移到右侧
                 this.makeRedPacket(spawnDis * 0.5);
             }
             else {
                 this.makeRedPacket();
             }
-
+            
             nearestObj = this.makeObstacle(id);
-        },
-        randomSpawnDis: function () {
-            spawnDis = Phaser.Math.between(spawnDisVar.min, spawnDisVar.max);
         },
         //更新player下落的动画
         updatePlayerDownAni: function () {
@@ -338,7 +333,7 @@
             var y = packetYArr[iy];
 
             if (xOffsetSpawn === undefined) {
-                if (Math.random > 0.5)
+                if (Math.random() > 0.5)
                     xOffsetSpawn = 0;
                 else
                     xOffsetSpawn = spawnDis * 0.5;
