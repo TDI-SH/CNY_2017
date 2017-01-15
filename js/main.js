@@ -1,12 +1,12 @@
 (function () {
     var difficulty = {//按照分数划分难度等级,不同难度对应不同速度
-        scores: [25, 50, 75, 100, 150],
+        scores: [25, 70, 125, 200, 250],
         speeds: [-300, -325, -350, -400, -450]
     }
     var debug = false;
     var playerX = 100;
     var groundH = 60;
-    var playerVelocity = -680;
+    var playerVelocity = -700;
     var worldGravity = 2000;
 
     var spawnX = 1100;
@@ -74,6 +74,7 @@
         {
             'obstacleType': ObstacleType.Dead,
             'position': 'bottom',
+            'makePlayerIn': true/*是否让player掉入obstacle*/
         },
     ]
 
@@ -102,12 +103,14 @@
             this.cloud = new ParallaxSprite(this.game, 'images', 'ingame/cloud');
             this.hill = new ParallaxSprite(this.game, 'images', 'ingame/hill');
             this.city = new ParallaxSprite(this.game, 'images', 'ingame/city');
-            //玩家
-            this.makePlayer();
+            //碰撞组
+            this.playerCG = this.game.physics.p2.createCollisionGroup();
+            this.obstacleCG = this.game.physics.p2.createCollisionGroup();
+            this.groundCG = this.game.physics.p2.createCollisionGroup();
             //地面
             this.makeGround();
-            //障碍物碰撞组
-            this.obstacleCG = this.game.physics.p2.createCollisionGroup();
+            //玩家
+            this.makePlayer();
             //分数条
             this.makeScoreBoard();
             //控制键
@@ -176,7 +179,7 @@
             else {
                 this.makeRedPacket();
             }
-            
+
             nearestObj = this.makeObstacle(id);
         },
         //更新player下落的动画
@@ -222,8 +225,6 @@
         },
         //设置地面
         makeGround: function () {
-            this.groundCG = this.game.physics.p2.createCollisionGroup();
-
             var g = this.game.add.sprite(this.game.width * 0.5, game.world.height - groundH * 0.5, 'ground');
             this.game.physics.p2.enable(g, debug);
 
@@ -233,8 +234,6 @@
         },
         //设置player
         makePlayer: function () {
-            this.playerCG = this.game.physics.p2.createCollisionGroup();
-
             var frameRate = 10;
             var prefix = 'characters/chicken_' + INME.Vars.characterIndex + '/';
             var last = this.getPlayerAniLastFrame(INME.Vars.characterIndex);
@@ -308,6 +307,7 @@
             var vars = obstacleVars[id];
             obstacle.type = Type.Obstacle;
             obstacle.obstacleType = vars.obstacleType;
+            obstacle.makePlayerIn = vars.makePlayerIn;
 
             var y;
             switch (vars.position) {
@@ -437,9 +437,16 @@
                     this.updateScore('minus');
                 }
                 else {
+                    this.makePlayerIn(obstacleBody.sprite);
                     this.gameOver();
                 }
                 obstacleBody.hasCollided = true;
+            }
+        },
+        makePlayerIn: function (obstacle) {
+            if (obstacle.makePlayerIn) {
+                this.player.x = obstacle.x;//并不完美?
+                this.player.y = obstacle.y - 30;
             }
         },
         gameOver: function () {//手动让游戏暂停会停掉所有的声音，为了播放gameover音效，暂决定不用游戏暂停模拟gameover

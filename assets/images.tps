@@ -527,6 +527,20 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">images/obstacles/obstacle_7.png</key>
+            <key type="filename">images/obstacles/obstacle_7_old.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>22,15,43,30</rect>
+                <key>scale9Paddings</key>
+                <rect>22,15,43,30</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">images/public/btnClose.jpg</key>
             <key type="filename">images/startgame/btnHelp.jpg</key>
             <struct type="IndividualSpriteSettings">
