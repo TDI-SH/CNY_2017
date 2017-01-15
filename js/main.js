@@ -5,9 +5,22 @@
     }
     var debug = false;
     var playerX = 100;
-    var skyY = 250;
+
     var spawnX = 1100;
-    var spawnDis = 200;
+    var spawnDisVar = {//可以spawn的距离范围
+        min: 300,
+        max: 350,
+    }
+    var packetYArr = [//红包y轴位置的可取值
+        300,
+        350
+    ]
+    var obstacleSkyYArr = [//空中障碍物y轴位置的可取值
+        280,
+        300,
+    ]
+
+
     var groundH = 60;
     var playerVelocity = -650;
     var worldGravity = 2000;
@@ -77,8 +90,8 @@
             playerCollideGround = true;
             speed = difficulty.speeds[0];
 
-            seed = 0;//游戏
-            nearestX = spawnDis;//红包或障碍物离spawnX最近的距离
+            nearestObj = null;
+            spawnDis = spawnDisVar.min;
             //背景音乐
             INME.Sound.bg.play();
             //物理引擎，需要多边形碰撞所以从Arcade切换成了P2
@@ -95,11 +108,8 @@
             this.makePlayer();
             //地面
             this.makeGround();
-            //障碍物
+            //障碍物碰撞组
             this.obstacleCG = this.game.physics.p2.createCollisionGroup();
-            this.makeObstacle();
-            //红包
-            this.makeRedPacket();
             //分数条
             this.makeScoreBoard();
             //控制键
@@ -147,12 +157,33 @@
                 this.spawn();
             }
         },
-        //障碍物和红包的产生,
+        //产生障碍物和红包
         spawn: function () {
-
-
+            if (nearestObj === null) {
+                this.spawnObj();
+            }
+            else {
+                if ((spawnX - nearestObj.x) > spawnDis) {
+                    this.spawnObj();
+                }
+            }
         },
+        spawnObj: function () {
+            this.randomSpawnDis();
+            var id = (Math.random() * obstacleVars.length) | 0;
 
+            if (obstacleVars[id].position === 'sky') {//障碍物在空中时,将红包移到右侧
+                this.makeRedPacket(spawnDis * 0.5);
+            }
+            else {
+                this.makeRedPacket();
+            }
+
+            nearestObj = this.makeObstacle(id);
+        },
+        randomSpawnDis: function () {
+            spawnDis = Phaser.Math.between(spawnDisVar.min, spawnDisVar.max);
+        },
         //更新player下落的动画
         updatePlayerDownAni: function () {
             if (playerCollideGround === false && this.player.deltaY > 0) {
@@ -246,9 +277,7 @@
             jumpCount = 2;
         },
         //产生障碍物
-        makeObstacle: function () {
-            var len = obstacleVars.length;
-            var id = Math.random() * len | 0;
+        makeObstacle: function (id) {
             var obstacleId = 'obstacle_' + id;
 
             var obstacle = this.produceObstacle(id);
@@ -263,7 +292,7 @@
             obstacle.body.collides(this.playerCG);//障碍物碰撞player的回调函数不需要重复定义
             obstacle.body.velocity.x = speed;
 
-            this.game.time.events.add(this.rnd.between(1000, 3000), this.makeObstacle, this);
+            return obstacle;
         },
         produceObstacle: function (id) {
             var key = 'obstacles/obstacle_' + id;
@@ -288,7 +317,8 @@
             var y;
             switch (vars.position) {
                 case 'sky':
-                    y = skyY;
+                    var iy = (Math.random() * obstacleSkyYArr.length) | 0;
+                    y = obstacleSkyYArr[iy];
                     break;
                 case 'ground':
                     y = this.game.height - groundH - obstacle.height * 0.5;
@@ -297,12 +327,25 @@
                     y = this.game.height - groundH + obstacle.height * 0.5;
                     break;
             }
-            obstacle.position.set(this.game.width + obstacle.width * 0.5, y);
+            obstacle.position.set(spawnX, y);
         },
         //产生红包
-        makeRedPacket: function () {
+        //xOffsetSpawn:红包x轴位置距spawnX的差值
+        makeRedPacket: function (xOffsetSpawn) {
             var redPacket = this.game.add.sprite(0, 0, 'images', 'redpacket/spin/2');
-            redPacket.position.set(this.game.width, skyY);
+
+            var iy = (Math.random() * packetYArr.length) | 0;
+            var y = packetYArr[iy];
+
+            if (xOffsetSpawn === undefined) {
+                if (Math.random > 0.5)
+                    xOffsetSpawn = 0;
+                else
+                    xOffsetSpawn = spawnDis * 0.5;
+            }
+            x = spawnX + xOffsetSpawn;
+
+            redPacket.position.set(x, y);
             redPacket.animations.add('drop', Phaser.Animation.generateFrameNames('redpacket/drop/', 0, 15), 20, false);
             redPacket.animations.add('spin', Phaser.Animation.generateFrameNames('redpacket/spin/', 0, 11), 10, true);
             redPacket.type = Type.RedPacket;
@@ -311,9 +354,8 @@
             this.game.physics.p2.enable(redPacket, debug);
             redPacket.body.kinematic = true;
             redPacket.body.velocity.x = speed;
-
-            this.game.time.events.add(this.rnd.between(1000, 3000), this.makeRedPacket, this);
         },
+
         //收集红包
         collectPacket: function (playerBody, packetBody) {//player碰撞红包时，可能存在多个碰撞点碰撞，所以回调函数可能触发多次
             if (packetBody.hasCollided === undefined) {
@@ -383,8 +425,6 @@
                     this.verifyJump();
                     break;
             }
-
-            console.log('1111', e.keyCode);
         },
         //将所有红包和障碍物的移动速度设置为新的speed
         speedUp: function () {
