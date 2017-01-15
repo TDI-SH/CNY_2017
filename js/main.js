@@ -8,6 +8,7 @@
     var groundH = 60;
     var playerVelocity = -700;
     var worldGravity = 2000;
+    var firstSession = true;
 
     var spawnX = 1100;
     var spawnDisVar = {//可以spawn的距离范围
@@ -119,6 +120,16 @@
             //player的碰撞
             this.player.body.collides(this.groundCG, this.playerCollideGround, this);
             this.player.body.collides(this.obstacleCG, this.playerCollideObstacle, this);
+            //game starts with paused state
+            
+            //unpause with tap
+            if(firstSession){
+                this.game.paused = true;
+                this.game.input.onDown.add(this.unpauseGame, this);
+            }
+            
+            // spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+            // upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
         },
         overlap: function (body1, body2) {
             if (body1.sprite === null || body2.sprite === null)
@@ -148,7 +159,8 @@
             return true;
         },
         update: function () {
-            if (!isDead) {
+            if (!isDead) {                
+
                 this.scrollBg();
 
                 this.updatePlayerDownAni();
@@ -350,7 +362,6 @@
             redPacket.body.kinematic = true;
             redPacket.body.velocity.x = speed;
         },
-
         //收集红包
         collectPacket: function (playerBody, packetBody) {//player碰撞红包时，可能存在多个碰撞点碰撞，所以回调函数可能触发多次
             if (packetBody.hasCollided === undefined) {
@@ -447,6 +458,11 @@
             if (obstacle.makePlayerIn) {
                 this.player.y = obstacle.y - 30;
             }
+        },    
+        unpauseGame: function() {
+
+            game.paused = false;
+            firstSession = false;
         },
         gameOver: function () {//手动让游戏暂停会停掉所有的声音，为了播放gameover音效，暂决定不用游戏暂停模拟gameover
             isDead = true;
