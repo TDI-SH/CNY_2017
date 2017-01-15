@@ -445,7 +445,6 @@
         },
         makePlayerIn: function (obstacle) {
             if (obstacle.makePlayerIn) {
-                this.player.x = obstacle.x;//并不完美?
                 this.player.y = obstacle.y - 30;
             }
         },
