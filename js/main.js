@@ -5,6 +5,9 @@
     }
     var debug = false;
     var playerX = 100;
+    var skyY = 250;
+    var spawnX = 1100;
+    var spawnDis = 200;
     var groundH = 60;
     var playerVelocity = -650;
     var worldGravity = 2000;
@@ -73,6 +76,9 @@
             isDead = false;
             playerCollideGround = true;
             speed = difficulty.speeds[0];
+
+            seed = 0;//游戏
+            nearestX = spawnDis;//红包或障碍物离spawnX最近的距离
             //背景音乐
             INME.Sound.bg.play();
             //物理引擎，需要多边形碰撞所以从Arcade切换成了P2
@@ -137,11 +143,19 @@
                 this.updatePlayerDownAni();
 
                 this.check();
+
+                this.spawn();
             }
         },
+        //障碍物和红包的产生,
+        spawn: function () {
+
+
+        },
+
         //更新player下落的动画
         updatePlayerDownAni: function () {
-            if (playerCollideGround === false && this.player.deltaY > 0) {//落下
+            if (playerCollideGround === false && this.player.deltaY > 0) {
                 this.player.play('down');
             }
         },
@@ -274,7 +288,7 @@
             var y;
             switch (vars.position) {
                 case 'sky':
-                    y = this.game.height - groundH - obstacle.height * 0.5 - 120;
+                    y = skyY;
                     break;
                 case 'ground':
                     y = this.game.height - groundH - obstacle.height * 0.5;
@@ -287,9 +301,8 @@
         },
         //产生红包
         makeRedPacket: function () {
-            var y = 290;
             var redPacket = this.game.add.sprite(0, 0, 'images', 'redpacket/spin/2');
-            redPacket.position.set(this.game.width, y);
+            redPacket.position.set(this.game.width, skyY);
             redPacket.animations.add('drop', Phaser.Animation.generateFrameNames('redpacket/drop/', 0, 15), 20, false);
             redPacket.animations.add('spin', Phaser.Animation.generateFrameNames('redpacket/spin/', 0, 11), 10, true);
             redPacket.type = Type.RedPacket;
@@ -364,12 +377,14 @@
 
         },
         handleKeyboard: function (e) {
-            switch (e.key) {
-                case " ":
-                case "ArrowUp":
+            switch (e.keyCode) {
+                case 32:
+                case 38:
                     this.verifyJump();
                     break;
             }
+
+            console.log('1111', e.keyCode);
         },
         //将所有红包和障碍物的移动速度设置为新的speed
         speedUp: function () {
