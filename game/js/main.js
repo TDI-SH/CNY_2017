@@ -8,7 +8,6 @@
     var groundH = 60;
     var playerVelocity = -700;
     var worldGravity = 2000;
-    var firstSession = true;
 
     var spawnX = 1100;
     var spawnDisVar = {//可以spawn的距离范围
@@ -23,7 +22,7 @@
         280,
         300,
     ]
-
+    
     var Type = {
         Player: 'Player',
         Obstacle: 'Obstacle',
@@ -78,7 +77,10 @@
             'makePlayerIn': true/*是否让player掉入obstacle*/
         },
     ]
-
+    
+    // INME.cookie.set("once", true, Infinity, /game/);
+    // console.log(INME.cookie.get("once"));
+    // console.log(document.cookie);
     /**
      * state - InGame
      **/
@@ -121,12 +123,8 @@
             this.player.body.collides(this.groundCG, this.playerCollideGround, this);
             this.player.body.collides(this.obstacleCG, this.playerCollideObstacle, this);
             //game starts with paused state
-
+            this.firstTime();
             //unpause with tap
-            if (firstSession) {
-                this.game.paused = true;
-                this.game.input.onDown.add(this.unpauseGame, this);
-            }
         },
         overlap: function (body1, body2) {
             if (body1.sprite === null || body2.sprite === null)
@@ -455,11 +453,25 @@
             if (obstacle.makePlayerIn) {
                 this.player.y = obstacle.y - 30;
             }
-        },
+        }, 
         unpauseGame: function () {
-
             game.paused = false;
-            firstSession = false;
+            game.add.tween(this.img).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
+        },
+        firstTime:function(){
+            spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+            upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
+            var pressDown = spaceBar || upArrow
+            if (document.cookie.replace(/(?:(?:^|.*;\s*)once\s*\=\s*([^;]*).*$)|^.*$/, "$1") !== "true") {
+                //show tutorial
+                this.img = this.game.add.image(240, 40, 'helpIntro');
+                this.game.paused = true;
+                //unpause game
+                this.game.input.onDown.add(this.unpauseGame, this);
+                spaceBar.onDown.add(this.unpauseGame, this);
+                upArrow.onDown.add(this.unpauseGame, this);
+                document.cookie = "once=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+            }
         },
         gameOver: function () {//手动让游戏暂停会停掉所有的声音，为了播放gameover音效，暂决定不用游戏暂停模拟gameover
             isDead = true;
@@ -496,6 +508,7 @@
             this.group.position.x = 0;
         }
     }
+    
     /**
      * 主入口
      */
