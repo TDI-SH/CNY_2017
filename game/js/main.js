@@ -511,7 +511,6 @@
 
     window.addEventListener('resize', resizeHandler, false);
     function resizeHandler() {
-        console.log(window.innerWidth, window.innerHeight);
     }
 
 })();

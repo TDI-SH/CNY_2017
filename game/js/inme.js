@@ -1,13 +1,9 @@
 var INME = INME || {};
 INME = (function () {
     var Vars = {
-        speed: 1,
         characterIndex: 0,
         characterNum: 2,
         characterPrefix: 'chicken',
-        velocity: -550,
-        gravity: 2000,
-        score: 0,
         language: 'sc',
         copyFontname: 'copy',
     };
@@ -50,6 +46,11 @@ INME = (function () {
             'sc': '上一步',
             'tc': '上一步',
             'en': 'Preview'
+        },
+        'landscape': {
+            'sc': '请横屏玩耍',
+            'tc': '請橫屏玩耍',
+            'en': 'Please play in landscape'
         }
     }
     //console.log(getCopy(lan));

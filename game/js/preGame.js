@@ -17,7 +17,9 @@
                 console.log('手机');
 
                 this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-                //game.scale.forceOrientation(true, false);
+                this.game.scale.forceOrientation(true, false);//强制为横屏
+                this.game.scale.enterIncorrectOrientation.add(this.orientationHandler, this, 0, true);
+                this.game.scale.leaveIncorrectOrientation.add(this.orientationHandler, this, 0, false);
             }
 
         },
@@ -26,6 +28,12 @@
         },
         create: function () {
             this.game.state.start(INME.State.Key.Loading);
+        },
+        orientationHandler: function (paused) {
+            var display = paused === true ? 'block' : 'none';
+            this.game.paused = paused;
+            document.querySelector('.msg__landscape').style.display = display;
+            document.querySelector('.msg__landscape>p').textContent = INME.getCopy('landscape');
         }
     }
     /**
