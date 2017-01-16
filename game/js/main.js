@@ -77,11 +77,6 @@
         },
     ]
 
-    //console.log(document.Cookie);
-
-    /**
-     * state - InGame
-     **/
     INME.State.InGame = {
         create: function () {
             jumpCount = 2;
@@ -422,24 +417,24 @@
             switch (e.keyCode) {
                 case 32:
                 case 38:
-                    if (game.paused) {
+                    if(game.paused){
                         this.unpauseGame();
                         this.verifyJump();
                         break;
-                    } else {
+                    } else{
                         this.verifyJump();
                         break;
                     }
-
+                    
             }
         },
-        handleInput: function () {
-            if (game.paused) {
+        handleInput: function(){
+           if(game.paused){
                 this.unpauseGame();
                 this.verifyJump();
-            } else {
+            } else{
                 this.verifyJump();
-            }
+            } 
         },
         //将所有红包和障碍物的移动速度设置为新的speed
         speedUp: function () {
@@ -467,18 +462,20 @@
             if (obstacle.makePlayerIn) {
                 this.player.y = obstacle.y - 30;
             }
-        },
+        }, 
         unpauseGame: function () {
             game.paused = false;
-            game.add.tween(this.img).to({ alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
+            game.add.tween(this.img).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
         },
-        pauseCookie: function () {
+        pauseCookie: function (){
             var tmp = INME.cookie.get("once");
+            console.log(document.cookie);
             console.log(tmp);
-            if (tmp === undefined) {
+            if( tmp === undefined){
                 this.img = this.game.add.image(240, 40, 'helpIntro');
                 this.game.paused = true;
-                INME.cookie.set("once", true, 31536e3, /game/);
+                oneYear = new Date(1, 0, 0, 0, 0, 0, 0);
+                INME.cookie.set("once", true, oneYear, /game/);
             }
         },
         gameOver: function () {//手动让游戏暂停会停掉所有的声音，为了播放gameover音效，暂决定不用游戏暂停模拟gameover

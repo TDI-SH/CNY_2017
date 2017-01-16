@@ -86,25 +86,23 @@
     /**
      * state - Story
      */
+    // INME.State.Story = {
+    //     create: function () {
+    //         var video = this.game.add.video('backstory');
+    //         video.addToWorld();
+    //         video.play();
+
+    //         video.onComplete.addOnce(function () {
+    //             console.log('backstory ended, enter game');
+    //             //this.game.state.start(INME.State.Key.StartGame);
+    //         }, this);
+
+    //         video.volume = 0;//－－－测试
+    //         this.game.state.start(INME.State.Key.StartGame)
+    //     }
+    // }
+
     INME.State.Story = {
-        create: function () {
-            var video = this.game.add.video('backstory');
-            video.addToWorld();
-            video.play();
-
-            video.onComplete.addOnce(function () {
-                console.log('backstory ended, enter game');
-                //this.game.state.start(INME.State.Key.StartGame);
-            }, this);
-
-            video.volume = 0;//－－－测试
-            this.game.state.start(INME.State.Key.StartGame)
-        }
-    }
-    /**
-     * state - Help
-     */
-    INME.State.Help = {
         create: function () {
 
             this.imgs = [];
@@ -128,7 +126,7 @@
                 this.imgs.push(img);
                 img.alpha = 0;
             }
-
+            this.game.input.keyboard.addCallbacks(this, this.handlePress);
             this.imgs[this.id].alpha = 1;//初始化            
         },
         handleClick: function (btn) {
@@ -168,8 +166,15 @@
 
                 this.id = newId;
             }
+        },
+        handlePress: function (key) {
+            switch(key.keyCode) {
+                case 27:
+                   this.game.state.start(INME.State.Key.StartGame);  
+            }
         }
     }
+    
     /**
      * state - StartGame
      */
@@ -179,7 +184,6 @@
             btnPlay.name = 'btnPlay';
             btnPlay.position.set(480, 420);
 
-            this.game.add.button(870, 490, 'btnHelp', this.handleClick, this, 1, 0, 1, 0).name = 'btnHelp';
             //角色选择
             var cs = new CharacterSelector(this.game, this.getCSKeys(), this.selectCharacter, INME.Vars.characterIndex);
             cs.position.set((this.game.width - cs.width) >> 1, 100);
@@ -199,9 +203,6 @@
             switch (btnName) {
                 case 'btnPlay':
                     this.game.state.start(INME.State.Key.InGame);
-                    break;
-                case 'btnHelp':
-                    this.game.state.start(INME.State.Key.Help);
                     break;
             }
         }

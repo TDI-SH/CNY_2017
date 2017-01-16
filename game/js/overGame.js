@@ -69,7 +69,6 @@
             shareFace.input.useHandCursor = true;
             gameOverGroup.add(shareFace);
 
-
             gameOverGroup.position.x = this.game.world.centerX;
             gameOverGroup.position.y = this.game.world.centerY;
             gameOverGroup.alpha = 0;
