@@ -1,4 +1,7 @@
 var INME = INME || {};
+
+
+
 INME = (function () {
     var Vars = {
         characterIndex: 0,
@@ -98,6 +101,58 @@ INME = (function () {
     function getCopy(key) {
         return copy[key][Vars.language];
     }
+    /**
+     * ajax
+     */
+    function ajax(method, url, data, success, error) {
+        if (error === undefined)
+            error = function () { };
+
+        var request = new XMLHttpRequest();
+        request.onload = function () {
+            if (request.status >= 200 && request.status < 400) {
+                success(JSON.parse(request.responseText));
+            } else {
+                error();
+            }
+        };
+        request.onerror = error;
+
+        request.open(method, url, true);
+        if (method === 'POST') {
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            if (data) {
+                var str = '';
+                for (var key in data) {
+                    str += encodeURIComponent(key) + '=' + encodeURIComponent(data[key]) + '&';
+                }
+                str = str.substring(0, str.length - 1);
+                request.send(str);
+            }
+        }
+        else {
+            request.send();
+        }
+    }
+    /**
+     * 获得第10名的分数
+     */
+    function getTenthScore() {
+        ajax('GET', '../server/score.php', null, function (data) {
+            var players = data['scorelist'];
+            var len = players.length;
+            var tenthIndex = len < 10 ? (len - 1) : 9;
+            if (tenthIndex > -1) {
+                INME.Vars.tenthScore = players[tenthIndex].score;
+            }
+            else {
+                INME.Vars.tenthScore = 0;
+            }
+            console.log('获取第10名的成绩成功', INME.Vars.tenthScore);
+        });
+    }
+    getTenthScore();
+
     return {
         Vars: Vars,
         State: State,
@@ -105,6 +160,7 @@ INME = (function () {
         getCopy: getCopy,
         getCopyBT: getCopyBT,
         Button: Button,
+        ajax: ajax
     }
 })();
 
@@ -145,4 +201,7 @@ INME.cookie = (function () {
         get: get
     }
 })();
+
+
+
 

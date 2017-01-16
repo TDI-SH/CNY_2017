@@ -1,16 +1,7 @@
 (function () {
     // gameover
     INME.State.OverGame = {
-        preload: function () {
-
-        },
         create: function () {
-            this.gameOver();
-        },
-        update: function () {
-
-        },
-        gameOver: function () {
             gameOverGroup = this.game.add.group();
             gameOverBg = this.add.sprite(0, 0, "msgBg");
             gameOverBg.anchor.setTo(.5, .5);
@@ -20,7 +11,7 @@
             txt.anchor.setTo(.5, .5);
             gameOverGroup.add(txt);
 
-            var score = this.game.add.text(0, -50, 'SCORE:'+INME.Vars.score, { fontSize: '24px', fill: '#fff' });
+            var score = this.game.add.text(0, -50, 'SCORE:' + INME.Vars.score, { fontSize: '24px', fill: '#fff' });
             score.anchor.setTo(.5, .5);
             gameOverGroup.add(score);
 
@@ -36,13 +27,11 @@
             submit.input.useHandCursor = true;
             gameOverGroup.add(submit);
 
-            var view = this.game.add.button(80, 50, 'viewScore', this.viewHightScore, this);
+            var view = this.game.add.button(80, 50, 'viewScore', this.viewHighScore, this);
             view.anchor.setTo(.5, .5);
             view.scale.setTo(.7, .7);
             view.input.useHandCursor = true;
             gameOverGroup.add(view);
-
-
 
             var shareSina = this.game.add.button(-120, 90, 'share', function () {
                 this.shareFn('sina');
@@ -87,17 +76,29 @@
             this.game.add.tween(gameOverGroup).to({
                 alpha: 1
             }, 1000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
+
+            
         },
         playAgain: function () {
             console.log('play again');
             this.game.state.start(INME.State.Key.StartGame);
         },
+        //提交分数
         submitScore: function () {
             console.log('submit');
-            // this.game.state.start('submit');
+
+            document.querySelector('.container').style.display = 'block';
+            document.querySelector('.submitscore').style.display = 'block';
+
+            
         },
-        viewHightScore: function () {
+        //查看top10榜单
+        viewHighScore: function () {
             console.log('view high score');
+
+            document.querySelector('.container').style.display = 'block';
+            document.querySelector('.scoreboard').style.display = 'block';
+            INME.ajax('GET', '../server/score.php', null, getTop10);
         },
         shareFn: function (obj) {
             var sinaShareURL = "http://service.weibo.com/share/share.php?";
@@ -117,4 +118,54 @@
 
         }
     }
+
+    function getTop10(data) {
+        var players = data['scorelist'];
+        var len = players.length;
+        var tds = document.querySelectorAll('td');
+        for (var i = 0; i < len; i++) {
+            var player = players[i];
+            var rank = i + 1;
+            var name = player.name;
+            var score = player.score;
+
+            tds[i * 3].textContent = rank;
+            tds[i * 3 + 1].textContent = name;
+            tds[i * 3 + 2].textContent = score;
+        }
+    }
+
+    function addListener() {
+        //关闭
+        document.querySelector('.container__btnclose').addEventListener('click', closeContainer, false);
+        //表达提交
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();//阻止默认提交行为
+            var name = document.querySelector('input[name="name"]').value;
+            var email = document.querySelector('input[name="email"]').value;
+            if (name !== '' || email !== '') {
+                var data = {
+                    name: name,
+                    email: email,
+                    score: INME.Vars.score,
+                }
+                INME.ajax('POST', '../server/add.php', data, addUser);
+            }
+        }, false);
+    }
+
+    function addUser() {
+
+        console.log('添加user成功');
+
+        closeContainer();
+    }
+
+    function closeContainer() {
+        document.querySelector('.container').style.display = 'none';
+        document.querySelector('.scoreboard').style.display = 'none';
+        document.querySelector('.submitscore').style.display = 'none';
+    }
+
+    addListener();
 })();

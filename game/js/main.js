@@ -76,9 +76,9 @@
             'makePlayerIn': true/*是否让player掉入obstacle*/
         },
     ]
-    
+
     //console.log(document.Cookie);
-    
+
     /**
      * state - InGame
      **/
@@ -422,24 +422,24 @@
             switch (e.keyCode) {
                 case 32:
                 case 38:
-                    if(game.paused){
+                    if (game.paused) {
                         this.unpauseGame();
                         this.verifyJump();
                         break;
-                    } else{
+                    } else {
                         this.verifyJump();
                         break;
                     }
-                    
+
             }
         },
-        handleInput: function(){
-           if(game.paused){
+        handleInput: function () {
+            if (game.paused) {
                 this.unpauseGame();
                 this.verifyJump();
-            } else{
+            } else {
                 this.verifyJump();
-            } 
+            }
         },
         //将所有红包和障碍物的移动速度设置为新的speed
         speedUp: function () {
@@ -467,15 +467,15 @@
             if (obstacle.makePlayerIn) {
                 this.player.y = obstacle.y - 30;
             }
-        }, 
+        },
         unpauseGame: function () {
             game.paused = false;
-            game.add.tween(this.img).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
+            game.add.tween(this.img).to({ alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
         },
-        pauseCookie: function (){
+        pauseCookie: function () {
             var tmp = INME.cookie.get("once");
             console.log(tmp);
-            if( tmp === undefined){
+            if (tmp === undefined) {
                 this.img = this.game.add.image(240, 40, 'helpIntro');
                 this.game.paused = true;
                 INME.cookie.set("once", true, 31536e3, /game/);

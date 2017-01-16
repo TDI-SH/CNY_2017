@@ -14,6 +14,76 @@ html,body{
     
     background-color: #000000;
 }
+/*container*/
+.container
+{
+    position: absolute;
+    width: 960px;
+    height: 540px;   
+    z-index: 789;   
+    background-color: #ffffff;    
+}
+.container__btnclose
+{
+    position: absolute;
+    width: 50px;
+    line-height: 50px;
+    left: 10px;
+    top: 10px;
+    text-align: center;
+    background-color: #a22a39;
+    color: #ffffff;
+    cursor: pointer;  
+}
+/*top10榜单*/
+.scoreboard
+{
+    display: none;
+}
+table{
+    position: absolute;
+    width: 80%;
+    left: 10%;    
+    border-collapse: collapse;            
+}
+table,th,td
+{
+    border: 1px solid #dddddd;
+}
+tr:nth-child(even)
+{
+    background-color: #f2f2f2
+}
+th,td
+{
+    padding: 10px;
+    text-align: left;
+}
+th
+{    
+    background-color: #a22a39;
+    color: #ffffff;
+}
+td
+{
+    color: #000000;
+}
+/*提交分数*/
+.submitscore
+{
+    display: none;
+}
+form
+{
+    position: absolute;
+}
+.submitscore>p
+{
+    width: 100%;
+    line-height: 200px;
+    text-align: center 
+}
+/*横竖屏切换提示信息*/
 .msg__landscape
 {   
     position: absolute;
@@ -29,11 +99,26 @@ html,body{
 {
     position: absolute;
     width: 100%;
-    text-align: center;
-    top: 50%;     
+    text-align: center;    
+}
+/*公用*/
+.v_center
+{
+    top: 50%;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     -o-transform: translateY(-50%);
     transform: translateY(-50%);
 }
+.center
+{
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%); 
+}
+
