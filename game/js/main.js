@@ -121,15 +121,12 @@
             this.player.body.collides(this.groundCG, this.playerCollideGround, this);
             this.player.body.collides(this.obstacleCG, this.playerCollideObstacle, this);
             //game starts with paused state
-            
+
             //unpause with tap
-            if(firstSession){
+            if (firstSession) {
                 this.game.paused = true;
                 this.game.input.onDown.add(this.unpauseGame, this);
             }
-            
-            // spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-            // upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
         },
         overlap: function (body1, body2) {
             if (body1.sprite === null || body2.sprite === null)
@@ -159,7 +156,7 @@
             return true;
         },
         update: function () {
-            if (!isDead) {                
+            if (!isDead) {
 
                 this.scrollBg();
 
@@ -458,8 +455,8 @@
             if (obstacle.makePlayerIn) {
                 this.player.y = obstacle.y - 30;
             }
-        },    
-        unpauseGame: function() {
+        },
+        unpauseGame: function () {
 
             game.paused = false;
             firstSession = false;
