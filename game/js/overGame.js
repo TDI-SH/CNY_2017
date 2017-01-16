@@ -77,7 +77,7 @@
                 alpha: 1
             }, 1000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
 
-            
+
         },
         playAgain: function () {
             console.log('play again');
@@ -90,7 +90,7 @@
             document.querySelector('.container').style.display = 'block';
             document.querySelector('.submitscore').style.display = 'block';
 
-            
+
         },
         //查看top10榜单
         viewHighScore: function () {

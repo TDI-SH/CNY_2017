@@ -53,8 +53,8 @@
                 'getpacket': this.game.add.audio('getpacket'),
                 'dead': this.game.add.audio('dead'),
             }
-            //this.game.state.start(INME.State.Key.Language);//测试
-            this.game.state.start(INME.State.Key.OverGame);
+            this.game.state.start(INME.State.Key.Language);//测试
+            //this.game.state.start(INME.State.Key.OverGame);
         },
     }
     /**
