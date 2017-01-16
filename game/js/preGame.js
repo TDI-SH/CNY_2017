@@ -90,15 +90,25 @@
     //     create: function () {
     //         var video = this.game.add.video('backstory');
     //         video.addToWorld();
+    //         this.game.input.keyboard.addCallbacks(this, this.handlePress);
+    //         console.log(this.game.input.keyboard.addCallbacks(this, this.handlePress));
     //         video.play();
-
     //         video.onComplete.addOnce(function () {
     //             console.log('backstory ended, enter game');
-    //             //this.game.state.start(INME.State.Key.StartGame);
+    //             this.game.state.start(INME.State.Key.StartGame);
     //         }, this);
 
     //         video.volume = 0;//－－－测试
-    //         this.game.state.start(INME.State.Key.StartGame)
+    //         //this.game.state.start(INME.State.Key.StartGame)
+            
+    //     },
+
+    //     handlePress: function (key) {
+    //         switch(key.keyCode) {
+    //             case 27:
+    //                this.game.state.start(INME.State.Key.StartGame);  
+    //         }
+    //         console.log(key.keyCode);
     //     }
     // }
 
@@ -126,8 +136,8 @@
                 this.imgs.push(img);
                 img.alpha = 0;
             }
-            this.game.input.keyboard.addCallbacks(this, this.handlePress);
-            this.imgs[this.id].alpha = 1;//初始化            
+            this.imgs[this.id].alpha = 1;//初始化   
+            this.game.input.keyboard.addCallbacks(this, this.handlePress);         
         },
         handleClick: function (btn) {
             switch (btn.name) {
@@ -178,6 +188,17 @@
     /**
      * state - StartGame
      */
+    // INME.State.StartGame = {
+    //     create: function () {
+    //         this.game.load.image('loadingbar', 'assets/images/loading/loadingbar.png');
+    //     },
+
+    //     generatePlayers: function(){
+            
+    //     }
+    // }
+
+    
     INME.State.StartGame = {
         create: function () {
             var btnPlay = new INME.Button(this.game, this.handleClick, this, 'btnLan', INME.getCopy('play'), 28);
@@ -187,6 +208,7 @@
             //角色选择
             var cs = new CharacterSelector(this.game, this.getCSKeys(), this.selectCharacter, INME.Vars.characterIndex);
             cs.position.set((this.game.width - cs.width) >> 1, 100);
+            console.log(cs);
         },
         getCSKeys: function () {
             var arr = [];
@@ -205,9 +227,9 @@
                     this.game.state.start(INME.State.Key.InGame);
                     break;
             }
-        }
-
+        },
     }
+
     function CharacterSelector(game, keys, callback, index) {
         var x = 0;
         var padding = 30;
