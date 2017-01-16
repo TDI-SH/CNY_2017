@@ -62,6 +62,7 @@ var OverGame = (function () {
         //gameover
         document.querySelector('.gameover__btnReplay').addEventListener('click', function () {
             document.querySelector('.container').style.display = 'none';
+            game.state.start(INME.State.Key.InGame);
         }, false);
         document.querySelector('.gameover__btnHome').addEventListener('click', function () {
             game.state.start(INME.State.Key.StartGame);
@@ -73,7 +74,7 @@ var OverGame = (function () {
         form.addEventListener('submit', submitForm, false);
         //scoreboard
         document.querySelector('.scoreboard__btnclose').addEventListener('click', function () {
-            document.querySelector('.scoreboard').style.display = 'block';
+            document.querySelector('.scoreboard').style.display = 'none';
         }, false)
     }
 

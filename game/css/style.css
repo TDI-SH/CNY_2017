@@ -24,7 +24,7 @@ html,body{
     z-index: 789;   
     background-color: rgba(0, 0, 0, 0.5);
 }
-.container__btnclose,.gameover__btnclose
+.container__btnclose,.scoreboard__btnclose
 {
     position: absolute;
     width: 50px;
