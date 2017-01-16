@@ -474,8 +474,9 @@
             if( tmp === undefined){
                 this.img = this.game.add.image(240, 40, 'helpIntro');
                 this.game.paused = true;
-                oneYear = new Date(1, 0, 0, 0, 0, 0, 0);
+                oneYear = new Date(2088, 0, 0, 0, 0, 0, 0);
                 INME.cookie.set("once", true, oneYear, /game/);
+                console.log("this is the date: " + oneYear.toGMTString());
             }
         },
         gameOver: function () {//手动让游戏暂停会停掉所有的声音，为了播放gameover音效，暂决定不用游戏暂停模拟gameover
