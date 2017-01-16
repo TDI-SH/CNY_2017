@@ -100,7 +100,7 @@
 
     //         video.volume = 0;//－－－测试
     //         //this.game.state.start(INME.State.Key.StartGame)
-            
+
     //     },
 
     //     handlePress: function (key) {
@@ -137,7 +137,7 @@
                 img.alpha = 0;
             }
             this.imgs[this.id].alpha = 1;//初始化   
-            this.game.input.keyboard.addCallbacks(this, this.handlePress);         
+            this.game.input.keyboard.addCallbacks(this, this.handlePress);
         },
         handleClick: function (btn) {
             switch (btn.name) {
@@ -178,13 +178,13 @@
             }
         },
         handlePress: function (key) {
-            switch(key.keyCode) {
+            switch (key.keyCode) {
                 case 27:
-                   this.game.state.start(INME.State.Key.StartGame);  
+                    this.game.state.start(INME.State.Key.StartGame);
             }
         }
     }
-    
+
     /**
      * state - StartGame
      */
@@ -194,11 +194,11 @@
     //     },
 
     //     generatePlayers: function(){
-            
+
     //     }
     // }
 
-    
+
     INME.State.StartGame = {
         create: function () {
             var btnPlay = new INME.Button(this.game, this.handleClick, this, 'btnLan', INME.getCopy('play'), 28);

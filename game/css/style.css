@@ -22,19 +22,65 @@ html,body{
     width: 960px;
     height: 540px;   
     z-index: 789;   
-    background-color: #ffffff;    
+    background-color: rgba(0, 0, 0, 0.5);
 }
-.container__btnclose
+.container__btnclose,.gameover__btnclose
 {
     position: absolute;
     width: 50px;
     line-height: 50px;
-    left: 10px;
+    right: 10px;
     top: 10px;
     text-align: center;
     background-color: #a22a39;
     color: #ffffff;
     cursor: pointer;  
+}
+/*gameover*/
+.gemeover__btn
+{
+    width: 100px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #789789;
+    color: #ffffff;
+    margin:10px;    
+}
+.gameover__form
+{
+    display: none;
+}
+/*分享*/
+
+.share__btn
+{
+    float: left;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;             
+}
+
+.share__btnX
+{
+    background-image: url('../assets/images/overgame/share_btnX.png');
+}
+
+.share__btnW
+{
+    background-image: url('../assets/images/overgame/share_btnW.png');
+}
+
+.share__btnT
+{
+    background-image: url('../assets/images/overgame/share_btnT.png');
+}
+
+.share__btnF
+{
+    background-image: url('../assets/images/overgame/share_btnF.png');
 }
 /*top10榜单*/
 .scoreboard
@@ -69,21 +115,7 @@ td
 {
     color: #000000;
 }
-/*提交分数*/
-.submitscore
-{
-    display: none;
-}
-form
-{
-    position: absolute;
-}
-.submitscore>p
-{
-    width: 100%;
-    line-height: 200px;
-    text-align: center 
-}
+
 /*横竖屏切换提示信息*/
 .msg__landscape
 {   

@@ -54,6 +54,16 @@ INME = (function () {
             'sc': '请横屏玩耍',
             'tc': '請橫屏玩耍',
             'en': 'Please play in landscape'
+        },
+        'lesstenth': {
+            'sc': '抱歉，没有进入前10名，继续努力',
+            'tc': '抱歉，没有进入前10名，继续努力',
+            'en': '抱歉，没有进入前10名，继续努力'
+        },
+        'overtenth': {
+            'sc': '恭喜,你进入了前10名',
+            'tc': '恭喜,你进入了前10名',
+            'en': '恭喜,你进入了前10名'
         }
     }
     //console.log(getCopy(lan));
@@ -194,8 +204,8 @@ INME.cookie = (function () {
         }
 
         document.cookie = cookieText;
-    }    
-       
+    }
+
     return {
         set: set,
         get: get
