@@ -22,7 +22,6 @@
         280,
         300,
     ]
-    
     var Type = {
         Player: 'Player',
         Obstacle: 'Obstacle',
@@ -78,9 +77,8 @@
         },
     ]
     
-    // INME.cookie.set("once", true, Infinity, /game/);
-    // console.log(INME.cookie.get("once"));
-    // console.log(document.cookie);
+    //console.log(document.Cookie);
+    
     /**
      * state - InGame
      **/
@@ -118,13 +116,14 @@
             this.makeScoreBoard();
             //控制键
             this.game.input.keyboard.addCallbacks(this, this.handleKeyboard);
-            this.game.input.onDown.add(this.verifyJump, this);
+            this.game.input.onDown.add(this.handleInput, this);
             //player的碰撞
             this.player.body.collides(this.groundCG, this.playerCollideGround, this);
             this.player.body.collides(this.obstacleCG, this.playerCollideObstacle, this);
             //game starts with paused state
-            this.firstTime();
+            //this.firstTime();
             //unpause with tap
+            this.pauseCookie();
         },
         overlap: function (body1, body2) {
             if (body1.sprite === null || body2.sprite === null)
@@ -423,9 +422,24 @@
             switch (e.keyCode) {
                 case 32:
                 case 38:
-                    this.verifyJump();
-                    break;
+                    if(game.paused){
+                        this.unpauseGame();
+                        this.verifyJump();
+                        break;
+                    } else{
+                        this.verifyJump();
+                        break;
+                    }
+                    
             }
+        },
+        handleInput: function(){
+           if(game.paused){
+                this.unpauseGame();
+                this.verifyJump();
+            } else{
+                this.verifyJump();
+            } 
         },
         //将所有红包和障碍物的移动速度设置为新的speed
         speedUp: function () {
@@ -458,19 +472,13 @@
             game.paused = false;
             game.add.tween(this.img).to( { alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
         },
-        firstTime:function(){
-            spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-            upArrow = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
-            var pressDown = spaceBar || upArrow
-            if (document.cookie.replace(/(?:(?:^|.*;\s*)once\s*\=\s*([^;]*).*$)|^.*$/, "$1") !== "true") {
-                //show tutorial
+        pauseCookie: function (){
+            var tmp = INME.cookie.get("once");
+            console.log(tmp);
+            if( tmp === undefined){
                 this.img = this.game.add.image(240, 40, 'helpIntro');
                 this.game.paused = true;
-                //unpause game
-                this.game.input.onDown.add(this.unpauseGame, this);
-                spaceBar.onDown.add(this.unpauseGame, this);
-                upArrow.onDown.add(this.unpauseGame, this);
-                document.cookie = "once=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+                INME.cookie.set("once", true, 31536e3, /game/);
             }
         },
         gameOver: function () {//手动让游戏暂停会停掉所有的声音，为了播放gameover音效，暂决定不用游戏暂停模拟gameover
@@ -487,7 +495,7 @@
             setTimeout(function () {
                 this.game.state.start(INME.State.Key.OverGame);
             }.bind(this), 1000);
-        }
+        },
     }
 
     function ParallaxSprite(game, key, frame, x, y) {
@@ -508,7 +516,6 @@
             this.group.position.x = 0;
         }
     }
-    
     /**
      * 主入口
      */

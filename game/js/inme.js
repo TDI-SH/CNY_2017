@@ -138,10 +138,11 @@ INME.cookie = (function () {
         }
 
         document.cookie = cookieText;
-    }
+    }    
+       
     return {
         set: set,
-        get: get,
+        get: get
     }
 })();
 
