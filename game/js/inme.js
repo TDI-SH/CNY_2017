@@ -56,9 +56,9 @@ INME = (function () {
             'en': 'Please play in landscape'
         },
         'lesstenth': {
-            'sc': '抱歉，没有进入前10名，继续努力',
-            'tc': '抱歉，没有进入前10名，继续努力',
-            'en': '抱歉，没有进入前10名，继续努力'
+            'sc': '抱歉，你没有进入前10名，继续努力',
+            'tc': '抱歉，你没有进入前10名，继续努力',
+            'en': '抱歉，你没有进入前10名，继续努力'
         },
         'overtenth': {
             'sc': '恭喜,你进入了前10名',
@@ -123,6 +123,7 @@ INME = (function () {
             if (request.status >= 200 && request.status < 400) {
                 success(JSON.parse(request.responseText));
             } else {
+                console.log(request.status);
                 error();
             }
         };
@@ -137,6 +138,7 @@ INME = (function () {
                     str += encodeURIComponent(key) + '=' + encodeURIComponent(data[key]) + '&';
                 }
                 str = str.substring(0, str.length - 1);
+                console.log(str)
                 request.send(str);
             }
         }

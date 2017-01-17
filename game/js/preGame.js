@@ -15,6 +15,7 @@
             }
             else {
                 console.log('手机');
+                this.responsiveDom();
 
                 this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
                 this.game.scale.forceOrientation(true, false);//强制为横屏
@@ -34,6 +35,12 @@
             this.game.paused = paused;
             document.querySelector('.msg__landscape').style.display = display;
             document.querySelector('.msg__landscape>p').textContent = INME.getCopy('landscape');
+        },
+        //在手机端对dom层做响应式布局
+        responsiveDom: function () {
+            var container = document.querySelector('.container');
+            container.style.width = '100%';
+            container.style.height = '100%';
         }
     }
     /**
@@ -208,7 +215,6 @@
             //角色选择
             var cs = new CharacterSelector(this.game, this.getCSKeys(), this.selectCharacter, INME.Vars.characterIndex);
             cs.position.set((this.game.width - cs.width) >> 1, 100);
-            console.log(cs);
         },
         getCSKeys: function () {
             var arr = [];

@@ -40,11 +40,14 @@
                 <p>邮箱:</p>
                 <input type="email" name="email" />
                 <br/>
-                <input type="submit" value="提交" />
+                <input type="submit" value="submit" />
+                <input type="button" value="skip" />
             </form>
-            <div class="gemeover__btn gameover__btnReplay">replay</div>
-            <div class="gemeover__btn gameover__btnHome">home</div>
-            <div class="gemeover__btn gameover__btnViewTop">view top10</div>
+            <div class="gameover_btns">
+                <div class="btn gameover__btnReplay">replay</div>
+                <div class="btn gameover__btnHome">home</div>
+                <div class="btn gameover__btnViewTop">view top10</div>
+            </div>
             <div class="share">
                 <div class="share__btnX share__btn"></div>
                 <div class="share__btnW share__btn"></div>
@@ -52,7 +55,6 @@
                 <div class="share__btnF share__btn"></div>
             </div>
         </div>
-        <div class="container__btnclose">关闭</div>
         <div class="scoreboard">
             <table class="v_center" align="center" cellpadding="0" cellspacing="0">
                 <tr>
@@ -112,10 +114,11 @@
 
                 </tr>
             </table>
-
-            <div class="scoreboard__btnclose">关闭</div>
+            <div class="btn scoreboard__btnReplay">replay</div>
+            <div class="btn scoreboard__btnHome">home</div>
+            <div class="btn scoreboard__btnClose">close</div>
         </div>
-        
+
     </div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.min.js"></script>
     <script type="text/javascript" src="js/inme.js"></script>

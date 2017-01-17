@@ -1,4 +1,6 @@
 (function () {
+    var needShowHelp = false;//是否应该显示帮助页面
+
     var difficulty = {//按照分数划分难度等级,不同难度对应不同速度
         scores: [25, 70, 125, 200, 250],
         speeds: [-300, -325, -350, -400, -450]
@@ -76,7 +78,6 @@
             'makePlayerIn': true/*是否让player掉入obstacle*/
         },
     ]
-
     INME.State.InGame = {
         create: function () {
             jumpCount = 2;
@@ -115,10 +116,8 @@
             //player的碰撞
             this.player.body.collides(this.groundCG, this.playerCollideGround, this);
             this.player.body.collides(this.obstacleCG, this.playerCollideObstacle, this);
-            //game starts with paused state
-            //this.firstTime();
-            //unpause with tap
-            this.pauseCookie();
+            //尝试是否显示帮助页面
+            this.showHelp();
         },
         overlap: function (body1, body2) {
             if (body1.sprite === null || body2.sprite === null)
@@ -149,14 +148,13 @@
         },
         update: function () {
             if (!isDead) {
-
-                this.scrollBg();
+                this.spawn();
 
                 this.updatePlayerDownAni();
 
                 this.check();
 
-                this.spawn();
+                this.scrollBg();
             }
         },
         //产生障碍物和红包
@@ -195,7 +193,7 @@
                 if (child.animations && child.animations.getAnimation('miss') && child.x < playerX && child.hasMiss === undefined) {//展示爆竹动画
                     child.play('miss');
                     child.body.destroy();//销毁body，避免继续移动
-                    child.animations.currentAnim.onComplete.add(this.aniEndDestory, this, 0, child);
+                    child.animations.currentAnim.onComplete.add(this.destoryObj, this, 0, child);
 
                     child.hasMiss = true;
                 }
@@ -359,7 +357,7 @@
                 packetBody.destroy();//销毁body，避免继续移动
                 packet.x = this.player.x;//红包动画对齐player
                 packet.play('drop');
-                packet.animations.currentAnim.onComplete.add(this.aniEndDestory, this, 0, packet);
+                packet.animations.currentAnim.onComplete.add(this.destoryObj, this, 0, packet);
 
                 this.updateScore('add');
                 this.levelChange();
@@ -367,8 +365,8 @@
                 packetBody.hasCollided = true;
             }
         },
-        //动画结束销毁对象
-        aniEndDestory: function (obj) {
+        //销毁对象
+        destoryObj: function (obj) {
             obj.destroy();
         },
         //更新分数
@@ -401,8 +399,35 @@
                 }
             }
         },
-        //double jump
-        verifyJump: function () {
+        //将所有红包和障碍物的移动速度设置为新的speed
+        speedUp: function () {
+            this.game.world.children.forEach(function (child) {
+                if (child.type === Type.Obstacle || child.type === Type.RedPacket) {
+                    if (child.body)
+                        child.body.velocity.x = speed;
+                }
+            });
+        },
+        //处理控制键和触摸
+        handleKeyboard: function (e) {
+            switch (e.keyCode) {
+                case 32:
+                case 38:
+                    if (needShowHelp)
+                        this.closeHelp();
+                    else
+                        this.jump();
+                    break;
+            }
+        },
+        handleInput: function () {
+            if (needShowHelp)
+                this.closeHelp();
+            else
+                this.jump();
+        },
+        //跳跃
+        jump: function () {
             if (!isDead) {
                 if (jumpCount > 0) {
                     playerCollideGround = false;
@@ -412,38 +437,6 @@
                 }
             }
 
-        },
-        handleKeyboard: function (e) {
-            switch (e.keyCode) {
-                case 32:
-                case 38:
-                    if (game.paused) {
-                        this.unpauseGame();
-                        this.verifyJump();
-                        break;
-                    } else {
-                        this.verifyJump();
-                        break;
-                    }
-
-            }
-        },
-        handleInput: function () {
-            if (game.paused) {
-                this.unpauseGame();
-                this.verifyJump();
-            } else {
-                this.verifyJump();
-            }
-        },
-        //将所有红包和障碍物的移动速度设置为新的speed
-        speedUp: function () {
-            this.game.world.children.forEach(function (child) {
-                if (child.type === Type.Obstacle || child.type === Type.RedPacket) {
-                    if (child.body)
-                        child.body.velocity.x = speed;
-                }
-            });
         },
         //player与障碍物碰撞
         playerCollideObstacle: function (playerBody, obstacleBody) {
@@ -458,43 +451,42 @@
                 obstacleBody.hasCollided = true;
             }
         },
-        makePlayerIn: function (obstacle) {
-            if (obstacle.makePlayerIn) {
-                this.player.y = obstacle.y - 30;
-            }
-        },
-        unpauseGame: function () {
-            game.paused = false;
-            game.add.tween(this.img).to({ alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
-        },
-        pauseCookie: function () {
-            var tmp = INME.cookie.get("once");
-            console.log(document.cookie);
-            console.log(tmp);
-            if (tmp === undefined) {
-                this.img = this.game.add.image(240, 40, 'helpIntro');
-                this.game.paused = true;
-                oneYear = new Date(2088, 0, 0, 0, 0, 0, 0);
-                INME.cookie.set("once", true, oneYear, /game/);
-                console.log("this is the date: " + oneYear.toGMTString());
-            }
-        },
         gameOver: function () {//手动让游戏暂停会停掉所有的声音，为了播放gameover音效，暂决定不用游戏暂停模拟gameover
             isDead = true;
             this.player.play('dead');
             INME.Sound.bg.stop();
             INME.Sound.dead.play();
 
-            this.game.world.children.forEach(function (child) {//销毁所有对象的body
+            this.game.world.children.forEach(function (child) {//销毁所有对象的body和动画
+                if (child.animations)
+                    child.animations.stop();
                 if (child.body)
                     child.body.destroy();
             });
 
-            setTimeout(function () {
-                OverGame.init(this.game);
-                console.log(this.game);
-                //this.game.state.start(INME.State.Key.OverGame);
-            }.bind(this), 1000);
+            OverGame.init(this.game);
+
+        },
+        makePlayerIn: function (obstacle) {
+            if (obstacle.makePlayerIn) {
+                this.player.y = obstacle.y - 30;
+            }
+        },
+        //帮助页面
+        closeHelp: function () {
+            this.game.paused = false;
+            this.game.add.tween(this.img).to({ alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
+        },
+        showHelp: function () {
+            if (INME.cookie.get("once") === undefined) {
+                this.img = this.game.add.image(240, 40, 'helpIntro');
+                this.game.paused = true;
+                INME.cookie.set("once", true, new Date(2020, 0, 1));
+                needShowHelp = true;
+            }
+            else {
+                needShowHelp = false;
+            }
         },
     }
 
