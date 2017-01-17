@@ -10,26 +10,39 @@ var OverGame = (function () {
 
     var game;
 
-    addListeners();
+    (function addListeners() {
+        //gameover
+        document.querySelector('.gameover__btnReplay').addEventListener('click', replay, false);
+        document.querySelector('.gameover__btnHome').addEventListener('click', goHome, false);
+        document.querySelector('.gameover__btnViewTop').addEventListener('click', viewTop10, false);
+        form.addEventListener('submit', submitForm, false);
+        document.querySelector('input[type="button"]').addEventListener('click', function () {//skip button
+            showForm(false);
+            viewTop10();
+        }, false);
+        //scoreboard
+        document.querySelector('.scoreboard__btnReplay').addEventListener('click', replay, false)
+        document.querySelector('.scoreboard__btnHome').addEventListener('click', goHome, false);
+        document.querySelector('.scoreboard__btnClose').addEventListener('click', closeTop10, false);
+    })();
+
     function init(_game) {
         game = _game;
-
-        document.querySelector('.container').style.display = 'block';
+        container.style.display = 'block';
         score.textContent = INME.Vars.score;
-
         checkScoreVsTenth();
     }
 
     function checkScoreVsTenth() {
-        if (INME.Vars.score > INME.Vars.tenthScore) {//超过第10名        
+        if (INME.Vars.score > INME.Vars.tenthScore) {//超过第10名的分数
             if (INME.cookie.get('name') === undefined || INME.cookie.get('email') === undefined) {//没有玩家信息
                 msg.textContent = INME.getCopy('overtenth');
-                resetForm(true);
+                showForm(true);
             }
-            else {//已有玩家的信息
+            else {//已经有玩家的信息
                 msg.textContent = INME.cookie.get('name') + INME.getCopy('overtenth');
-                resetForm(false);
-                updateScore();
+                showForm(false);
+                updatePlayerScore();
             }
         }
         else {
@@ -42,6 +55,7 @@ var OverGame = (function () {
         }
     }
 
+    //提交表单
     var name;
     var email;
     function submitForm(e) {
@@ -55,68 +69,38 @@ var OverGame = (function () {
                 email: email,
                 score: INME.Vars.score,
             }
-            INME.ajax('POST', '../server/add.php', data, addUser);
+            INME.ajax('POST', '../server/add.php', data, addNewPlayer);
         }
     }
 
-    function addUser() {
+    function addNewPlayer() {
         console.log('添加user成功');
 
-        resetForm(false);
+        showForm(false);
         INME.cookie.set('name', name, new Date(2020, 0, 1));
         INME.cookie.set('email', email, new Date(2020, 0, 1));
     }
 
-    function updateScore() {
+    function updatePlayerScore() {
         var data = {
             name: INME.cookie.get('name'),
             email: INME.cookie.get('email'),
             score: INME.Vars.score,
         }
-        INME.ajax('POST', '../server/update.php', data, function () {
+        INME.ajax('POST', '../server/add.php', data, function () {
             console.log('更新用户的分数成功');
-        });        
+        });
     }
 
-    function addListeners() {
-        //gameover
-        document.querySelector('.gameover__btnReplay').addEventListener('click', replay, false);
-        document.querySelector('.gameover__btnHome').addEventListener('click', goHome, false);
-        document.querySelector('.gameover__btnViewTop').addEventListener('click', viewTop10, false);
-        form.addEventListener('submit', submitForm, false);
-        document.querySelector('input[type="button"]').addEventListener('click', function () {////skip
-            resetForm(false);
-            viewTop10();
-        }, false);
-        //scoreboard
-        document.querySelector('.scoreboard__btnReplay').addEventListener('click', replay, false)
-        document.querySelector('.scoreboard__btnHome').addEventListener('click', goHome, false);
-        document.querySelector('.scoreboard__btnClose').addEventListener('click', closeTop10, false);
-    }
+
 
     function replay() {
         game.state.start(INME.State.Key.InGame);
-        resetDom();
+        resetContainer();
     }
     function goHome() {
         game.state.start(INME.State.Key.StartGame);
-        resetDom();
-    }
-    function resetDom() {
-        container.style.display = 'none';
-        scoreboard.style.display = 'none';
-        resetForm(false);
-    }
-
-    function resetForm(showForm) {
-        if (showForm) {
-            form.style.display = 'block';
-            btns.style.display = 'none';
-        }
-        else {
-            form.style.display = 'none';
-            btns.style.display = 'block';
-        }
+        resetContainer();
     }
 
     function viewTop10() {
@@ -142,7 +126,32 @@ var OverGame = (function () {
             tds[i * 3 + 1].textContent = name;
             tds[i * 3 + 2].textContent = score;
         }
+
+        //获得此时第10名的分数，并更新INME.Vars.tenthScore
+        var lastIndex = len - 1;
+        if (lastIndex > -1) {
+            INME.Vars.tenthScore = players[lastIndex].score;
+        }
+        console.log('获取第10名的分数成功,getTop10', INME.Vars.tenthScore);
     }
+
+    function resetContainer() {
+        container.style.display = 'none';
+        scoreboard.style.display = 'none';
+        showForm(false);
+    }
+
+    function showForm(showForm) {
+        if (showForm) {
+            form.style.display = 'block';
+            btns.style.display = 'none';
+        }
+        else {
+            form.style.display = 'none';
+            btns.style.display = 'block';
+        }
+    }
+
 
     return {
         init: init

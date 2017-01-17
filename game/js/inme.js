@@ -1,14 +1,18 @@
 var INME = INME || {};
 
-
-
 INME = (function () {
+    /**
+     * tenthScore:
+     * 第10名的分数;在1.游戏初始加载和2.查看top10榜单时,更新该值;并不是实时更新的;
+     * 所以可能玩家的分数并不高于现在的第10名时,分数
+     */
     var Vars = {
         characterIndex: 0,
         characterNum: 2,
         characterPrefix: 'chicken',
         language: 'sc',
         copyFontname: 'copy',
+        tenthScore: 0,
     };
 
     var State = {
@@ -20,7 +24,6 @@ INME = (function () {
             Help: 'Help',
             StartGame: 'StartGame',
             InGame: 'InGame',
-            OverGame: 'OverGame',
         },
     };
 
@@ -56,15 +59,25 @@ INME = (function () {
             'en': 'Please play in landscape'
         },
         'lesstenth': {
-            'sc': '抱歉，你没有进入前10名，继续努力',
-            'tc': '抱歉，你没有进入前10名，继续努力',
-            'en': '抱歉，你没有进入前10名，继续努力'
+            'sc': '你没有进入前10名，请继续努力',
+            'tc': '你沒有進入前10名，請繼續努力',
+            'en': 'You do not have to enter the top 10, please continue to work'
         },
         'overtenth': {
-            'sc': '恭喜,你进入了前10名',
-            'tc': '恭喜,你进入了前10名',
-            'en': '恭喜,你进入了前10名'
-        }
+            'sc': '恭喜你进入前10名',
+            'tc': '恭喜你進入前10名',
+            'en': 'Congratulations on your entry into the Top 10'
+        },
+        'chicken_1_name': {
+            'sc': 'RONNIE',
+            'tc': 'RONNIE',
+            'en': 'RONNIE'
+        },
+        'chicken_2_name': {
+            'sc': 'LILY',
+            'tc': 'LILY',
+            'en': 'LILY'
+        },
     }
     //console.log(getCopy(lan));
     /**
@@ -123,7 +136,6 @@ INME = (function () {
             if (request.status >= 200 && request.status < 400) {
                 success(JSON.parse(request.responseText));
             } else {
-                console.log(request.status);
                 error();
             }
         };
@@ -138,7 +150,6 @@ INME = (function () {
                     str += encodeURIComponent(key) + '=' + encodeURIComponent(data[key]) + '&';
                 }
                 str = str.substring(0, str.length - 1);
-                console.log(str)
                 request.send(str);
             }
         }
@@ -149,21 +160,17 @@ INME = (function () {
     /**
      * 获得第10名的分数
      */
-    function getTenthScore() {
+    (function getTenthScore() {
         ajax('GET', '../server/score.php', null, function (data) {
             var players = data['scorelist'];
             var len = players.length;
-            var tenthIndex = len < 10 ? (len - 1) : 9;
-            if (tenthIndex > -1) {
-                INME.Vars.tenthScore = players[tenthIndex].score;
+            var lastIndex = len - 1;
+            if (lastIndex > -1) {
+                INME.Vars.tenthScore = players[lastIndex].score;
             }
-            else {
-                INME.Vars.tenthScore = 0;
-            }
-            console.log('获取第10名的成绩成功', INME.Vars.tenthScore);
+            console.log('获取第10名的分数成功,inme', INME.Vars.tenthScore);
         });
-    }
-    getTenthScore();
+    })();
 
     return {
         Vars: Vars,

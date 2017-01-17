@@ -249,7 +249,7 @@
 
             this.game.physics.p2.enable(player, debug);
             player.body.clearShapes();
-            player.body.addRectangle(player.width * 0.7, player.height);//目前角色的碰撞矩形不一样？
+            player.body.addRectangle(player.width * 0.7, player.height);
             player.body.setCollisionGroup(this.playerCG);
             player.body.fixedRotation = true;
 

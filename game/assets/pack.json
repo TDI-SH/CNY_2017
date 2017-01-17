@@ -90,33 +90,6 @@
             "type": "image",
             "key": "ground",
             "url": "assets/images/ingame/platform.png"
-        },
-        {
-            "type": "spritesheet",
-            "key": "share",
-            "url": "assets/images/gameover/shareIcon.png",
-            "frameWidth": 60,
-            "frameHeight": 60
-        },
-        {
-            "type": "image",
-            "key": "msgBg",
-            "url": "assets/images/gameover/messageBg.png"
-        },
-        {
-            "type": "image",
-            "key": "playBtn",
-            "url": "assets/images/gameover/MenuPlay.png"
-        },
-        {
-            "type": "image",
-            "key": "submit",
-            "url": "assets/images/gameover/SubmitBtn.png"
-        },
-        {
-            "type": "image",
-            "key": "viewScore",
-            "url": "assets/images/gameover/viewHightScore.png"
         }
     ]
 }
