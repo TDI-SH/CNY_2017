@@ -1,4 +1,4 @@
-html,body,canvas,div,img
+html,body,canvas,div,img,p,input
 {
     margin: 0;
     padding: 0;    
@@ -50,7 +50,7 @@ html,body{
     cursor: pointer;  
 }
 /*gameover*/
-.msg__overtenth,.msg__addplayer,.msg__lesstenth
+.msg__overtenth,.msg__addplayer,.msg__lesstenth,.addplayer__inputbg
 {
     position: absolute;
     left: 0;
@@ -64,8 +64,8 @@ html,body{
 .gameover__score
 {
     position: absolute;
-    left: 445px;
-    top: 284px;
+    left: 443px;
+    top: 300px;
     font-size: 36px;
     color: #fed202;   
 }
@@ -78,17 +78,29 @@ html,body{
 {
     display: none;
 }
+.addplayer__input-name,.addplayer__input-email
+{
+    width: 307px;
+    height: 58px;
+    border-width: 0;/*去掉默认样式*/
+    outline: none;
+    text-decoration: none;
+    color: #742c00;
+    font-size: 18px;
+    background-color:transparent;
+    padding-left: 30px;
+}
 .addplayer__input-name
 {
     position: absolute;
-    left: 110px;
-    top: 372px;
+    left: 104px;
+    top: 367px;    
 }
 .addplayer__input-email
 {
     position: absolute;
-    left: 450px;
-    top: 372px;    
+    left: 444px;
+    top: 367px;    
 }
 .addplayer__btnSkip
 {

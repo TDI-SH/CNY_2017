@@ -28,7 +28,7 @@ var OverGame = (function () {
     function init(_game) {
         game = _game;
         container.style.display = 'block';
-        score.textContent = INME.Vars.score;
+        score.textContent = INME.getCopy('score') + INME.Vars.score;
         checkScoreVsTenth();
     }
 
@@ -143,14 +143,14 @@ var OverGame = (function () {
         if (lesstenth) {
             msgLessTenth.style.display = 'block';
             msgOverTenth.style.display = 'none';
-            score.classList.add('.gameover__score_lesstenth');
-            btns.classList.add('.gameover__btns_lesstenth');
+            score.classList.add('gameover__score_lesstenth');
+            btns.classList.add('gameover__btns_lesstenth');
         }
         else {
             msgLessTenth.style.display = 'none';
             msgOverTenth.style.display = 'block';
-            score.classList.remove('.gameover__score_lesstenth');
-            btns.classList.remove('.gameover__btns_lesstenth');
+            score.classList.remove('gameover__score_lesstenth');
+            btns.classList.remove('gameover__btns_lesstenth');
         }
     }
 
@@ -169,4 +169,4 @@ var OverGame = (function () {
     return {
         init: init
     }
-})();
+})(); 
