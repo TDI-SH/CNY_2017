@@ -479,7 +479,7 @@
         },
         showHelp: function () {
             if (INME.cookie.get("once") === undefined) {
-                this.img = this.game.add.image(240, 40, 'helpIntro');
+                this.img = this.game.add.image(0, 0, 'images', INME.getFrameByLan('intro/introduction'));
                 this.game.paused = true;
                 INME.cookie.set("once", true, new Date(2020, 0, 1));
                 needShowHelp = true;
