@@ -29,9 +29,9 @@ INME = (function () {
 
     var copy = {
         'lan': {
-            'sc': 'sc',
-            'tc': 'tc',
-            'en': 'en'
+            'sc': '简体中文',
+            'tc': '繁体中文',
+            'en': 'English'
         },
         'play': {
             'sc': '开始',
@@ -102,7 +102,6 @@ INME = (function () {
         var text = new Phaser.BitmapText(game, 0, 0, Vars.copyFontname, text, size);
         text.inputEnabled = false;
         bg.addChild(text);
-
 
         text.position.set(-text.width * 0.5 + offsetX, -text.height * 0.5 + offsetY);
 
