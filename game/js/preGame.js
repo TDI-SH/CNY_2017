@@ -106,6 +106,8 @@
         }
     }
 
+
+
     /**
      * state - Story
      */
@@ -135,76 +137,16 @@
     //     }
     // }
 
+
+
     INME.State.Story = {
         create: function () {
-
-            this.imgs = [];
-            this.num = 3;
-            this.id = 0;
-
-            this.game.add.button(10, 10, 'btnClose', this.handleClick, this, 1, 0, 1, 0).name = 'btnClose';
-
-            var btnNext = new INME.Button(this.game, this.handleClick, this, 'btnLan', INME.getCopy('next'), 28);
-            btnNext.name = 'btnNext';
-            btnNext.position.set(615, 470);
-
-            var btnPre = new INME.Button(this.game, this.handleClick, this, 'btnLan', INME.getCopy('pre'), 28);
-            btnPre.name = 'btnPre';
-            btnPre.position.set(345, 470);
-
-            var x = 240;
-            var y = 40;
-            for (var i = 0; i < this.num; i++) {
-                var img = this.game.add.image(x, y, 'helpIntro', i);
-                this.imgs.push(img);
-                img.alpha = 0;
-            }
-            this.imgs[this.id].alpha = 1;//初始化   
-            this.game.input.keyboard.addCallbacks(this, this.handlePress);
+            var story = this.game.add.sprite(0, 0, 'images2', INME.getFrameByLan('story/story'));
+            story.inputEnabled = true;
+            story.events.onInputDown.add(this.handleClick,this);
         },
-        handleClick: function (btn) {
-            switch (btn.name) {
-                case 'btnClose':
-                    this.game.state.start(INME.State.Key.StartGame);
-                    break;
-                case 'btnNext':
-                    var newId = this.id + 1;
-                    if (newId >= this.num)
-                        newId = this.num - 1;
-
-                    this.switchInto(newId);
-                    break;
-                case 'btnPre':
-                    var newId = this.id - 1;
-                    if (newId < 0)
-                        newId = 0;
-
-                    this.switchInto(newId);
-                    break;
-            }
-        },
-        switchInto: function (newId) {
-            if (newId !== this.id) {
-
-                console.log(newId, this.id);
-
-                var oldImg = this.imgs[this.id];
-                var newImg = this.imgs[newId];
-
-
-                newImg.alpha = 0;
-                this.game.add.tween(newImg).to({ alpha: 1 }, 500, 'Linear', true);
-
-                this.game.add.tween(oldImg).to({ alpha: 0 }, 500, 'Linear', true);
-
-                this.id = newId;
-            }
-        },
-        handlePress: function (key) {
-            switch (key.keyCode) {
-                case 27:
-                    this.game.state.start(INME.State.Key.StartGame);
-            }
+        handleClick: function () {
+            this.game.state.start(INME.State.Key.StartGame);
         }
     }
 

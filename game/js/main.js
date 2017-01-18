@@ -224,7 +224,7 @@
         },
         //设置地面
         makeGround: function () {
-            var g = this.game.add.sprite(this.game.width * 0.5, game.world.height - groundH * 0.5, 'images','ingame/platform');
+            var g = this.game.add.sprite(this.game.width * 0.5, game.world.height - groundH * 0.5, 'images', 'ingame/platform');
             this.game.physics.p2.enable(g, debug);
 
             g.body.setCollisionGroup(this.groundCG);
@@ -486,7 +486,7 @@
         },
         showHelp: function () {
             if (INME.cookie.get("once") === undefined) {
-                this.img = this.game.add.image(0, 0, 'images', INME.getFrameByLan('intro/introduction'));
+                this.img = this.game.add.image(0, 0, 'images2', INME.getFrameByLan('intro/introduction'));
                 this.game.paused = true;
                 INME.cookie.set("once", true, new Date(2020, 0, 1));
                 needShowHelp = true;

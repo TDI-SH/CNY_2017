@@ -7,6 +7,12 @@
             "atlasURL": "assets/images.json"
         },
         {
+            "type": "atlasJSONHash",
+            "key": "images2",
+            "textureURL": "assets/images2.png",
+            "atlasURL": "assets/images2.json"
+        },
+        {
             "type": "physics",
             "key": "physics",
             "url": "assets/physics.json"
@@ -31,11 +37,11 @@
             "type": "audio",
             "key": "dead",
             "urls": "assets/sound/dead.wav"
-        },       
+        },
         {
             "type": "video",
             "key": "backstory",
             "urls": "assets/video/backstory.mp4"
-        }        
+        }
     ]
 }
