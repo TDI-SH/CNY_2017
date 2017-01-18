@@ -110,6 +110,7 @@
             this.makePlayer();
             //分数条
             this.makeScoreBoard();
+            this.makeTopBoard();
             //控制键
             this.game.input.keyboard.addCallbacks(this, this.handleKeyboard);
             this.game.input.onDown.add(this.handleInput, this);
@@ -215,12 +216,31 @@
         },
         //分数条
         makeScoreBoard: function () {
-            var right = 20;
-            var top = 20;
-            var scoreBoard = this.add.bitmapText(0, 0, INME.Vars.copyFontname, INME.getCopy('score') + '0', 25);
-            scoreBoard.anchor.set(1, 0);
-            scoreBoard.position.set(this.game.width - right, top);
-            this.scoreBoard = scoreBoard;
+            var prefix = 'ingame/chicken_' + INME.Vars.characterIndex;
+            var characterImg = {
+                key: 'images',
+                frame: prefix,
+            }
+            var nameImg = {
+                key: 'images',
+                frame: INME.getFrameByLan(prefix + '_name')
+            }
+            var position = {
+                x: 20,
+                y: 20
+            }
+            this.scoreBoard = new ScoreBoard(this.game, characterImg, nameImg, position)
+        },
+        makeTopBoard: function () {
+            var img = {
+                key: 'images',
+                frame: 'ingame/topestIcon'
+            }
+            var position = {
+                x: 765,
+                y: 24
+            }
+            new TopBoard(this.game, img, position);
         },
         //设置地面
         makeGround: function () {
@@ -382,7 +402,7 @@
             }
             if (score < 0)
                 score = 0;
-            this.scoreBoard.text = INME.getCopy('score') + score;
+            this.scoreBoard.updateScore(score);
             INME.Vars.score = score;
         },
         //根据分数判断是否升级难度
@@ -513,6 +533,57 @@
         this.group.position.x += speed;
         if (this.group.position.x <= -this.imageWidth) {
             this.group.position.x = 0;
+        }
+    }
+
+    function ScoreBoard(game, characterImg, nameImg, position) {
+        var sp = game.add.sprite();
+        sp.position.set(position.x, position.y);
+
+        var character = sp.addChild(new Phaser.Image(game, 0, 0, characterImg.key, characterImg.frame));
+        var name = sp.addChild(new Phaser.Image(game, 0, 0, nameImg.key, nameImg.frame));
+        name.position.set(character.width, character.height - name.height);
+
+        var scoreBT = sp.addChild(new Phaser.BitmapText(game, 0, 0, INME.Vars.copyFontname, '0', 36));
+        scoreBT.position.set(character.width + 5, character.height * 0.5 - scoreBT.height * 0.5);
+
+        this.scoreBT = scoreBT;
+    }
+
+    ScoreBoard.prototype.updateScore = function (value) {
+        this.scoreBT.text = value;
+    }
+
+    function TopBoard(game, img, position) {
+        var sp = game.add.sprite();
+        sp.position.set(position.x, position.y);
+
+        var img = sp.addChild(new Phaser.Image(game, 0, 0, img.key, img.frame));
+
+        var scoreBT = sp.addChild(new Phaser.BitmapText(game, 0, 0, INME.Vars.copyFontname, '0', 36));
+        scoreBT.position.set(img.width + 5, img.height * 0.5 - scoreBT.height * 0.5);
+
+        this.scoreBT = scoreBT;
+        this.getTopestScore();
+    }
+    TopBoard.prototype.getTopestScore = function () {
+        INME.ajax('GET', '../server/score.php', null, getTop10);
+
+        var scoreBT = this.scoreBT;
+        function getTop10(data) {
+            var players = data['scorelist'];
+            var len = players.length;
+            if (len > 0) {
+                var topestscore = players[0].score;
+                scoreBT.text = topestscore;
+                console.log('获取最高分数成功,main', topestscore);
+            }
+            //获得此时第10名的分数，并更新INME.Vars.tenthScore
+            var lastIndex = len - 1;
+            if (lastIndex > -1) {
+                INME.Vars.tenthScore = players[lastIndex].score;
+                console.log('获取第10名的分数成功,main', INME.Vars.tenthScore);
+            }
         }
     }
     /**

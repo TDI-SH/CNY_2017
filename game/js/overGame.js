@@ -126,8 +126,9 @@ var OverGame = (function () {
         var lastIndex = len - 1;
         if (lastIndex > -1) {
             INME.Vars.tenthScore = players[lastIndex].score;
+            console.log('获取第10名的分数成功,getTop10', INME.Vars.tenthScore);
         }
-        console.log('获取第10名的分数成功,getTop10', INME.Vars.tenthScore);
+        
     }
 
     function resetContainer() {
