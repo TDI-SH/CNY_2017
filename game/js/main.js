@@ -413,16 +413,20 @@
             switch (e.keyCode) {
                 case 32:
                 case 38:
-                    if (needShowHelp)
+                    if (needShowHelp) {
                         this.closeHelp();
+                        needShowHelp = false;
+                    }
                     else
                         this.jump();
                     break;
             }
         },
         handleInput: function () {
-            if (needShowHelp)
+            if (needShowHelp) {
                 this.closeHelp();
+                needShowHelp = false;
+            }
             else
                 this.jump();
         },
@@ -456,6 +460,7 @@
             this.player.play('dead');
             INME.Sound.bg.stop();
             INME.Sound.dead.play();
+            INME.Vars.score = score;//更新分数
 
             this.game.world.children.forEach(function (child) {//销毁所有对象的body和动画
                 if (child.animations)
@@ -463,6 +468,8 @@
                 if (child.body)
                     child.body.destroy();
             });
+
+
 
             OverGame.init(this.game);
 
