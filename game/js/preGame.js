@@ -39,8 +39,18 @@
         //在手机端对dom层做响应式布局
         responsiveDom: function () {
             var container = document.querySelector('.container');
-            container.style.width = '100%';
-            container.style.height = '100%';
+            var scaleW = window.innerWidth / this.game.width;
+            var scaleH = window.innerHeight / this.game.height;
+            var scale = Math.min(scaleW, scaleH);
+            var value = 'translate(-50%,-50%) scale(' + scale + ',' + scale + ')';
+            this.setTransfrom(container, value);
+        },
+        setTransfrom: function (dom, value) {
+            dom.style.webkitTransform = value;
+            dom.style.MozTransform = value
+            dom.style.msTransform = value;
+            dom.style.OTransform = value;
+            dom.style.transform = value;
         }
     }
     /**

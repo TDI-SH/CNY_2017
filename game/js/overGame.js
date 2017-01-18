@@ -1,10 +1,9 @@
 var OverGame = (function () {
     var container = document.querySelector('.container');
 
-    var msg = document.querySelector('.gameover__msg');
     var score = document.querySelector('.gameover__score');
-    var form = document.querySelector('.gameover__form');
-    var btns = document.querySelector('.gameover_btns');
+    var form = document.querySelector('.gameover__addplayer');
+    var btns = document.querySelector('.gameover__btns');
 
     var scoreboard = document.querySelector('.scoreboard');
 
@@ -15,9 +14,9 @@ var OverGame = (function () {
         document.querySelector('.gameover__btnReplay').addEventListener('click', replay, false);
         document.querySelector('.gameover__btnHome').addEventListener('click', goHome, false);
         document.querySelector('.gameover__btnViewTop').addEventListener('click', viewTop10, false);
-        form.addEventListener('submit', submitForm, false);
-        document.querySelector('input[type="button"]').addEventListener('click', function () {//skip button
-            showForm(false);
+        document.querySelector('.addplayer__btnSubmit').addEventListener('click', addPlayer, false);
+        document.querySelector('.addplayer__btnSkip').addEventListener('click', function () {//skip button
+            showAddPlayer(false);
             viewTop10();
         }, false);
         //scoreboard
@@ -35,22 +34,20 @@ var OverGame = (function () {
 
     function checkScoreVsTenth() {
         if (INME.Vars.score > INME.Vars.tenthScore) {//超过第10名的分数
+            showLessTenth(false);
             if (INME.cookie.get('name') === undefined || INME.cookie.get('email') === undefined) {//没有玩家信息
-                msg.textContent = INME.getCopy('overtenth');
-                showForm(true);
+                showAddPlayer(true);
             }
             else {//已经有玩家的信息
-                msg.textContent = INME.cookie.get('name') + INME.getCopy('overtenth');
-                showForm(false);
+                showAddPlayer(false);
                 updatePlayerScore();
             }
         }
         else {
+            showLessTenth(true);
             if (INME.cookie.get('name') === undefined || INME.cookie.get('email') === undefined) {
-                msg.textContent = INME.getCopy('lesstenth');
             }
             else {
-                msg.textContent = INME.cookie.get('name') + INME.getCopy('lesstenth');
             }
         }
     }
@@ -58,25 +55,24 @@ var OverGame = (function () {
     //提交表单
     var name;
     var email;
-    function submitForm(e) {
-        e.preventDefault();//阻止默认提交行为
+    function addPlayer(e) {
 
-        name = document.querySelector('input[name="name"]').value;
-        email = document.querySelector('input[name="email"]').value;
-        if (name !== '' || email !== '') {
+        name = document.querySelector('.addplayer__input-name').value;
+        email = document.querySelector('.addplayer__input-email').value;
+        if (name !== '' && email !== '' && name !== 'NAME' && email !== 'E-MAIL') {
             var data = {
                 name: name,
                 email: email,
                 score: INME.Vars.score,
             }
-            INME.ajax('POST', '../server/add.php', data, addNewPlayer);
+            INME.ajax('POST', '../server/add.php', data, addNewPlayerComplete);
         }
     }
 
-    function addNewPlayer() {
+    function addNewPlayerComplete() {
         console.log('添加user成功');
 
-        showForm(false);
+        showAddPlayer(false);
         INME.cookie.set('name', name, new Date(2020, 0, 1));
         INME.cookie.set('email', email, new Date(2020, 0, 1));
     }
@@ -91,7 +87,6 @@ var OverGame = (function () {
             console.log('更新用户的分数成功');
         });
     }
-
 
 
     function replay() {
@@ -138,11 +133,29 @@ var OverGame = (function () {
     function resetContainer() {
         container.style.display = 'none';
         scoreboard.style.display = 'none';
-        showForm(false);
+        showAddPlayer(false);
+        showLessTenth(false);
     }
 
-    function showForm(showForm) {
-        if (showForm) {
+    function showLessTenth(lesstenth) {
+        var msgOverTenth = document.querySelector('.msg__overtenth');
+        var msgLessTenth = document.querySelector('.msg__lesstenth');
+        if (lesstenth) {
+            msgLessTenth.style.display = 'block';
+            msgOverTenth.style.display = 'none';
+            score.classList.add('.gameover__score_lesstenth');
+            btns.classList.add('.gameover__btns_lesstenth');
+        }
+        else {
+            msgLessTenth.style.display = 'none';
+            msgOverTenth.style.display = 'block';
+            score.classList.remove('.gameover__score_lesstenth');
+            btns.classList.remove('.gameover__btns_lesstenth');
+        }
+    }
+
+    function showAddPlayer(showAddPlayer) {
+        if (showAddPlayer) {
             form.style.display = 'block';
             btns.style.display = 'none';
         }

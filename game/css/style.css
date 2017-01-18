@@ -1,7 +1,13 @@
-html,body,canvas
+html,body,canvas,div,img
 {
     margin: 0;
     padding: 0;    
+}
+img{
+    display: block;
+}
+div{
+    box-sizing: border-box;
 }
 
 html,body{ 
@@ -22,7 +28,14 @@ html,body{
     width: 960px;
     height: 540px;   
     z-index: 789;   
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%) ;
+    -ms-transform: translate(-50%,-50%) ;
+    -o-transform: translate(-50%,-50%) ;
+    transform: translate(-50%,-50%) ;
 }
 .container__btnclose,.scoreboard__btnclose
 {
@@ -37,41 +50,100 @@ html,body{
     cursor: pointer;  
 }
 /*gameover*/
-.gameover__msg
+.msg__overtenth,.msg__addplayer,.msg__lesstenth
 {
-    margin-top: 50px;
-    color: #ffffff;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
-.gameover__form
+.msg__lesstenth
+{
+    display: none;    
+}
+/*分数*/
+.gameover__score
+{
+    position: absolute;
+    left: 445px;
+    top: 284px;
+    font-size: 36px;
+    color: #fed202;   
+}
+.gameover__score_lesstenth
+{
+    top: 225px;
+}
+/*添加新player*/
+.gameover__addplayer
 {
     display: none;
 }
+.addplayer__input-name
+{
+    position: absolute;
+    left: 110px;
+    top: 372px;
+}
+.addplayer__input-email
+{
+    position: absolute;
+    left: 450px;
+    top: 372px;    
+}
+.addplayer__btnSkip
+{
+    position: absolute;
+    left: 108px;
+    top: 458px;
+}
+.addplayer__btnSubmit
+{
+    position: absolute;
+    left: 575px;
+    top: 446px;
+}
+/*其余按钮*/
+.gameover__btns
+{
+    position: absolute;
+    left: 0;
+    top: 374px;
+}
+.gameover__btns_lesstenth
+{
+    top: 386px;
+}
+.gameover__btnHome 
+{
+    position: absolute;
+    left: 175px;
+    top: 7px;
+    cursor: pointer;      
+}
+.gameover__btnReplay
+{
+    position: absolute;
+    left: 340px;
+    top: 0;
+    cursor: pointer;
+}
+.gameover__btnViewTop
+{
+    position: absolute;
+    left: 554px;
+    top: 6px;
+    cursor: pointer;
+}
 /*分享*/
-.share__btn
+.share
 {
-    float: left;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;             
+    position: absolute;
+    right: 0;
+    top: 0;
 }
-.share__btnX
+.share img
 {
-    background-image: url('../assets/images/overgame/share_btnX.png');
-}
-.share__btnW
-{
-    background-image: url('../assets/images/overgame/share_btnW.png');
-}
-.share__btnT
-{
-    background-image: url('../assets/images/overgame/share_btnT.png');
-}
-.share__btnF
-{
-    background-image: url('../assets/images/overgame/share_btnF.png');
+    cursor: pointer;
 }
 /*top10榜单*/
 .scoreboard
@@ -151,12 +223,10 @@ td
 }
 .center
 {
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%,-50%);
-    -moz-transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-    -o-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%); 
+    -webkit-transform: translate(-50%,-50%) ;
+    -moz-transform: translate(-50%,-50%) ;
+    -ms-transform: translate(-50%,-50%) ;
+    -o-transform: translate(-50%,-50%) ;
+    transform: translate(-50%,-50%) ;
 }
 
