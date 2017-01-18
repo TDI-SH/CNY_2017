@@ -206,20 +206,50 @@
 
     INME.State.StartGame = {
         create: function () {
+            
+
+            //角色选择
+            new CharacterSelector(this.game, this.getCSImages(), this.getCSPositions(), this.selectCharacter, INME.Vars.characterIndex);
+
+            //长城
+            this.game.add.image(0, 310, 'images', 'startgame/greatWall');
+
             var btnPlay = new INME.Button(this.game, this.handleClick, this, 'btnLan', INME.getCopy('play'), 28);
             btnPlay.name = 'btnPlay';
             btnPlay.position.set(480, 420);
 
-            //角色选择
-            var cs = new CharacterSelector(this.game, this.getCSKeys(), this.selectCharacter, INME.Vars.characterIndex);
-            cs.position.set((this.game.width - cs.width) >> 1, 100);
         },
-        getCSKeys: function () {
+        getCSImages: function () {
             var arr = [];
             for (var i = 0; i < INME.Vars.characterNum; i++) {
-                arr.push(INME.Vars.characterPrefix + '_' + i + '_select');
+                arr.push({
+                    light: {
+                        key: 'images',
+                        frame: 'startgame/light',
+                    },
+                    normal: {
+                        key: 'images',
+                        frame: 'startgame/chicken_' + i,
+                    },
+                    select: {
+                        key: 'images',
+                        frame: 'startgame/chicken_' + i + '_select',
+                    }
+                })
             }
             return arr;
+        },
+        getCSPositions: function () {
+            return [
+                {
+                    x: -13,
+                    y: 0,
+                },
+                {
+                    x: 611,
+                    y: 0
+                }
+            ]
         },
         selectCharacter: function (index) {
             INME.Vars.characterIndex = index;
@@ -234,29 +264,54 @@
         },
     }
 
-    function CharacterSelector(game, keys, callback, index) {
-        var x = 0;
-        var padding = 30;
+    function Character(game, image) {
+        var group = game.add.sprite();
 
-        index = index === undefined ? 0 : index;
+        this.lightImg = group.addChild(new Phaser.Image(game, 0, 0, image.light.key, image.light.frame));
+        this.normalImg = group.addChild(new Phaser.Image(game, 0, 0, image.normal.key, image.normal.frame));
+        this.selectImg = group.addChild(new Phaser.Image(game, 0, 0, image.select.key, image.select.frame));
 
+        this.select(false);
+        
+        return group;
+    }
+
+    Character.prototype.select = function (value) {
+        if (value) {
+            this.normalImg.alpha = 0;
+            this.lightImg.alpha = 1;
+            this.selectImg.alpha = 1;
+        }
+        else {
+            this.normalImg.alpha = 1;
+            this.lightImg.alpha = 0;
+            this.selectImg.alpha = 0;
+        }
+    }
+
+    function CharacterSelector(game, images, positions, callback, index) {
         var group = game.add.group();
         group.inputEnableChildren = true;
         group.onChildInputDown.add(handleClick);
 
-        var len = keys.length;
+        var len = images.length;
         for (var i = 0; i < len; i++) {
-            var c = group.create(x, 0, keys[i]);
-            x += (c.width + padding);
+            var image = images[i];
+            var position = positions[i];
+            var character = new Character(game, image);
+            character.position.set(position.x, position.y);
+
+            group.add(character);
         }
 
-        setSprite(group.getChildAt(index), 1);//初始化选择
+        index = index === undefined ? 0 : index;
+        //group.getChildAt(index).select(true);
 
-        function handleClick(sprite, pointer) {
-            var wantIndex = group.getChildIndex(sprite);
+        function handleClick(character) {
+            var wantIndex = group.getChildIndex(character);
             if (wantIndex !== index) {
-                setSprite(sprite, 1);
-                setSprite(group.getChildAt(index), 0);
+                character.select(true);
+                group.getChildAt(index).select(false);
 
                 index = wantIndex;
 
@@ -264,10 +319,44 @@
             }
         }
 
-        function setSprite(sprite, frame) {
-            sprite.frame = frame;
-        }
 
-        return group;
+
     }
+
+    // function CharacterSelector(game, keys, callback, index) {
+    //     var x = 0;
+    //     var padding = 30;
+
+    //     index = index === undefined ? 0 : index;
+
+    //     var group = game.add.group();
+    //     group.inputEnableChildren = true;
+    //     group.onChildInputDown.add(handleClick);
+
+    //     var len = keys.length;
+    //     for (var i = 0; i < len; i++) {
+    //         var c = group.create(x, 0, keys[i]);
+    //         x += (c.width + padding);
+    //     }
+
+    //     setSprite(group.getChildAt(index), 1);//初始化选择
+
+    //     function handleClick(sprite, pointer) {
+    //         var wantIndex = group.getChildIndex(sprite);
+    //         if (wantIndex !== index) {
+    //             setSprite(sprite, 1);
+    //             setSprite(group.getChildAt(index), 0);
+
+    //             index = wantIndex;
+
+    //             callback(index);
+    //         }
+    //     }
+
+    //     function setSprite(sprite, frame) {
+    //         sprite.frame = frame;
+    //     }
+
+    //     return group;
+    // }
 })();
