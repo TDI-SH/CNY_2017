@@ -110,6 +110,30 @@ INME = (function () {
     }
 
     /**
+     * 自定义按钮:背景＋文字图片
+     */
+    function Button2(game, callback, callbackContext, key, overFrame, outFrame, textFrame, anchorX, anchorY) {
+        anchorX = anchorX === undefined ? 0.5 : anchorX;
+        anchorY = anchorY === undefined ? 0.5 : anchorY;
+
+        var bg = game.add.button(0, 0, key, callback, callbackContext, overFrame, outFrame, overFrame, outFrame);
+        bg.anchor.set(anchorX, anchorY);
+
+        var offsetX = (0.5 - anchorX) * bg.width;
+        var offsetY = (0.5 - anchorY) * bg.height;
+
+        var text = new Phaser.Image(game, 0, 0, key, textFrame);
+        text.inputEnabled = false;
+        bg.addChild(text);
+
+        text.position.set(-text.width * 0.5 + offsetX, -text.height * 0.5 + offsetY);
+
+        return bg;
+    }
+
+
+
+    /**
      * 返回对应语言版本的文字的BitmapText
      */
     function getCopyBT(game, x, y, key, size) {
@@ -124,6 +148,13 @@ INME = (function () {
     function getCopy(key) {
         return copy[key][Vars.language];
     }
+    /**
+     * 返回对应语言版本的frame
+     */
+    function getFrameByLan(prefix) {
+        return prefix + '_' + Vars.language;
+    }
+
     /**
      * ajax
      */
@@ -178,7 +209,9 @@ INME = (function () {
         Languages: copy.lan,
         getCopy: getCopy,
         getCopyBT: getCopyBT,
+        getFrameByLan: getFrameByLan,
         Button: Button,
+        Button2: Button2,
         ajax: ajax
     }
 })();

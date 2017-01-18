@@ -190,38 +190,36 @@
         }
     }
 
-    /**
-     * state - StartGame
-     */
-    // INME.State.StartGame = {
-    //     create: function () {
-    //         this.game.load.image('loadingbar', 'assets/images/loading/loadingbar.png');
-    //     },
-
-    //     generatePlayers: function(){
-
-    //     }
-    // }
-
-
     INME.State.StartGame = {
         create: function () {
-            
-
             //角色选择
             new CharacterSelector(this.game, this.getCSImages(), this.getCSPositions(), this.selectCharacter, INME.Vars.characterIndex);
-
-            //长城
+            //前景
             this.game.add.image(0, 310, 'images', 'startgame/greatWall');
-
-            var btnPlay = new INME.Button(this.game, this.handleClick, this, 'btnLan', INME.getCopy('play'), 28);
+            //标题
+            var title = this.game.add.image(0, 0, 'images', INME.getFrameByLan('startgame/title'));
+            title.anchor.set(0.5, 0.5);
+            title.position.set(this.game.width >> 1, 100);
+            //开始按钮
+            var btnPlay = new INME.Button2(this.game, this.handleClick, this, 'images', 'startgame/btnOver', 'startgame/btn', INME.getFrameByLan('startgame/play'));
             btnPlay.name = 'btnPlay';
-            btnPlay.position.set(480, 420);
-
+            btnPlay.position.set(480, 260);
         },
         getCSImages: function () {
+            var namePositions = [
+                {
+                    x: 271,
+                    y: 403,
+                },
+                {
+                    x: 6,
+                    y: 403,
+                }
+            ]
+
             var arr = [];
             for (var i = 0; i < INME.Vars.characterNum; i++) {
+                var prefix = 'startgame/chicken_' + i;
                 arr.push({
                     light: {
                         key: 'images',
@@ -229,11 +227,17 @@
                     },
                     normal: {
                         key: 'images',
-                        frame: 'startgame/chicken_' + i,
+                        frame: prefix,
                     },
                     select: {
                         key: 'images',
-                        frame: 'startgame/chicken_' + i + '_select',
+                        frame: prefix + '_select',
+                    },
+                    name: {
+                        key: 'images',
+                        frame: INME.getFrameByLan(prefix + '_name'),
+                        x: namePositions[i].x,
+                        y: namePositions[i].y
                     }
                 })
             }
@@ -264,16 +268,17 @@
         },
     }
 
-    function Character(game, image) {
-        var group = game.add.sprite();
+    function Character(game, group, image, position) {
+        var sp = game.add.sprite();
+        sp.position.set(position.x, position.y);
+        group.add(sp);
 
-        this.lightImg = group.addChild(new Phaser.Image(game, 0, 0, image.light.key, image.light.frame));
-        this.normalImg = group.addChild(new Phaser.Image(game, 0, 0, image.normal.key, image.normal.frame));
-        this.selectImg = group.addChild(new Phaser.Image(game, 0, 0, image.select.key, image.select.frame));
+        this.lightImg = sp.addChild(new Phaser.Image(game, 0, 0, image.light.key, image.light.frame));
+        this.normalImg = sp.addChild(new Phaser.Image(game, 0, 0, image.normal.key, image.normal.frame));
+        this.selectImg = sp.addChild(new Phaser.Image(game, 0, 0, image.select.key, image.select.frame));
+        this.nameImg = sp.addChild(new Phaser.Image(game, image.name.x, image.name.y, image.name.key, image.name.frame));
 
         this.select(false);
-        
-        return group;
     }
 
     Character.prototype.select = function (value) {
@@ -281,11 +286,13 @@
             this.normalImg.alpha = 0;
             this.lightImg.alpha = 1;
             this.selectImg.alpha = 1;
+            this.nameImg.alpha = 1;
         }
         else {
             this.normalImg.alpha = 1;
             this.lightImg.alpha = 0;
             this.selectImg.alpha = 0;
+            this.nameImg.alpha = 0;
         }
     }
 
@@ -294,69 +301,27 @@
         group.inputEnableChildren = true;
         group.onChildInputDown.add(handleClick);
 
+        var characters = [];
         var len = images.length;
         for (var i = 0; i < len; i++) {
             var image = images[i];
             var position = positions[i];
-            var character = new Character(game, image);
-            character.position.set(position.x, position.y);
-
-            group.add(character);
+            var character = new Character(game, group, image, position);
+            characters.push(character);
         }
 
-        index = index === undefined ? 0 : index;
-        //group.getChildAt(index).select(true);
+        characters[index].select(true);//设置初始选中状态
 
-        function handleClick(character) {
-            var wantIndex = group.getChildIndex(character);
+        function handleClick(sp) {
+            var wantIndex = group.getChildIndex(sp);
             if (wantIndex !== index) {
-                character.select(true);
-                group.getChildAt(index).select(false);
+                characters[wantIndex].select(true);
+                characters[index].select(false);
 
                 index = wantIndex;
 
                 callback(index);
             }
         }
-
-
-
     }
-
-    // function CharacterSelector(game, keys, callback, index) {
-    //     var x = 0;
-    //     var padding = 30;
-
-    //     index = index === undefined ? 0 : index;
-
-    //     var group = game.add.group();
-    //     group.inputEnableChildren = true;
-    //     group.onChildInputDown.add(handleClick);
-
-    //     var len = keys.length;
-    //     for (var i = 0; i < len; i++) {
-    //         var c = group.create(x, 0, keys[i]);
-    //         x += (c.width + padding);
-    //     }
-
-    //     setSprite(group.getChildAt(index), 1);//初始化选择
-
-    //     function handleClick(sprite, pointer) {
-    //         var wantIndex = group.getChildIndex(sprite);
-    //         if (wantIndex !== index) {
-    //             setSprite(sprite, 1);
-    //             setSprite(group.getChildAt(index), 0);
-
-    //             index = wantIndex;
-
-    //             callback(index);
-    //         }
-    //     }
-
-    //     function setSprite(sprite, frame) {
-    //         sprite.frame = frame;
-    //     }
-
-    //     return group;
-    // }
 })();

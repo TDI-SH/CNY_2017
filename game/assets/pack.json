@@ -46,34 +46,6 @@
         },
         {
             "type": "spritesheet",
-            "key": "btnPlay",
-            "url": "assets/images/startgame/btnPlay.jpg",
-            "frameWidth": 190,
-            "frameHeight": 40
-        },
-        {
-            "type": "spritesheet",
-            "key": "btnHelp",
-            "url": "assets/images/startgame/btnHelp.jpg",
-            "frameWidth": 80,
-            "frameHeight": 40
-        },
-        {
-            "type": "spritesheet",
-            "key": "chicken_0_select",
-            "url": "assets/images/startgame/chicken_0.jpg",
-            "frameWidth": 200,
-            "frameHeight": 200
-        },
-        {
-            "type": "spritesheet",
-            "key": "chicken_1_select",
-            "url": "assets/images/startgame/chicken_1.jpg",
-            "frameWidth": 200,
-            "frameHeight": 200
-        },
-        {
-            "type": "spritesheet",
             "key": "helpIntro",
             "url": "assets/images/help/helpIntro.jpg",
             "frameWidth": 480,
