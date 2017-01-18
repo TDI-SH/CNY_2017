@@ -25,7 +25,8 @@
 
         },
         preload: function () {
-            this.game.load.image('loadingbar', 'assets/images/loading/loadingbar.png');
+            this.game.load.image('loadingbar', 'assets/loading/loadingbar.png');
+            this.game.load.image('loadingBg', 'assets/loading/loadingBg.png');
         },
         create: function () {
             this.game.state.start(INME.State.Key.Loading);
@@ -58,7 +59,10 @@
      */
     INME.State.Loading = {
         preload: function () {
-            var lb = this.game.add.sprite(0, 268, 'loadingbar');
+            this.game.add.image(0, 0, 'loadingBg');
+
+
+            var lb = this.game.add.sprite(282, 346, 'loadingbar');
             this.game.load.setPreloadSprite(lb);
 
             this.game.load.pack('common', 'assets/pack.json');
@@ -70,8 +74,7 @@
                 'getpacket': this.game.add.audio('getpacket'),
                 'dead': this.game.add.audio('dead'),
             }
-            this.game.state.start(INME.State.Key.Language);//测试
-            //this.game.state.start(INME.State.Key.OverGame);
+            this.game.state.start(INME.State.Key.Language);
         },
     }
     /**

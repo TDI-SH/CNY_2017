@@ -31,37 +31,11 @@
             "type": "audio",
             "key": "dead",
             "urls": "assets/sound/dead.wav"
-        },
-        {
-            "type": "spritesheet",
-            "key": "btnLan",
-            "url": "assets/images/language/btnLan.jpg",
-            "frameWidth": 190,
-            "frameHeight": 40
-        },
+        },       
         {
             "type": "video",
             "key": "backstory",
             "urls": "assets/video/backstory.mp4"
-        },
-        {
-            "type": "spritesheet",
-            "key": "helpIntro",
-            "url": "assets/images/help/helpIntro.jpg",
-            "frameWidth": 480,
-            "frameHeight": 360
-        },
-        {
-            "type": "spritesheet",
-            "key": "btnClose",
-            "url": "assets/images/public/btnClose.jpg",
-            "frameWidth": 80,
-            "frameHeight": 40
-        },
-        {
-            "type": "image",
-            "key": "ground",
-            "url": "assets/images/ingame/platform.png"
-        }
+        }        
     ]
 }

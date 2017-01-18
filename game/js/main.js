@@ -224,7 +224,7 @@
         },
         //设置地面
         makeGround: function () {
-            var g = this.game.add.sprite(this.game.width * 0.5, game.world.height - groundH * 0.5, 'ground');
+            var g = this.game.add.sprite(this.game.width * 0.5, game.world.height - groundH * 0.5, 'images','ingame/platform');
             this.game.physics.p2.enable(g, debug);
 
             g.body.setCollisionGroup(this.groundCG);

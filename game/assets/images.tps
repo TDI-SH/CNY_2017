@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.3.1</string>
         <key>fileName</key>
-        <string>/Users/RWU/CNY_2017/assets/images.tps</string>
+        <string>/Volumes/TDI/DIGITAL/PROJECTS/W/WLT/CNY_2017/WORKINGFILES/CNY_2017/game/assets/images.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -90,9 +90,9 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>4096</int>
             <key>height</key>
-            <int>2048</int>
+            <int>4096</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -302,73 +302,15 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">images/gameover/MenuPlay.png</key>
-            <key type="filename">images/gameover/viewHightScore.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>39,14,77,27</rect>
-                <key>scale9Paddings</key>
-                <rect>39,14,77,27</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">images/gameover/SubmitBtn.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>50,10,101,21</rect>
-                <key>scale9Paddings</key>
-                <rect>50,10,101,21</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">images/gameover/messageBg.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>105,65,210,130</rect>
-                <key>scale9Paddings</key>
-                <rect>105,65,210,130</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">images/gameover/shareIcon.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>60,15,120,30</rect>
-                <key>scale9Paddings</key>
-                <rect>60,15,120,30</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">images/help/helpIntro.jpg</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>120,270,240,540</rect>
-                <key>scale9Paddings</key>
-                <rect>120,270,240,540</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">images/ingame/bg.png</key>
+            <key type="filename">images/intro/introduction_en.png</key>
+            <key type="filename">images/intro/introduction_sc.png</key>
+            <key type="filename">images/intro/introduction_tc.png</key>
+            <key type="filename">images/overgame/inputBg.png</key>
+            <key type="filename">images/overgame/msg_addplayer_en.png</key>
+            <key type="filename">images/overgame/msg_lesstenth_en.png</key>
+            <key type="filename">images/overgame/msg_overtenth_en.png</key>
+            <key type="filename">images/overgame/scoreboardTitle_en.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -409,20 +351,6 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">images/language/btnLan.jpg</key>
-            <key type="filename">images/startgame/btnPlay.jpg</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>48,20,95,40</rect>
-                <key>scale9Paddings</key>
-                <rect>48,20,95,40</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">images/loading/loadingbar.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -433,6 +361,45 @@
                 <rect>240,1,480,2</rect>
                 <key>scale9Paddings</key>
                 <rect>240,1,480,2</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/loading/loadingbarBg.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>99,7,199,15</rect>
+                <key>scale9Paddings</key>
+                <rect>99,7,199,15</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/loading/logo.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>52,40,104,80</rect>
+                <key>scale9Paddings</key>
+                <rect>52,40,104,80</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/loading/logo2.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>47,7,94,14</rect>
+                <key>scale9Paddings</key>
+                <rect>47,7,94,14</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -528,7 +495,6 @@
                 <false/>
             </struct>
             <key type="filename">images/obstacles/obstacle_7.png</key>
-            <key type="filename">images/obstacles/obstacle_7_old.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -541,8 +507,103 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">images/overgame/btnBack_en.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>39,15,78,31</rect>
+                <key>scale9Paddings</key>
+                <rect>39,15,78,31</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/overgame/btnHome_en.png</key>
+            <key type="filename">images/overgame/btnViewTop_en.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>39,16,78,31</rect>
+                <key>scale9Paddings</key>
+                <rect>39,16,78,31</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/overgame/btnReplay_en.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>51,19,103,39</rect>
+                <key>scale9Paddings</key>
+                <rect>51,19,103,39</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/overgame/btnSkip_en.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>29,13,58,27</rect>
+                <key>scale9Paddings</key>
+                <rect>29,13,58,27</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/overgame/btnSubmit_en.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>51,19,102,39</rect>
+                <key>scale9Paddings</key>
+                <rect>51,19,102,39</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/overgame/share_btnF.png</key>
+            <key type="filename">images/overgame/share_btnI.png</key>
+            <key type="filename">images/overgame/share_btnT.png</key>
+            <key type="filename">images/overgame/share_btnW.png</key>
+            <key type="filename">images/overgame/share_btnX.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>19,27,37,54</rect>
+                <key>scale9Paddings</key>
+                <rect>19,27,37,54</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/overgame/tableBg.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>128,206,256,413</rect>
+                <key>scale9Paddings</key>
+                <rect>128,206,256,413</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">images/public/btnClose.jpg</key>
-            <key type="filename">images/startgame/btnHelp.jpg</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -607,17 +668,107 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">images/startgame/chicken_0.jpg</key>
-            <key type="filename">images/startgame/chicken_1.jpg</key>
+            <key type="filename">images/startgame/btn.png</key>
+            <key type="filename">images/startgame/btnOver.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>50,100,100,200</rect>
+                <rect>56,20,113,41</rect>
                 <key>scale9Paddings</key>
-                <rect>50,100,100,200</rect>
+                <rect>56,20,113,41</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/startgame/chicken_0.png</key>
+            <key type="filename">images/startgame/chicken_0_select.png</key>
+            <key type="filename">images/startgame/chicken_1.png</key>
+            <key type="filename">images/startgame/chicken_1_select.png</key>
+            <key type="filename">images/startgame/light.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>88,124,176,247</rect>
+                <key>scale9Paddings</key>
+                <rect>88,124,176,247</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/startgame/chicken_0_name_en.png</key>
+            <key type="filename">images/startgame/chicken_0_name_sc.png</key>
+            <key type="filename">images/startgame/chicken_0_name_tc.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>22,5,44,9</rect>
+                <key>scale9Paddings</key>
+                <rect>22,5,44,9</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/startgame/chicken_1_name_en.png</key>
+            <key type="filename">images/startgame/chicken_1_name_sc.png</key>
+            <key type="filename">images/startgame/chicken_1_name_tc.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,5,24,9</rect>
+                <key>scale9Paddings</key>
+                <rect>12,5,24,9</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/startgame/greatWall.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>240,58,480,115</rect>
+                <key>scale9Paddings</key>
+                <rect>240,58,480,115</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/startgame/play_en.png</key>
+            <key type="filename">images/startgame/play_sc.png</key>
+            <key type="filename">images/startgame/play_tc.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>22,6,44,12</rect>
+                <key>scale9Paddings</key>
+                <rect>22,6,44,12</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/startgame/title_en.png</key>
+            <key type="filename">images/startgame/title_sc.png</key>
+            <key type="filename">images/startgame/title_tc.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>110,30,220,61</rect>
+                <key>scale9Paddings</key>
+                <rect>110,30,220,61</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
