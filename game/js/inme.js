@@ -29,9 +29,9 @@ INME = (function () {
 
     var copy = {
         'lan': {
-            'sc': '简体中文',
-            'tc': '繁体中文',
-            'en': 'English'
+            'sc': 'sc',
+            'tc': 'tc',
+            'en': 'en'
         },
         'play': {
             'sc': '开始',

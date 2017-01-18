@@ -147,13 +147,13 @@ html,body{
     cursor: pointer;
 }
 /*分享*/
-.share
+#share
 {
     position: absolute;
     right: 0;
     top: 0;
 }
-.share img
+#share img
 {
     cursor: pointer;
 }
