@@ -23,6 +23,13 @@ var OverGame = (function () {
         document.querySelector('.scoreboard__btnReplay').addEventListener('click', replay, false)
         document.querySelector('.scoreboard__btnHome').addEventListener('click', goHome, false);
         document.querySelector('.scoreboard__btnBack').addEventListener('click', closeTop10, false);
+        //阻止input的默认行为
+        name = document.querySelector('.addplayer__input-name').addEventListener('focus', preventInputDefault, false);
+        email = document.querySelector('.addplayer__input-email').addEventListener('focus', preventInputDefault, false);
+        function preventInputDefault(e) {
+            console.log('阻止input默认样式');
+            e.preventDefault();
+        }
     })();
 
     function init(_game) {
@@ -117,7 +124,7 @@ var OverGame = (function () {
             var name = player.name;
             var score = player.score;
 
-            tds[i * 3].textContent = rank+'.';
+            tds[i * 3].textContent = rank + '.';
             tds[i * 3 + 1].textContent = name;
             tds[i * 3 + 2].textContent = score;
         }
@@ -128,7 +135,7 @@ var OverGame = (function () {
             INME.Vars.tenthScore = players[lastIndex].score;
             console.log('获取第10名的分数成功,getTop10', INME.Vars.tenthScore);
         }
-        
+
     }
 
     function resetContainer() {

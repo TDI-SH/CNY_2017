@@ -18,6 +18,7 @@
                 this.responsiveDom();
 
                 this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+                this.game.scale.onSizeChange.add(this.resizeHandler, this)
                 this.game.scale.forceOrientation(true, false);//强制为横屏
                 this.game.scale.enterIncorrectOrientation.add(this.orientationHandler, this, 0, true);
                 this.game.scale.leaveIncorrectOrientation.add(this.orientationHandler, this, 0, false);
@@ -30,6 +31,10 @@
         },
         create: function () {
             this.game.state.start(INME.State.Key.Loading);
+        },
+        resizeHandler: function () {
+            console.log('resize');
+            this.responsiveDom();
         },
         orientationHandler: function (paused) {
             var display = paused === true ? 'block' : 'none';
@@ -143,7 +148,7 @@
         create: function () {
             var story = this.game.add.sprite(0, 0, 'images2', INME.getFrameByLan('story/story'));
             story.inputEnabled = true;
-            story.events.onInputDown.add(this.handleClick,this);
+            story.events.onInputDown.add(this.handleClick, this);
         },
         handleClick: function () {
             this.game.state.start(INME.State.Key.StartGame);
