@@ -36,7 +36,7 @@
         {
             "type": "audio",
             "key": "dead",
-            "urls": "assets/sound/dead.wav"
+            "urls": "assets/sound/dead.mp3"
         },
         {
             "type": "video",
