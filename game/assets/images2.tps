@@ -197,9 +197,94 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">images2/intro/introduction_en.png</key>
-            <key type="filename">images2/intro/introduction_sc.png</key>
-            <key type="filename">images2/intro/introduction_tc.png</key>
+            <key type="filename">images2/intro/btnBg.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>61,15,122,31</rect>
+                <key>scale9Paddings</key>
+                <rect>61,15,122,31</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images2/intro/img1_en.png</key>
+            <key type="filename">images2/intro/img1_sc.png</key>
+            <key type="filename">images2/intro/img1_tc.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>218,25,436,51</rect>
+                <key>scale9Paddings</key>
+                <rect>218,25,436,51</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images2/intro/img2_en.png</key>
+            <key type="filename">images2/intro/img2_sc.png</key>
+            <key type="filename">images2/intro/img2_tc.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>218,22,435,44</rect>
+                <key>scale9Paddings</key>
+                <rect>218,22,435,44</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images2/intro/img3_en.png</key>
+            <key type="filename">images2/intro/img3_sc.png</key>
+            <key type="filename">images2/intro/img3_tc.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>218,22,435,45</rect>
+                <key>scale9Paddings</key>
+                <rect>218,22,435,45</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images2/intro/tap_en.png</key>
+            <key type="filename">images2/intro/tap_sc.png</key>
+            <key type="filename">images2/intro/tap_tc.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>48,5,95,9</rect>
+                <key>scale9Paddings</key>
+                <rect>48,5,95,9</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images2/intro/title_en.png</key>
+            <key type="filename">images2/intro/title_sc.png</key>
+            <key type="filename">images2/intro/title_tc.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>72,9,145,17</rect>
+                <key>scale9Paddings</key>
+                <rect>72,9,145,17</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">images2/story/story_en.png</key>
             <key type="filename">images2/story/story_sc.png</key>
             <key type="filename">images2/story/story_tc.png</key>

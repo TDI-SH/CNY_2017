@@ -556,6 +556,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">images/obstacles/obstacle_8.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>15,14,30,27</rect>
+                <key>scale9Paddings</key>
+                <rect>15,14,30,27</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">images/redpacket/drop/0.png</key>
             <key type="filename">images/redpacket/drop/1.png</key>
             <key type="filename">images/redpacket/drop/10.png</key>

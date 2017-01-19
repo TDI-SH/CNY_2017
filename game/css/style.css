@@ -82,7 +82,7 @@ html,body{
 }
 .gameover__score_lesstenth
 {
-    top: 225px;
+    top: 235px;
 }
 /*添加新player*/
 .gameover__addplayer
@@ -248,7 +248,8 @@ td:nth-child(3n+2) {
     left: 0;
     top: 0;
     z-index: 7890;
-    background-color: #ffffff;
+    background-color: #7d1024;
+    color: #ffffff;
     display: none;  
 }
 .msg__landscape>p

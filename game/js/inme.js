@@ -34,9 +34,9 @@ INME = (function () {
 
     var copy = {        
         'score': {
-            'sc': '分数:',
-            'tc': '分數:',
-            'en': 'Score:'
+            'sc': '分数: ',
+            'tc': '分數: ',
+            'en': 'Score: '
         },
         'landscape': {
             'sc': '请横屏玩耍',

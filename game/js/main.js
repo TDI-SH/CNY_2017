@@ -1,5 +1,5 @@
 (function () {
-    var needShowHelp = false;//是否应该显示帮助页面
+    var needShowHelp = true;//是否应该显示帮助页面
 
     var difficulty = {//按照分数划分难度等级,不同难度对应不同速度
         scores: [25, 70, 125, 200, 250],
@@ -76,6 +76,10 @@
             'obstacleType': ObstacleType.Dead,
             'position': 'bottom',
             'makePlayerIn': true/*是否让player掉入obstacle*/
+        },
+        {
+            'obstacleType': ObstacleType.Dead,
+            'position': 'sky',
         },
     ]
     INME.State.InGame = {
@@ -495,10 +499,7 @@
                     child.body.destroy();
             });
 
-
-
             OverGame.init(this.game);
-
         },
         makePlayerIn: function (obstacle) {
             if (obstacle.makePlayerIn) {
@@ -507,20 +508,70 @@
         },
         //帮助页面
         closeHelp: function () {
-            this.game.paused = false;
-            this.game.add.tween(this.img).to({ alpha: 0 }, 500, Phaser.Easing.Linear.None, true);
+            isDead = false;//用isDead模拟暂停，因为游戏一旦暂停，tween也被暂停
+            needShowHelp = false;
+            this.helpPage.show(false);
         },
         showHelp: function () {
             if (INME.cookie.get("once") === undefined) {
-                this.img = this.game.add.image(0, 0, 'images2', INME.getFrameByLan('intro/introduction'));
-                this.game.paused = true;
+
+                this.helpPage = new HelpPage(this.game);
+
                 INME.cookie.set("once", true, new Date(2020, 0, 1));
+
+                isDead = true;
                 needShowHelp = true;
             }
             else {
+                isDead = false;
                 needShowHelp = false;
             }
         },
+    }
+
+    function HelpPage(game) {
+        this.game = game;
+
+        var group = this.game.add.group();
+
+        //背景
+        var g = new Phaser.Graphics(this.game, 0, 0);
+        g.clear();
+        g.beginFill(0x000000, 0.7);
+        g.drawRect(0, 0, this.game.width, this.game.height);
+        g.endFill();
+        group.add(g);
+        //title
+        var title = group.add(new Phaser.Image(game, 0, 0, 'images2', INME.getFrameByLan('intro/title')));
+        title.position.set((this.game.width - title.width) * 0.5, 53);
+        //条目
+        this.img1 = group.add(new Phaser.Image(game, 41, 115, 'images2', INME.getFrameByLan('intro/img1')));
+        this.img2 = group.add(new Phaser.Image(game, 42, 235, 'images2', INME.getFrameByLan('intro/img2')));
+        this.img3 = group.add(new Phaser.Image(game, 42, 343, 'images2', INME.getFrameByLan('intro/img3')));
+        this.img1.alpha = 0;
+        this.img2.alpha = 0;
+        this.img3.alpha = 0;
+        //按钮
+        var btn = new INME.Button2(game, null, this, 'images2', 'intro/btnBg', 'intro/btnBg', INME.getFrameByLan('intro/tap'));
+        btn.position.set(this.game.width * 0.5, 485);
+        btn.alpha = 0;
+        this.btn = btn;
+        group.add(btn);
+
+        this.group = group;
+        this.show(true);
+    }
+    HelpPage.prototype.show = function (tweeIn) {
+        if (tweeIn) {
+            this.game.add.tween(this.img1).to({ alpha: 1 }, 500, null, true, 0);
+            this.game.add.tween(this.img2).to({ alpha: 1 }, 500, null, true, 500);
+            this.game.add.tween(this.img3).to({ alpha: 1 }, 500, null, true, 1000);
+            this.game.add.tween(this.btn).to({ alpha: 1 }, 500, null, true, 1500);
+        }
+        else {
+            var tween = this.game.add.tween(this.group).to({ alpha: 0 }, 500, null, true, 0);
+        }
+
     }
 
     function ParallaxSprite(game, key, frame, x, y) {
