@@ -20,10 +20,12 @@ html,body{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select:none;
-
     -webkit-tap-highlight-color:transparent;
     
     background-color: #7d1024;
+
+    font-family:Helvetica, Arial, sans-serif;
+    font-weight: bold;
 }
 /*container*/
 .container
@@ -211,7 +213,6 @@ th,td
 {
     text-align: left;
     font-size: 24px;
-    font-weight: bold;
     color: #742c00;
 }
 td:nth-child(3n+1) {
