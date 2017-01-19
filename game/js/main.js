@@ -59,7 +59,7 @@
                     'prefix': 'boom/',
                     'start': 0,
                     'stop': 7,
-                    'frameRate': 10,
+                    'frameRate': 20,
                     'loop': false
                 }
             }
