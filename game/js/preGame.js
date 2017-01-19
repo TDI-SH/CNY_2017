@@ -92,8 +92,8 @@
             var i = 0;
             var lans = INME.Languages;
             var x = this.game.width >> 1;
-            var padding = 100;
-            var y = 150;
+            var padding = 88;
+            var y = 183;
             for (var lan in lans) {
                 var text = lans[lan];
                 var btn = new INME.Button2(this.game, this.handleClick, this, 'images', 'language/button_bg', 'language/button_bg', 'language/button_' + arr[i]);

@@ -119,7 +119,7 @@ INME = (function () {
         bg.anchor.set(anchorX, anchorY);
 
         var offsetX = (0.5 - anchorX) * bg.width;
-        var offsetY = (0.5 - anchorY) * bg.height;
+        var offsetY = (0.49 - anchorY) * bg.height;
 
         var text = new Phaser.Image(game, 0, 0, key, textFrame);
         text.inputEnabled = false;
