@@ -118,7 +118,7 @@
             this.player.body.collides(this.groundCG, this.playerCollideGround, this);
             this.player.body.collides(this.obstacleCG, this.playerCollideObstacle, this);
             //尝试是否显示帮助页面
-            this.showHelp();            
+            this.showHelp();
         },
         overlap: function (body1, body2) {
             if (body1.sprite === null || body2.sprite === null)
@@ -380,7 +380,7 @@
                 INME.Sound.getpacket.play();
                 packetBody.destroy();//销毁body，避免继续移动
                 packet.x = this.player.x;//红包动画对齐player
-                this.game.world.bringToTop(this.player);//将player提到最前
+                this.game.world.bringToTop(this.player);//将player放在最前
                 packet.play('drop');
                 packet.animations.currentAnim.onComplete.add(this.destoryObj, this, 0, packet);
 
@@ -474,6 +474,7 @@
                     this.updateScore('minus');
                 }
                 else {
+                    this.game.world.bringToTop(this.player);//将player放在最前
                     this.makePlayerIn(obstacleBody.sprite);
                     this.gameOver();
                 }
