@@ -226,8 +226,10 @@
                 frame: INME.getFrameByLan(prefix + '_name')
             }
             var position = {
+                anchorX: 0,
+                anchorY: 1,
                 x: 20,
-                y: 20
+                y: 100,
             }
             this.scoreBoard = new ScoreBoard(this.game, characterImg, nameImg, position)
         },
@@ -237,8 +239,10 @@
                 frame: 'ingame/topestIcon'
             }
             var position = {
-                x: 765,
-                y: 24
+                anchorX: 1,
+                anchorY: 1,
+                x: this.game.width - 20,
+                y: 100
             }
             new TopBoard(this.game, img, position);
         },
@@ -537,45 +541,51 @@
     }
 
     function ScoreBoard(game, characterImg, nameImg, position) {
-        var sp = game.add.sprite();
-        sp.position.set(position.x, position.y);
+        var group = game.add.group();
 
-        var character = sp.addChild(new Phaser.Image(game, 0, 0, characterImg.key, characterImg.frame));
-        var name = sp.addChild(new Phaser.Image(game, 0, 0, nameImg.key, nameImg.frame));
+        var character = group.addChild(new Phaser.Image(game, 0, 0, characterImg.key, characterImg.frame));
+        var name = group.addChild(new Phaser.Image(game, 0, 0, nameImg.key, nameImg.frame));
         name.position.set(character.width, character.height - name.height);
 
-        var scoreBT = sp.addChild(new Phaser.BitmapText(game, 0, 0, INME.Vars.copyFontname, '0', 36));
+        var scoreBT = group.addChild(new Phaser.BitmapText(game, 0, 0, INME.Vars.copyFontname, '0', 36));
         scoreBT.position.set(character.width + 5, character.height * 0.5 - scoreBT.height * 0.5);
 
         this.scoreBT = scoreBT;
+        this.group = group;
+        this.position = position;
+
+        this.setPosition();
     }
 
     ScoreBoard.prototype.updateScore = function (value) {
         this.scoreBT.text = value;
     }
+    ScoreBoard.prototype.setPosition = setPosition;
 
     function TopBoard(game, img, position) {
-        var sp = game.add.sprite();
-        sp.position.set(position.x, position.y);
+        var group = game.add.group();
 
-        var img = sp.addChild(new Phaser.Image(game, 0, 0, img.key, img.frame));
+        var img = group.addChild(new Phaser.Image(game, 0, 0, img.key, img.frame));
 
-        var scoreBT = sp.addChild(new Phaser.BitmapText(game, 0, 0, INME.Vars.copyFontname, '0', 36));
+        var scoreBT = group.addChild(new Phaser.BitmapText(game, 0, 0, INME.Vars.copyFontname, '0', 36));
         scoreBT.position.set(img.width + 5, img.height * 0.5 - scoreBT.height * 0.5);
 
+        this.group = group;
+        this.position = position;
         this.scoreBT = scoreBT;
+        this.setPosition();
         this.getTopestScore();
     }
     TopBoard.prototype.getTopestScore = function () {
-        INME.ajax('GET', '../server/score.php', null, getTop10);
+        INME.ajax('GET', '../server/score.php', null, getTop10.bind(this));
 
-        var scoreBT = this.scoreBT;
         function getTop10(data) {
             var players = data['scorelist'];
             var len = players.length;
             if (len > 0) {
                 var topestscore = players[0].score;
-                scoreBT.text = topestscore;
+                this.scoreBT.text = topestscore;
+                this.setPosition();
                 console.log('获取最高分数成功,main', topestscore);
             }
             //获得此时第10名的分数，并更新INME.Vars.tenthScore
@@ -585,6 +595,15 @@
                 console.log('获取第10名的分数成功,main', INME.Vars.tenthScore);
             }
         }
+    }
+    TopBoard.prototype.setPosition = setPosition;
+
+    function setPosition() {
+        var anchorX = this.position.anchorX === undefined ? 0.5 : this.position.anchorX;
+        var anchorY = this.position.anchorY === undefined ? 0.5 : this.position.anchorY;
+        var x = this.position.x - anchorX * this.group.width;
+        var y = this.position.y - anchorY * this.group.height;
+        this.group.position.set(x, y);
     }
     /**
      * 主入口
