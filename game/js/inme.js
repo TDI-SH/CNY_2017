@@ -33,51 +33,26 @@ INME = (function () {
             'tc': '繁体中文',
             'en': 'English'
         },
-        'play': {
-            'sc': '开始',
-            'tc': '開始',
-            'en': 'play'
-        },
         'score': {
             'sc': '分数:',
             'tc': '分數:',
             'en': 'Score:'
-        },
-        'next': {
-            'sc': '下一步',
-            'tc': '下一步',
-            'en': 'Next'
-        },
-        'pre': {
-            'sc': '上一步',
-            'tc': '上一步',
-            'en': 'Preview'
         },
         'landscape': {
             'sc': '请横屏玩耍',
             'tc': '請橫屏玩耍',
             'en': 'Please play in landscape'
         },
-        'lesstenth': {
-            'sc': '你没有进入前10名，请继续努力',
-            'tc': '你沒有進入前10名，請繼續努力',
-            'en': 'You do not have to enter the top 10, please continue to work'
+        'input_name_placeholder': {
+            'sc': '姓名',
+            'tc': '姓名',
+            'en': 'NAME'
         },
-        'overtenth': {
-            'sc': '恭喜你进入前10名',
-            'tc': '恭喜你進入前10名',
-            'en': 'Congratulations on your entry into the Top 10'
-        },
-        'chicken_1_name': {
-            'sc': 'RONNIE',
-            'tc': 'RONNIE',
-            'en': 'RONNIE'
-        },
-        'chicken_2_name': {
-            'sc': 'LILY',
-            'tc': 'LILY',
-            'en': 'LILY'
-        },
+        'input_email_placeholder': {
+            'sc': '邮箱',
+            'tc': '郵箱',
+            'en': 'E-MAIL'
+        }
     }
     //console.log(getCopy(lan));
     /**

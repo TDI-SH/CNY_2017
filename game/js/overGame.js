@@ -3,6 +3,9 @@ var OverGame = (function () {
 
     var score = document.querySelector('.gameover__score');
     var form = document.querySelector('.gameover__addplayer');
+    var inputName = document.querySelector('.addplayer__input-name');
+    var inputEmail = document.querySelector('.addplayer__input-email');
+
     var btns = document.querySelector('.gameover__btns');
 
     var scoreboard = document.querySelector('.scoreboard');
@@ -24,8 +27,8 @@ var OverGame = (function () {
         document.querySelector('.scoreboard__btnHome').addEventListener('click', goHome, false);
         document.querySelector('.scoreboard__btnBack').addEventListener('click', closeTop10, false);
         //阻止input的默认行为
-        name = document.querySelector('.addplayer__input-name').addEventListener('focus', preventInputDefault, false);
-        email = document.querySelector('.addplayer__input-email').addEventListener('focus', preventInputDefault, false);
+        name = inputName.addEventListener('focus', preventInputDefault, false);
+        email = inputEmail.addEventListener('focus', preventInputDefault, false);
         function preventInputDefault(e) {
             console.log('阻止input默认样式');
             e.preventDefault();
@@ -63,10 +66,9 @@ var OverGame = (function () {
     var name;
     var email;
     function addPlayer(e) {
-
-        name = document.querySelector('.addplayer__input-name').value;
-        email = document.querySelector('.addplayer__input-email').value;
-        if (name !== '' && email !== '' && name !== 'NAME' && email !== 'E-MAIL') {
+        name = inputName.value;
+        email = inputEmail.value;
+        if (name !== '' && email !== '') {
             var data = {
                 name: name,
                 email: email,
@@ -164,6 +166,10 @@ var OverGame = (function () {
 
     function showAddPlayer(showAddPlayer) {
         if (showAddPlayer) {
+            //更新placeholder
+            inputName.placeholder = INME.getCopy('input_name_placeholder');
+            inputEmail.placeholder = INME.getCopy('input_email_placeholder');
+
             form.style.display = 'block';
             btns.style.display = 'none';
         }

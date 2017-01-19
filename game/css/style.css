@@ -9,6 +9,22 @@ img{
 div{
     box-sizing: border-box;
 }
+/*重置placeholder文本的颜色*/
+::-webkit-input-placeholder {
+   color: #742c00;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #742c00;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #742c00;  
+}
+
+:-ms-input-placeholder {  
+   color: #742c00;  
+}
 
 html,body{
     position: relative;
@@ -75,7 +91,7 @@ html,body{
 }
 .addplayer__input-name,.addplayer__input-email
 {
-    width: 307px;
+    width: 277px;
     height: 58px;
     border-width: 0;/*去掉默认样式*/
     outline: none;
@@ -84,6 +100,7 @@ html,body{
     font-size: 18px;
     background-color:transparent;
     padding-left: 30px;
+    padding-right: 30px;
 }
 .addplayer__input-name
 {
