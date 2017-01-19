@@ -209,10 +209,10 @@ html,body{
 {
     position: absolute;
     width: 512px;
-    height: 413px;
+    height: 380px;
     overflow-y: scroll;
     left: 40px;
-    top: 105px;    
+    top: 130px;    
 }
 table{
     position: absolute;
