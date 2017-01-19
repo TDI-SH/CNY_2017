@@ -10,6 +10,11 @@ INME = (function () {
         characterIndex: 0,
         characterNum: 2,
         characterPrefix: 'chicken',
+        languages: [
+            'sc',
+            'tc',
+            'en'
+        ],
         language: 'sc',
         copyFontname: 'copy',
         tenthScore: 0,
@@ -27,12 +32,7 @@ INME = (function () {
         },
     };
 
-    var copy = {
-        'lan': {
-            'sc': '简体中文',
-            'tc': '繁体中文',
-            'en': 'English'
-        },
+    var copy = {        
         'score': {
             'sc': '分数:',
             'tc': '分數:',
@@ -41,7 +41,7 @@ INME = (function () {
         'landscape': {
             'sc': '请横屏玩耍',
             'tc': '請橫屏玩耍',
-            'en': 'Please play in landscape'
+            'en': 'Please rotate device to play'
         },
         'input_name_placeholder': {
             'sc': '姓名',
@@ -180,7 +180,6 @@ INME = (function () {
     return {
         Vars: Vars,
         State: State,
-        Languages: copy.lan,
         getCopy: getCopy,
         getCopyBT: getCopyBT,
         getFrameByLan: getFrameByLan,

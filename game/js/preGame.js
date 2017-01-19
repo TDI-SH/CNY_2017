@@ -88,20 +88,19 @@
 
     INME.State.Language = {
         create: function () {
-            var arr = ["sc", "tc", "en"];
-            var i = 0;
-            var lans = INME.Languages;
             var x = this.game.width >> 1;
             var padding = 88;
             var y = 183;
-            for (var lan in lans) {
-                var text = lans[lan];
-                var btn = new INME.Button2(this.game, this.handleClick, this, 'images', 'language/button_bg', 'language/button_bg', 'language/button_' + arr[i]);
+
+            var lans = INME.Vars.languages;
+            var len = lans.length;
+            for (var i = 0; i < len; i++) {
+                var lan = lans[i];
+                var btn = new INME.Button2(this.game, this.handleClick, this, 'images', 'language/button_bg', 'language/button_bg', 'language/button_' + lan);
                 btn.name = lan;
                 btn.x = x;
                 btn.y = y;
                 y += padding;
-                i++;
             }
         },
         handleClick: function (btn) {
