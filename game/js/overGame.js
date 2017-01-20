@@ -82,6 +82,7 @@ var OverGame = (function () {
         console.log('添加user成功');
 
         showAddPlayer(false);
+        viewTop10();//跳转到榜单页面
         INME.cookie.set('name', name, new Date(2020, 0, 1));
         INME.cookie.set('email', email, new Date(2020, 0, 1));
     }
