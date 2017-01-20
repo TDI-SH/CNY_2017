@@ -50,7 +50,6 @@
             var scaleH = window.innerHeight / this.game.height;
             var scale = Math.min(scaleW, scaleH);
             var roundScale = (scale + 0.01).toFixed(2);
-            console.log('我们', scale, roundScale);
             var value = 'translate(-50%,-50%) scale(' + roundScale + ',' + roundScale + ')';
             this.setTransfrom(container, value);
         },
