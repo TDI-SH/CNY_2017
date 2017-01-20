@@ -30,7 +30,7 @@ var OverGame = (function () {
         name = inputName.addEventListener('focus', preventInputDefault, false);
         email = inputEmail.addEventListener('focus', preventInputDefault, false);
         function preventInputDefault(e) {
-            console.log('阻止input默认样式');
+            console.log('试图阻止input默认样式');
             e.preventDefault();
         }
     })();
