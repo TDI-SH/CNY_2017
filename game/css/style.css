@@ -38,8 +38,8 @@ html,body{
     user-select:none;
     -webkit-tap-highlight-color:transparent;
     
-    /*background-color: #7d1024;*/
-    background-color: #000000;
+    background-color: #7d1024;
+    
 
     font-family:Helvetica, Arial, sans-serif;
     font-weight: bold;
@@ -229,6 +229,7 @@ table,th,td
 }
 th,td
 {
+    height: 82.5px;/*固定值，修复火狐问题*/
     text-align: left;
     font-size: 24px;
     color: #742c00;
