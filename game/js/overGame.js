@@ -37,6 +37,7 @@ var OverGame = (function () {
 
     function init(_game) {
         game = _game;
+        updateLanImg();
         container.style.display = 'block';
         score.textContent = INME.getCopy('score') + INME.Vars.score;
         checkScoreVsTenth();
@@ -178,6 +179,25 @@ var OverGame = (function () {
             form.style.display = 'none';
             btns.style.display = 'block';
         }
+    }
+
+    //更新对应语言版本的图片
+    function updateLanImg() {
+        var format = '.png';//假定格式全为.png
+        var imgs = document.querySelectorAll('.container img');
+        Array.prototype.forEach.call(imgs, function (img) {
+            var src = img.src;
+            var _index = src.lastIndexOf('_');
+            var dotIndex = src.lastIndexOf('.');
+            if (_index !== -1 && dotIndex !== -1) {
+                var lan = src.substring(_index + 1, dotIndex);
+                var path = src.substring(0, _index);
+                if (INME.Vars.languages.indexOf(lan) !== -1) {
+                    var newPath = path + '_' + INME.Vars.language + format;
+                    img.src = newPath;
+                }
+            }
+        });
     }
 
 
