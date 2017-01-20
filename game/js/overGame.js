@@ -35,12 +35,17 @@ var OverGame = (function () {
         }
     })();
 
+    var needUpdate = true;
     function init(_game) {
         game = _game;
-        updateLanImg();
         container.style.display = 'block';
         score.textContent = INME.getCopy('score') + INME.Vars.score;
         checkScoreVsTenth();
+
+        if (needUpdate) {
+            updateLanImg();
+            needUpdate = false;
+        }
     }
 
     function checkScoreVsTenth() {
@@ -193,8 +198,10 @@ var OverGame = (function () {
                 var lan = src.substring(_index + 1, dotIndex);
                 var path = src.substring(0, _index);
                 if (INME.Vars.languages.indexOf(lan) !== -1) {
-                    var newPath = path + '_' + INME.Vars.language + format;
-                    img.src = newPath;
+                    if (lan !== INME.Vars.language) {
+                        var newPath = path + '_' + INME.Vars.language + format;
+                        img.src = newPath;
+                    }
                 }
             }
         });
