@@ -149,9 +149,35 @@
             var story = this.game.add.sprite(0, 0, 'images2', INME.getFrameByLan('story/story'));
             story.inputEnabled = true;
             story.events.onInputDown.add(this.handleClick, this);
+            
+            this.cookieLanguage(INME.Vars.language);
         },
         handleClick: function () {
             this.game.state.start(INME.State.Key.StartGame);
+        },
+        cookieLanguage: function(language) {
+            var description = document.getElementById("description");
+            var linkAddress = document.getElementById("cookieLink");
+            var btn_continue = document.getElementById("button_continue");
+            var btn_findmore = document.getElementById("button_more");
+            switch(language){
+                case "sc":
+                    description.innerHTML = "此游戏运用第三方社交平台cookie来分享本网信息";
+                    btn_continue.textContent = "继续";
+                    btn_findmore.textContent = "了解更多";
+                    linkAddress.setAttribute('href', 'cookie_sc.html')
+                    console.log(description);
+                    break;
+                // case "en":       
+                case "tc":
+                    description.innerHTML = "此遊戲運用第三方社交平台cookie來分享本網信息";
+                    btn_continue.textContent = "繼續";
+                    btn_findmore.textContent = "了解更多";
+                    linkAddress.setAttribute('href', 'cookie_tc.html')
+                    break;
+            }
+            console.log(INME.Vars.language);
+            setupCookie();
         }
     }
 
@@ -287,6 +313,39 @@
 
                 callback(index);
             }
+        }
+    }
+    // cookie setups
+    function setupCookie()
+    {
+        if(INME.cookie.get('agreecookie')===undefined)
+            {
+                displayDom(document.querySelector('.cookie'));                    
+
+                document.querySelector('.cookie__btnContinue').addEventListener('click',function removeCookie(){
+                    INME.cookie.set('agreecookie','agreecookie',new Date(2020,0,1));
+                    displayDom(document.querySelector('.cookie'),false,true);                        
+                });          
+            }
+        if(INME.cookie.get('agreecookie')==='agreecookie')
+        {
+            displayDom(document.querySelector('.cookie'),false,true);                    
+        }
+    }
+
+    function displayDom(dom,isVisible,isDispose)
+    {
+        isVisible=isVisible===undefined?true:isVisible;
+        isDispose=isDispose===undefined?false:isDispose;
+        
+        if(isVisible)
+            dom.style.display='block';
+        else
+            dom.style.display='none';
+                    
+        if(isDispose)
+        {            
+            dom.parentNode.removeChild(dom);            
         }
     }
 })();

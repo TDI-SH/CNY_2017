@@ -1,7 +1,5 @@
 //social platform sharing buttons
-share_button();
-	
-function share_button(){
+(function (){
 	var shareDiv = document.getElementById("share");
 
 	//list of sharers used by different platforms
@@ -18,7 +16,7 @@ function share_button(){
 	var host_url_secure = "https://roosterrun.wlt.com/game/";
 	var host_url = "http://roosterrun.wlt.com/game/";
 	//console.log(host_url);
-	
+
 	shareDiv.addEventListener("click", openWebPage);
 
 	// detect if is wechat
@@ -26,7 +24,7 @@ function share_button(){
 		//do something
 		//document.write("<h1>Hello World!</h1><p>Have a nice day!</p>");	
 	}
-	
+
 	function openWebPage(e){
 		//console.log(e.target.id);
 		
@@ -45,16 +43,18 @@ function share_button(){
 				break;
 		}	
 	}
-}
 
-function isWeiXin(){ 
-	var ua = window.navigator.userAgent.toLowerCase(); 
-	if(ua.match(/MicroMessenger/i) == 'micromessenger'){ 
-		return true; 
-	} else{ 
-		return false; 
+	function isWeiXin(){ 
+		var ua = window.navigator.userAgent.toLowerCase(); 
+		if(ua.match(/MicroMessenger/i) == 'micromessenger'){ 
+			return true; 
+		} else{ 
+			return false; 
+		} 
 	} 
-} 
+
+})();
+
 
 
 
