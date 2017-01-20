@@ -41,8 +41,8 @@ INME = (function () {
             'en': 'Score: '
         },
         'landscape': {
-            'sc': '请横屏玩耍',
-            'tc': '請橫屏玩耍',
+            'sc': '请横屏开始游戏',
+            'tc': '請橫屏開始遊戲',
             'en': 'Please rotate device to play'
         },
         'input_name_placeholder': {
