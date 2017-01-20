@@ -21,7 +21,7 @@
             "type": "bitmapFont",
             "key": "copy",
             "textureURL": "assets/copy/copy.png",
-            "atlasURL": "assets/copy/copy.fnt"
+            "atlasURL": "assets/copy/copy.xml"
         },
         {
             "type": "audio",
