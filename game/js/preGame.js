@@ -40,7 +40,8 @@
             var display = paused === true ? 'block' : 'none';
             this.game.paused = paused;
             document.querySelector('.msg__landscape').style.display = display;
-            document.querySelector('.msg__landscape>p').textContent = INME.getCopy('landscape');
+            if (INME.Vars.language !== '')
+                document.querySelector('.msg__landscape>p').textContent = INME.getCopy('landscape');
         },
         //在手机端对dom层做响应式布局
         responsiveDom: function () {

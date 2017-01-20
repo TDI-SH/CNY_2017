@@ -5,6 +5,8 @@ INME = (function () {
      * tenthScore:
      * 第10名的分数;在1.游戏初始加载和2.查看top10榜单时,更新该值;并不是实时更新的;
      * 所以可能玩家的分数并不高于现在的第10名时,分数
+     * 
+     * language:未明确选择语言时语言为空，不指定默认值
      */
     var Vars = {
         characterIndex: 0,
@@ -15,7 +17,7 @@ INME = (function () {
             'tc',
             'en'
         ],
-        language: 'sc',
+        language: '',
         copyFontname: 'copy',
         tenthScore: 0,
     };
