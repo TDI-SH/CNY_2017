@@ -38,7 +38,8 @@ html,body{
     user-select:none;
     -webkit-tap-highlight-color:transparent;
     
-    background-color: #7d1024;
+    /*background-color: #7d1024;*/
+    background-color: #000000;
 
     font-family:Helvetica, Arial, sans-serif;
     font-weight: bold;
@@ -296,5 +297,17 @@ canvas
     -ms-transform: translate(-50%,-50%) ;
     -o-transform: translate(-50%,-50%) ;
     transform: translate(-50%,-50%) ;        
+}
+/*对于iphone6 plus的hack*/
+@media only screen 
+    and (min-device-width : 414px) 
+    and (max-device-width : 736px) 
+    and (orientation : landscape) 
+    and (-webkit-min-device-pixel-ratio : 3) 
+{
+    canvas
+    {
+        top: 45%;
+    }
 }
 
