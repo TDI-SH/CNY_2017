@@ -76,11 +76,7 @@
             'obstacleType': ObstacleType.Dead,
             'position': 'bottom',
             'makePlayerIn': true/*是否让player掉入obstacle*/
-        },
-        {
-            'obstacleType': ObstacleType.Dead,
-            'position': 'sky',
-        },
+        }        
     ]
     INME.State.InGame = {
         create: function () {

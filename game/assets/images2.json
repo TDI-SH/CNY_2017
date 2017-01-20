@@ -2,7 +2,7 @@
 
 "intro/btnBg":
 {
-	"frame": {"x":292,"y":814,"w":243,"h":61},
+	"frame": {"x":1,"y":814,"w":243,"h":61},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":243,"h":61},
@@ -82,7 +82,7 @@
 },
 "intro/tap_en":
 {
-	"frame": {"x":1,"y":850,"w":190,"h":18},
+	"frame": {"x":246,"y":814,"w":190,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":190,"h":18},
@@ -90,7 +90,7 @@
 },
 "intro/tap_sc":
 {
-	"frame": {"x":1,"y":850,"w":190,"h":18},
+	"frame": {"x":246,"y":814,"w":190,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":190,"h":18},
@@ -98,7 +98,7 @@
 },
 "intro/tap_tc":
 {
-	"frame": {"x":1,"y":850,"w":190,"h":18},
+	"frame": {"x":246,"y":814,"w":190,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":190,"h":18},
@@ -106,7 +106,7 @@
 },
 "intro/title_en":
 {
-	"frame": {"x":1,"y":814,"w":289,"h":34},
+	"frame": {"x":1,"y":877,"w":289,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":289,"h":34},
@@ -114,7 +114,7 @@
 },
 "intro/title_sc":
 {
-	"frame": {"x":1,"y":814,"w":289,"h":34},
+	"frame": {"x":1,"y":877,"w":289,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":289,"h":34},
@@ -122,7 +122,7 @@
 },
 "intro/title_tc":
 {
-	"frame": {"x":1,"y":814,"w":289,"h":34},
+	"frame": {"x":1,"y":877,"w":289,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":289,"h":34},
@@ -157,8 +157,8 @@
 	"version": "1.0",
 	"image": "images2.png",
 	"format": "RGBA8888",
-	"size": {"w":923,"h":876},
+	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:b9a95c744851b9ff6ef84fde5bc73517:8eff50e62d87bd1fdbf64f81a4e170e4:f30665c6e687dce4ac97429165633ad7$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ba679d74faef70fde10898c0930fea44:61fad793c55c0434388ade895821389b:f30665c6e687dce4ac97429165633ad7$"
 }
 }
