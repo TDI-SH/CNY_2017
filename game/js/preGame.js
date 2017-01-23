@@ -48,7 +48,7 @@
             var scaleW = window.innerWidth / this.game.width;
             var scaleH = window.innerHeight / this.game.height;
             var scale = Math.min(scaleW, scaleH);
-            var roundScale = (scale + 0.01).toFixed(2);
+            var roundScale = (scale + 0.001).toFixed(3);
             var value = 'translate(-50%,-50%) scale(' + roundScale + ',' + roundScale + ')';
             this.setTransfrom(container, value);
         },
