@@ -193,8 +193,7 @@
         spawnObj: function () {
             spawnDis = Phaser.Math.between(spawnDisVar.min, spawnDisVar.max);
 
-            //var id = (Math.random() * obstacleVars.length) | 0;
-            var id = 3;
+            var id = (Math.random() * obstacleVars.length) | 0;
             if (obstacleVars[id].position === 'sky') {//障碍物在空中时,将红包移到右侧
                 this.makeRedPacket(spawnDis * 0.5);
             }

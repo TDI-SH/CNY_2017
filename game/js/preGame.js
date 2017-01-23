@@ -186,13 +186,13 @@
             //角色选择
             new CharacterSelector(this.game, this.getCSImages(), this.getCSPositions(), this.selectCharacter, INME.Vars.characterIndex);
             //前景
-            this.game.add.image(0, 310, 'images', 'startgame/greatWall');
+            this.game.add.image(0, 310, 'images2', 'startgame/greatWall');
             //标题
-            var title = this.game.add.image(0, 0, 'images', INME.getFrameByLan('startgame/title'));
+            var title = this.game.add.image(0, 0, 'images2', INME.getFrameByLan('startgame/title'));
             title.anchor.set(0.5, 0.5);
             title.position.set(this.game.width >> 1, 100);
             //开始按钮
-            var btnPlay = new INME.Button2(this.game, this.handleClick, this, 'images', 'startgame/btnOver', 'startgame/btn', INME.getFrameByLan('startgame/play'));
+            var btnPlay = new INME.Button2(this.game, this.handleClick, this, 'images2', 'startgame/btnOver', 'startgame/btn', INME.getFrameByLan('startgame/play'));
             btnPlay.name = 'btnPlay';
             btnPlay.position.set(480, 260);
         },
@@ -207,28 +207,34 @@
                     y: 403,
                 }
             ]
+            var stops = [
+                4, 1
+            ]
 
             var arr = [];
             for (var i = 0; i < INME.Vars.characterNum; i++) {
                 var prefix = 'startgame/chicken_' + i;
                 arr.push({
                     light: {
-                        key: 'images',
-                        frame: 'startgame/light',
+                        'key': 'images2',
+                        'frame': 'startgame/light',
                     },
                     normal: {
-                        key: 'images',
-                        frame: prefix,
+                        'key': 'images2',
+                        'frame': prefix,
                     },
                     select: {
-                        key: 'images',
-                        frame: prefix + '_select',
+                        'prefix': prefix + '_select/',
+                        'start': 0,
+                        'stop': stops[i],
+                        'frameRate': 5,
+                        'loop': true,
                     },
                     name: {
-                        key: 'images',
-                        frame: INME.getFrameByLan(prefix + '_name'),
-                        x: namePositions[i].x,
-                        y: namePositions[i].y
+                        'key': 'images2',
+                        'frame': INME.getFrameByLan(prefix + '_name'),
+                        'x': namePositions[i].x,
+                        'y': namePositions[i].y
                     }
                 })
             }
@@ -260,13 +266,16 @@
     }
 
     function Character(game, group, image, position) {
-        var sp = game.add.sprite();
+        var sp = game.add.sprite(0, 0, image.normal.key, image.normal.frame);
         sp.position.set(position.x, position.y);
         group.add(sp);
 
         this.lightImg = sp.addChild(new Phaser.Image(game, 0, 0, image.light.key, image.light.frame));
-        this.normalImg = sp.addChild(new Phaser.Image(game, 0, 0, image.normal.key, image.normal.frame));
-        this.selectImg = sp.addChild(new Phaser.Image(game, 0, 0, image.select.key, image.select.frame));
+
+        this.selectImg = sp.addChild(new Phaser.Image(game, 0, 0, image.normal.key, image.normal.frame));
+        this.normalFrame = image.normal.frame;
+        this.selectImg.animations.add('select', Phaser.Animation.generateFrameNames(image.select.prefix, image.select.start, image.select.stop), image.select.frameRate, image.select.loop);
+
         this.nameImg = sp.addChild(new Phaser.Image(game, image.name.x, image.name.y, image.name.key, image.name.frame));
 
         this.select(false);
@@ -274,16 +283,15 @@
 
     Character.prototype.select = function (value) {
         if (value) {
-            this.normalImg.alpha = 0;
             this.lightImg.alpha = 1;
-            this.selectImg.alpha = 1;
             this.nameImg.alpha = 1;
+            this.selectImg.animations.play('select');
         }
         else {
-            this.normalImg.alpha = 1;
             this.lightImg.alpha = 0;
-            this.selectImg.alpha = 0;
             this.nameImg.alpha = 0;
+            this.selectImg.frameName = this.normalFrame;
+            this.selectImg.animations.stop('select');
         }
     }
 
