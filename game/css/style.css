@@ -1,383 +1,325 @@
-html,body,canvas,div,img,p,input,table,th,td
-{
-    margin: 0;
-    padding: 0;    
+html, body, canvas, div, img, p, input, table, th, td {
+	margin: 0;
+	padding: 0;
 }
-img{
-    display: block;
+img {
+	display: block;
 }
-div{
-    box-sizing: border-box;
+div {
+	box-sizing: border-box;
 }
 /*重置placeholder文本的颜色*/
 ::-webkit-input-placeholder {
-   color: #742c00;
+ color: #742c00;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: #742c00;  
+ color: #742c00;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   color: #742c00;  
+ color: #742c00;
 }
 
-:-ms-input-placeholder {  
-   color: #742c00;  
+:-ms-input-placeholder {
+ color: #742c00;
 }
-
-html,body{
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select:none;
-    -webkit-tap-highlight-color:transparent;
-    
-    background-color: #7d1024;
-    
-
-    font-family:Helvetica, Arial, sans-serif;
-    font-weight: bold;
+html, body {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+	background-color: #7d1024;
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: bold;
 }
 /*container*/
-.container
-{
-    display: none;
-    position: absolute;
-    width: 960px;
-    height: 540px;   
-    z-index: 789;   
-    background-color: rgba(0, 0, 0, 0.7);
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%,-50%);
-    -moz-transform: translate(-50%,-50%) ;
-    -ms-transform: translate(-50%,-50%) ;
-    -o-transform: translate(-50%,-50%) ;
-    transform: translate(-50%,-50%) ;
+.container {
+	display: none;
+	position: absolute;
+	width: 960px;
+	height: 540px;
+	z-index: 789;
+	background-color: rgba(0, 0, 0, 0.7);
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
 }
 /*gameover*/
-.msg__overtenth,.msg__addplayer,.msg__lesstenth,.addplayer__inputbg
-{
-    position: absolute;
-    left: 0;
-    top: 0;
+.msg__overtenth, .msg__addplayer, .msg__lesstenth, .addplayer__inputbg {
+	position: absolute;
+	left: 0;
+	top: 0;
 }
-.msg__lesstenth
-{
-    display: none;    
+.msg__lesstenth {
+	display: none;
 }
 /*分数*/
-.gameover__score
-{
-    position: absolute;
-    left: 443px;
-    top: 300px;
-    font-size: 36px;
-    color: #fed202;   
+.gameover__score {
+	position: absolute;
+	left: 443px;
+	top: 300px;
+	font-size: 36px;
+	color: #fed202;
 }
-.gameover__score_lesstenth
-{
-    top: 235px;
+.gameover__score_lesstenth {
+	top: 235px;
 }
 /*添加新player*/
-.gameover__addplayer
-{
-    display: none;
+.gameover__addplayer {
+	display: none;
 }
-.addplayer__input-name,.addplayer__input-email
-{
-    width: 277px;
-    height: 58px;
-    border-width: 0;/*去掉默认样式*/
-    outline: none;
-    text-decoration: none;
-    color: #742c00;
-    font-size: 18px;
-    background-color:transparent;
-    padding-left: 30px;
-    padding-right: 30px;
+.addplayer__input-name, .addplayer__input-email {
+	width: 277px;
+	height: 58px;
+	border-width: 0;/*去掉默认样式*/
+	outline: none;
+	text-decoration: none;
+	color: #742c00;
+	font-size: 18px;
+	background-color: transparent;
+	padding-left: 30px;
+	padding-right: 30px;
 }
-.addplayer__input-name
-{
-    position: absolute;
-    left: 104px;
-    top: 367px;    
+.addplayer__input-name {
+	position: absolute;
+	left: 104px;
+	top: 367px;
 }
-.addplayer__input-email
-{
-    position: absolute;
-    left: 444px;
-    top: 367px;    
+.addplayer__input-email {
+	position: absolute;
+	left: 444px;
+	top: 367px;
 }
-.addplayer__btnSkip
-{
-    position: absolute;
-    left: 108px;
-    top: 458px;
+.addplayer__btnSkip {
+	position: absolute;
+	left: 108px;
+	top: 458px;
 }
-.addplayer__btnSubmit
-{
-    position: absolute;
-    left: 575px;
-    top: 446px;
+.addplayer__btnSubmit {
+	position: absolute;
+	left: 575px;
+	top: 446px;
 }
 /*其余按钮*/
-.gameover__btns
-{
-    position: absolute;
-    left: 0;
-    top: 374px;
+.gameover__btns {
+	position: absolute;
+	left: 0;
+	top: 374px;
 }
-.gameover__btns_lesstenth
-{
-    top: 386px;
+.gameover__btns_lesstenth {
+	top: 386px;
 }
-.gameover__btnHome 
-{
-    position: absolute;
-    left: 175px;
-    top: 7px;
-    cursor: pointer;      
+.gameover__btnHome {
+	position: absolute;
+	left: 175px;
+	top: 7px;
+	cursor: pointer;
 }
-.gameover__btnReplay
-{
-    position: absolute;
-    left: 340px;
-    top: 0;
-    cursor: pointer;
+.gameover__btnReplay {
+	position: absolute;
+	left: 340px;
+	top: 0;
+	cursor: pointer;
 }
-.gameover__btnViewTop
-{
-    position: absolute;
-    left: 554px;
-    top: 6px;
-    cursor: pointer;
+.gameover__btnViewTop {
+	position: absolute;
+	left: 554px;
+	top: 6px;
+	cursor: pointer;
 }
 /*分享*/
-#share
-{
-    position: absolute;
-    right: 0;
-    top: 0;
+#share {
+	position: absolute;
+	right: 0;
+	top: 0;
 }
-#share img
-{
-    cursor: pointer;
+#share img {
+	cursor: pointer;
 }
 /*top10榜单*/
-.scoreboard
-{
-    display: none;
-    position: absolute;
-    width: 100%;
-    height: 100%;    
-    left: 0;
-    top: 0;
-    background-color: #7d1024;
+.scoreboard {
+	display: none;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background-color: #7d1024;
 }
-.scoreboard__title
-{
-    position: absolute;
-    left: 0;
-    top: 0;
+.scoreboard__title {
+	position: absolute;
+	left: 0;
+	top: 0;
 }
-.scoreboard__btnBack
-{
-    position: absolute;
-    left: 679px;
-    top: 154px;
+.scoreboard__btnBack {
+	position: absolute;
+	left: 679px;
+	top: 154px;
 }
-.scoreboard__btnReplay
-{
-    position: absolute;
-    left: 655px;
-    top: 233px;
+.scoreboard__btnReplay {
+	position: absolute;
+	left: 655px;
+	top: 233px;
 }
-.scoreboard__btnHome
-{
-    position: absolute;
-    left: 679px;
-    top: 328px;
+.scoreboard__btnHome {
+	position: absolute;
+	left: 679px;
+	top: 328px;
 }
 /*表格*/
-.table__wrapper
-{
-    position: absolute;
-    width: 512px;
-    height: 380px;
-    overflow-y: scroll;
-    left: 40px;
-    top: 130px;    
+.table__wrapper {
+	position: absolute;
+	width: 512px;
+	height: 380px;
+	overflow-y: scroll;
+	left: 40px;
+	top: 130px;
 }
-table{
-    position: absolute;
-    width: 512px;
-    height: 826px;
-    left: 0;
-    top: 0;    
-    border-collapse: collapse;            
+table {
+	position: absolute;
+	width: 512px;
+	height: 826px;
+	left: 0;
+	top: 0;
+	border-collapse: collapse;
 }
-table,th,td
-{
-    /*border: 1px solid #dddddd;*/
+table, th, td {
+/*border: 1px solid #dddddd;*/
 }
-th,td
-{
-    height: 82.5px;/*固定值，修复火狐问题*/
-    text-align: left;
-    font-size: 24px;
-    color: #742c00;
+th, td {
+	height: 82.5px;/*固定值，修复火狐问题*/
+	text-align: left;
+	font-size: 24px;
+	color: #742c00;
 }
 td:nth-child(3n+1) {
-    text-align: center;
-    width: 96px;
+	text-align: center;
+	width: 96px;
 }
 td:nth-child(3n+2) {
-    width: 300px;
+	width: 300px;
 }
 /*横竖屏切换提示信息*/
-.msg__landscape
-{   
-    position: absolute;    
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    z-index: 7890;
-    background-color: #7d1024;
-    color: #ffffff;
-    display: none;  
+.msg__landscape {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	z-index: 7890;
+	background-color: #7d1024;
+	color: #ffffff;
+	display: none;
 }
-.msg__landscape>p
-{
-    position: absolute;
-    width: 100%;
-    text-align: center;    
+.msg__landscape>p {
+	position: absolute;
+	width: 100%;
+	text-align: center;
 }
 /*公用*/
-.btn
-{
-    width: 100px;
-    line-height: 30px;
-    text-align: center;
-    background-color: #789789;
-    color: #ffffff;
-    margin:10px;    
+.btn {
+	width: 100px;
+	line-height: 30px;
+	text-align: center;
+	background-color: #789789;
+	color: #ffffff;
+	margin: 10px;
 }
-.v_center
-{
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%);
+.v_center {
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	-o-transform: translateY(-50%);
+	transform: translateY(-50%);
 }
-.center
-{
-    -webkit-transform: translate(-50%,-50%) ;
-    -moz-transform: translate(-50%,-50%) ;
-    -ms-transform: translate(-50%,-50%) ;
-    -o-transform: translate(-50%,-50%) ;
-    transform: translate(-50%,-50%) ;
+.center {
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
 }
 /*对于游戏canvas层的hack样式*/
-canvas
-{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%,-50%) ;
-    -moz-transform: translate(-50%,-50%) ;
-    -ms-transform: translate(-50%,-50%) ;
-    -o-transform: translate(-50%,-50%) ;
-    transform: translate(-50%,-50%) ;        
-}
-/*对于iphone6 plus的hack*/
-@media only screen 
-    and (min-device-width : 414px) 
-    and (max-device-width : 736px) 
-    and (orientation : landscape) 
-    and (-webkit-min-device-pixel-ratio : 3) 
-{
-    canvas
-    {
-        top: 45%;
-    }
+canvas {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
 }
 
-/*** cookie ***/
-/*** cookie ***/
-.cookie
-{
-    position: absolute;
-    width: 100%;
-    left: 0;
-    bottom:0;
-    padding-bottom: 10px;
-    background-color: rgb(90,16,36);
-    color: rgb(255,255,255);
-    font-family: Helvetica;
-    font-size: 12px;
-    font-weight: lighter;
-    display: none;
-    z-index: 9999;
+/*对于iphone6 plus的hack样式*/
+@media only screen and (min-device-width : 414px) and (max-device-width : 736px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio : 3) {
+canvas {
+	top: 45%;
 }
-.cookie p
-{
-    padding: 10px 10px 0 10px;
-}
-.cookie__btn
-{
-    float: left;
-    margin-left: 10px;
-    margin-top: 10px;
-    width: 190px;
-    height: 80px;
-    border-radius: 50px;
-    background-color: #007c82;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: 100% auto;
-}
-.cookie__btnContinue
-{
-    color: rgb(255,255,255);
-    font-family: Helvetica;
-    font-size: 12px;
-    background-color: rgb(135,16,36);
-    text-align: center;
-    vertical-align: middle;
-    line-height: 25px;
-    /*background-image: url('../assets/cookie_button/btnContinue.png');*/    
-}
-.cookie__btnFind
-{
-    color: rgb(255,255,255);
-    font-family: Helvetica;
-    font-size: 12px;
-    margin-left: 15px;
-    background-color: rgb(135,16,36);
-    text-align: center;
-    vertical-align: middle;
-    line-height: 25px;
-    /*background-image: url('../assets/cookie_button/btnFind.png');  */  
-}
-.cookie__btn
-{
-    width: 105px;
-    height: 25px;
-    border-radius: 25px;
 }
 /*** cookie ***/
-#button_more {
-    
+.cookie {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	bottom: 0;
+	padding-bottom: 10px;
+	background-color: rgb(90,16,36);
+	color: rgb(255,255,255);
+	font-family: Helvetica;
+	font-size: 12px;
+	font-weight: lighter;
+	display: none;
+	z-index: 9999;
 }
-
-
+.cookie p {
+	padding: 10px 10px 0 10px;
+}
+.cookie__btn {
+	float: left;
+	margin-left: 10px;
+	margin-top: 10px;
+	width: 190px;
+	height: 80px;
+	border-radius: 50px;
+	background-color: #007c82;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+}
+.cookie__btnContinue {
+	color: rgb(255,255,255);
+	font-family: Helvetica;
+	font-size: 12px;
+	background-color: rgb(135,16,36);
+	text-align: center;
+	vertical-align: middle;
+	line-height: 25px;/*background-image: url('../assets/cookie_button/btnContinue.png');*/
+}
+.cookie__btnFind {
+	color: rgb(255,255,255);
+	font-family: Helvetica;
+	font-size: 12px;
+	margin-left: 15px;
+	background-color: rgb(135,16,36);
+	text-align: center;
+	vertical-align: middle;
+	line-height: 25px;/*background-image: url('../assets/cookie_button/btnFind.png');  */
+}
+.cookie__btn {
+	width: 105px;
+	height: 25px;
+	border-radius: 25px;
+}
+/*** cookie ***/
