@@ -51,7 +51,7 @@
             'obstacleType': ObstacleType.Dead,
             'position': 'sky',
             'speedY': -15,
-            'y': 420,//优先级最高
+            'y': 410,//优先级最高
         },
         {
             'obstacleType': ObstacleType.Dead,
