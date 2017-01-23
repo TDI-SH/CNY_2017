@@ -111,39 +111,6 @@
         }
     }
 
-
-
-    /**
-     * state - Story
-     */
-    // INME.State.Story = {
-    //     create: function () {
-    //         var video = this.game.add.video('backstory');
-    //         video.addToWorld();
-    //         this.game.input.keyboard.addCallbacks(this, this.handlePress);
-    //         console.log(this.game.input.keyboard.addCallbacks(this, this.handlePress));
-    //         video.play();
-    //         video.onComplete.addOnce(function () {
-    //             console.log('backstory ended, enter game');
-    //             this.game.state.start(INME.State.Key.StartGame);
-    //         }, this);
-
-    //         video.volume = 0;//－－－测试
-    //         //this.game.state.start(INME.State.Key.StartGame)
-
-    //     },
-
-    //     handlePress: function (key) {
-    //         switch(key.keyCode) {
-    //             case 27:
-    //                this.game.state.start(INME.State.Key.StartGame);  
-    //         }
-    //         console.log(key.keyCode);
-    //     }
-    // }
-
-
-
     INME.State.Story = {
         create: function () {
             var story = this.game.add.sprite(0, 0, 'images2', INME.getFrameByLan('story/story'));
@@ -166,9 +133,7 @@
                     btn_continue.style.backgroundImage = "url('assets/cookie_button/btnContinue_sc.png')";
                     btn_findmore.style.backgroundImage = "url('assets/cookie_button/btnFind_sc.png')";
                     linkAddress.setAttribute('href', 'cookie_sc.html')
-                    console.log(description);
                     break;
-                // case "en":       
                 case "tc":
                     description.innerHTML = "此遊戲運用第三方社交平台cookie來分享本網信息";
                     btn_continue.style.backgroundImage = "url('assets/cookie_button/btnContinue_tc.png')";

@@ -186,11 +186,7 @@ html, body {
 	top: 130px;
 	scrollbar-3dlight-color:gold;
     scrollbar-arrow-color:blue;
-    scrollbar-base-color:;
     scrollbar-darkshadow-color:blue;
-    scrollbar-face-color:;
-    scrollbar-highlight-color:;
-    scrollbar-shadow-color:
 }
 /*chrome scroll*/
 ::-webkit-scrollbar {
@@ -205,8 +201,6 @@ html, body {
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgb(204,204,0);
 }
-
-
 
 table {
 	position: absolute;
