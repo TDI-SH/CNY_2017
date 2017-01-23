@@ -50,12 +50,14 @@
         {
             'obstacleType': ObstacleType.Dead,
             'position': 'sky',
+            'speedY': -15,
+            'y': 420,//优先级最高
         },
         {
             'obstacleType': ObstacleType.Dead,
             'position': 'sky',
             'animations': {
-                'miss': {
+                'miss': {//障碍物与player擦肩而过时播放的动画
                     'prefix': 'obstacle_4/boom/',
                     'start': 0,
                     'stop': 7,
@@ -84,7 +86,7 @@
                     'frameRate': 20,
                     'loop': true,
                 },
-                'show': {//障碍物与player擦肩而过时播放的动画
+                'show': {//纯展示性动画
                     'prefix': 'obstacle_7/fishjump/',
                     'start': 0,
                     'stop': 15,
@@ -191,8 +193,8 @@
         spawnObj: function () {
             spawnDis = Phaser.Math.between(spawnDisVar.min, spawnDisVar.max);
 
-            var id = (Math.random() * obstacleVars.length) | 0;
-            //var id = 4;
+            //var id = (Math.random() * obstacleVars.length) | 0;
+            var id = 3;
             if (obstacleVars[id].position === 'sky') {//障碍物在空中时,将红包移到右侧
                 this.makeRedPacket(spawnDis * 0.5);
             }
@@ -333,19 +335,8 @@
         },
         //产生障碍物
         makeObstacle: function (id) {
-            var obstacleId = 'obstacle_' + id;
-
             var obstacle = this.produceObstacle(id);
             this.setObstacle(obstacle, id);
-
-            this.game.physics.p2.enable(obstacle, debug);
-            obstacle.body.clearShapes();//清除默认的碰撞矩形
-            obstacle.body.loadPolygon("physics", obstacleId);
-
-            obstacle.body.setCollisionGroup(this.obstacleCG);
-            obstacle.body.kinematic = true;
-            obstacle.body.collides(this.playerCG);//障碍物碰撞player的回调函数不需要重复定义
-            obstacle.body.velocity.x = speed;
 
             return obstacle;
         },
@@ -365,8 +356,6 @@
                             var aniSprite = this.game.add.image(0, 0, 'images', aniVars.prefix + '0')//直接再添加一个sprite不可以？
                             obstacle.addChild(aniSprite);
                             aniSprite.alpha = 0;
-                            console.log(aniSprite.width, aniSprite.height);
-                            console.log(obstacle.width, obstacle.height);
 
                             aniSprite.position.set(-obstacle.width * 0.5, aniVars.y);
                         }
@@ -393,7 +382,7 @@
             obstacle.type = Type.Obstacle;
             obstacle.obstacleType = vars.obstacleType;
             obstacle.makePlayerIn = vars.makePlayerIn;
-
+            //常规设置
             var y;
             switch (vars.position) {
                 case 'sky':
@@ -407,7 +396,22 @@
                     y = this.game.height - groundH + obstacle.height * 0.5;
                     break;
             }
+            if (vars.y)
+                y = vars.y;
             obstacle.position.set(spawnX, y);
+
+            //body设置
+            this.game.physics.p2.enable(obstacle, debug);
+            obstacle.body.clearShapes();//清除默认的碰撞矩形
+            obstacle.body.loadPolygon("physics", 'obstacle_' + id);
+
+            obstacle.body.setCollisionGroup(this.obstacleCG);
+            obstacle.body.kinematic = true;
+            obstacle.body.collides(this.playerCG);//障碍物碰撞player的回调函数不需要重复定义
+            obstacle.body.velocity.x = speed;
+            if (vars.speedY) {
+                obstacle.body.velocity.y = vars.speedY;
+            }
         },
         //产生红包
         //xOffsetSpawn:红包x轴位置距spawnX的差值
