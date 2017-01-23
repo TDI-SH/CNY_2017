@@ -163,16 +163,16 @@
             switch (language) {
                 case "sc":
                     description.innerHTML = "此游戏运用第三方社交平台cookie来分享本网信息";
-                    btn_continue.textContent = "继续";
-                    btn_findmore.textContent = "了解更多";
+                    btn_continue.style.backgroundImage = "url('assets/cookie_button/btnContinue_sc.png')";
+                    btn_findmore.style.backgroundImage = "url('assets/cookie_button/btnFind_sc.png')";
                     linkAddress.setAttribute('href', 'cookie_sc.html')
                     console.log(description);
                     break;
                 // case "en":       
                 case "tc":
                     description.innerHTML = "此遊戲運用第三方社交平台cookie來分享本網信息";
-                    btn_continue.textContent = "繼續";
-                    btn_findmore.textContent = "了解更多";
+                    btn_continue.style.backgroundImage = "url('assets/cookie_button/btnContinue_tc.png')";
+                    btn_findmore.style.backgroundImage = "url('assets/cookie_button/btnFind_tc.png')";
                     linkAddress.setAttribute('href', 'cookie_tc.html')
                     break;
             }
