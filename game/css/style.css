@@ -284,6 +284,10 @@ canvas {
 canvas {
 	top: 45%;
 }
+.container
+{
+    top: 45%;
+}
 }
 /*** cookie ***/
 .cookie {
