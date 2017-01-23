@@ -56,11 +56,11 @@
             'position': 'sky',
             'animations': {
                 'miss': {
-                    'prefix': 'boom/',
+                    'prefix': 'obstacle_4/boom/',
                     'start': 0,
                     'stop': 7,
                     'frameRate': 20,
-                    'loop': false
+                    'loop': false,
                 }
             }
         },
@@ -75,8 +75,27 @@
         {
             'obstacleType': ObstacleType.Dead,
             'position': 'bottom',
-            'makePlayerIn': true/*是否让player掉入obstacle*/
-        }        
+            'makePlayerIn': true,//是否让player掉入obstacle
+            'animations': {
+                'idle': {//障碍物的默认动画
+                    'prefix': 'obstacle_7/idle/',
+                    'start': 0,
+                    'stop': 15,
+                    'frameRate': 20,
+                    'loop': true,
+                },
+                'show': {//障碍物与player擦肩而过时播放的动画
+                    'prefix': 'obstacle_7/fishjump/',
+                    'start': 0,
+                    'stop': 15,
+                    'frameRate': 20,
+                    'loop': false,
+                    'aniType': 'coexist',//aniType指示该动画和障碍物主体之间的关系：可选值为coexist（共存）和默认值exclusive（排他
+                    'y': -120,//动画中心点相对于障碍物中心点y轴位置
+                }
+            }
+
+        }
     ]
     INME.State.InGame = {
         create: function () {
@@ -173,6 +192,7 @@
             spawnDis = Phaser.Math.between(spawnDisVar.min, spawnDisVar.max);
 
             var id = (Math.random() * obstacleVars.length) | 0;
+            //var id = 4;
             if (obstacleVars[id].position === 'sky') {//障碍物在空中时,将红包移到右侧
                 this.makeRedPacket(spawnDis * 0.5);
             }
@@ -191,13 +211,8 @@
         //检查
         check: function () {
             this.game.world.children.forEach(function (child) {
-                if (child.animations && child.animations.getAnimation('miss') && child.x < playerX && child.hasMiss === undefined) {//展示爆竹动画
-                    child.play('miss');
-                    child.body.destroy();//销毁body，避免继续移动
-                    child.animations.currentAnim.onComplete.add(this.destoryObj, this, 0, child);
-
-                    child.hasMiss = true;
-                }
+                this.checkPlayAni(child.x < playerX, child, 'miss');//尝试播放miss动画
+                this.checkPlayAni(child.x < (this.game.width * 0.6), child, 'show');//尝试播放show动画
 
                 var type = child.type;//销毁---debug为true时，world.children有额外数据             
                 if (type === Type.Obstacle || type === Type.RedPacket) {
@@ -207,6 +222,29 @@
                     }
                 }
             }, this)
+        },
+        checkPlayAni: function (contion, sprite, aniName) {
+            if (contion && sprite[aniName] === undefined) {
+                var aniSprite = sprite.children[0];
+                if (sprite.animations && sprite.animations.getAnimation(aniName)) {
+                    aniSprite = sprite;
+                    this.playAni(sprite, aniSprite, aniName);
+                }
+                else if (aniSprite && aniSprite.animations && aniSprite.animations.getAnimation(aniName)) {
+                    this.playAni(sprite, aniSprite, aniName, 'coexist');
+                }
+            }
+        },
+        playAni: function (sprite, aniSprite, aniName, aniType) {
+            if (aniType !== 'coexist') {
+                aniSprite.body.destroy();//销毁body，避免继续移动
+            }
+
+            aniSprite.alpha = 1;
+            aniSprite.play(aniName);
+            sprite[aniName] = true;
+            aniSprite.animations.currentAnim.onComplete.add(this.destoryObj, this, 0, sprite);
+
         },
         //背景滚动        
         scrollBg: function () {
@@ -319,8 +357,32 @@
             var animations = vars.animations;
             if (animations) {
                 for (var aniName in animations) {
-                    var aniVars = animations[aniName]
-                    obstacle.animations.add(aniName, Phaser.Animation.generateFrameNames(aniVars.prefix, aniVars.start, aniVars.stop), aniVars.frameRate, aniVars.loop);
+                    var aniVars = animations[aniName];
+                    var aniSprite;
+                    if (aniVars.aniType === 'coexist') {//期望播放该动画时，障碍物同时存在      
+                        var len = obstacle.children.length;
+                        if (len === 0) {
+                            var aniSprite = this.game.add.image(0, 0, 'images', aniVars.prefix + '0')//直接再添加一个sprite不可以？
+                            obstacle.addChild(aniSprite);
+                            aniSprite.alpha = 0;
+                            console.log(aniSprite.width, aniSprite.height);
+                            console.log(obstacle.width, obstacle.height);
+
+                            aniSprite.position.set(-obstacle.width * 0.5, aniVars.y);
+                        }
+                        else {
+                            aniSprite = obstacle.getChildAt(0);
+                        }
+                    }
+                    else {
+                        aniSprite = obstacle;
+                    }
+                    aniSprite.animations.add(aniName, Phaser.Animation.generateFrameNames(aniVars.prefix, aniVars.start, aniVars.stop), aniVars.frameRate, aniVars.loop);
+
+
+                    if (aniName === 'idle') {//播放默认动画
+                        aniSprite.play(aniName);
+                    }
                 }
             }
 
