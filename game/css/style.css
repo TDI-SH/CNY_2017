@@ -227,11 +227,8 @@ table {
 	top: 0;
 	border-collapse: collapse;
 }
-table, th, td {
-/*border: 1px solid #dddddd;*/
-}
 th, td {
-	height: 82.5px;/*固定值，修复火狐问题*/
+	height: 82.5px;/*固定高度的平均值，修复火狐上的问题*/
 	text-align: left;
 	font-size: 24px;
 	color: #742c00;
@@ -298,12 +295,8 @@ canvas {
 
 /*对于iphone6 plus的hack样式*/
 @media only screen and (min-device-width : 414px) and (max-device-width : 736px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio : 3) {
-canvas {
+canvas,.container {
 	top: 45%;
-}
-.container
-{
-    top: 45%;
 }
 }
 /*** cookie ***/
@@ -347,4 +340,4 @@ canvas {
 	height: 25px;
 	border-radius: 25px;
 }
-/*** cookie ***/
+
