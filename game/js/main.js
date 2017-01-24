@@ -265,10 +265,10 @@
                 frame: INME.getFrameByLan(prefix + '_name')
             }
             var position = {
-                anchorX: 0,
+                anchorX: 1,
                 anchorY: 1,
-                x: 20,
-                y: 100,
+                x: this.game.width - 20,
+                y: 100
             }
             this.scoreBoard = new ScoreBoard(this.game, characterImg, nameImg, position)
         },
@@ -278,10 +278,10 @@
                 frame: 'ingame/topestIcon'
             }
             var position = {
-                anchorX: 1,
+                anchorX: 0,
                 anchorY: 1,
-                x: this.game.width - 20,
-                y: 100
+                x: 20,
+                y: 100,
             }
             new TopBoard(this.game, img, position);
         },
