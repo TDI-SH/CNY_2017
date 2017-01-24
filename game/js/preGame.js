@@ -172,9 +172,15 @@
                     y: 403,
                 }
             ]
-            var stops = [
-                4, 1
+            var frameRates = [
+                12, 5
             ]
+            var frames = [[0, 1, 2, 1, 0, 1, 2, 1, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0,
+                1, 2, 4, 3, 4, 2, 4, 3, 3,
+                3, 3, 3, 3, 3, 3, 3], [0, 1]]
+
+
 
             var arr = [];
             for (var i = 0; i < INME.Vars.characterNum; i++) {
@@ -189,10 +195,8 @@
                         'frame': prefix,
                     },
                     select: {
-                        'prefix': prefix + '_select/',
-                        'start': 0,
-                        'stop': stops[i],
-                        'frameRate': 5,
+                        'frames': generateFrameNames(prefix + '_select/', frames[i]),
+                        'frameRate': frameRates[i],
                         'loop': true,
                     },
                     name: {
@@ -202,6 +206,17 @@
                         'y': namePositions[i].y
                     }
                 })
+            }
+
+            function generateFrameNames(prefix, arr) {
+                var arrary = [];
+                var len = arr.length;
+                for (var i = 0; i < len; i++) {
+                    var name = prefix + arr[i];
+                    arrary.push(name);
+                }
+                return arrary;
+
             }
             return arr;
         },
@@ -239,7 +254,9 @@
 
         this.selectImg = sp.addChild(new Phaser.Image(game, 0, 0, image.normal.key, image.normal.frame));
         this.normalFrame = image.normal.frame;
-        this.selectImg.animations.add('select', Phaser.Animation.generateFrameNames(image.select.prefix, image.select.start, image.select.stop), image.select.frameRate, image.select.loop);
+        this.selectImg.animations.add('select', image.select.frames, image.select.frameRate, image.select.loop);
+
+        console.log(image.select.frames);
 
         this.nameImg = sp.addChild(new Phaser.Image(game, image.name.x, image.name.y, image.name.key, image.name.frame));
 
