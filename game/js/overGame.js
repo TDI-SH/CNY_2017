@@ -205,6 +205,15 @@ var OverGame = (function () {
 
         document.querySelector('.wechat__bg').src = 'assets/overgame/wechatBg_' + mark + format;
         document.querySelector('.wechat__msg').src = 'assets/overgame/wechatMsg_' + mark + '_' + INME.Vars.language + format;
+        
+
+        if (mark === 'nowechat') {
+            document.querySelector('.wechat__qrcode').style.display = 'block';
+        }
+        else {
+            document.querySelector('.wechat__qrcode').style.display = 'none';
+
+        }
     }
 
     //更新对应语言版本的图片
