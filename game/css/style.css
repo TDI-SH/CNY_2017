@@ -146,6 +146,23 @@ html, body {
 #share img {
 	cursor: pointer;
 }
+.popup__wechat
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(0,0,0,0.6);
+    display: none;
+}
+.wechat__bg,.wechat__msg
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
 /*top10榜单*/
 .scoreboard {
 	display: none;

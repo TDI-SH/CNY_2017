@@ -30,9 +30,17 @@ var OverGame = (function () {
         name = inputName.addEventListener('focus', preventInputDefault, false);
         email = inputEmail.addEventListener('focus', preventInputDefault, false);
         function preventInputDefault(e) {
-            console.log('试图阻止input默认样式');
             e.preventDefault();
         }
+        //微信弹出窗
+        var popupWechat = document.querySelector('.popup__wechat');
+        popupWechat.addEventListener('click', function () {
+            popupWechat.style.display = 'none';
+        }, false);
+
+        document.querySelector('#wechat').addEventListener('click', function () {
+            popupWechat.style.display = 'block';
+        }, false);
     })();
 
     var needUpdate = true;
@@ -43,6 +51,7 @@ var OverGame = (function () {
         checkScoreVsTenth();
 
         if (needUpdate) {
+            updateWechatImg();
             updateLanImg();
             needUpdate = false;
         }
@@ -184,6 +193,18 @@ var OverGame = (function () {
             form.style.display = 'none';
             btns.style.display = 'block';
         }
+    }
+
+    function updateWechatImg() {
+        function isWechat() {
+            return (/micromessenger/i).test(navigator.userAgent);
+        }
+
+        var mark = isWechat() ? 'wechat' : 'nowechat';
+        var format = '.png';
+
+        document.querySelector('.wechat__bg').src = 'assets/overgame/wechatBg_' + mark + format;
+        document.querySelector('.wechat__msg').src = 'assets/overgame/wechatMsg_' + mark + '_' + INME.Vars.language + format;
     }
 
     //更新对应语言版本的图片
