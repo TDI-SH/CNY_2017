@@ -256,8 +256,6 @@
         this.normalFrame = image.normal.frame;
         this.selectImg.animations.add('select', image.select.frames, image.select.frameRate, image.select.loop);
 
-        console.log(image.select.frames);
-
         this.nameImg = sp.addChild(new Phaser.Image(game, image.name.x, image.name.y, image.name.key, image.name.frame));
 
         this.select(false);
