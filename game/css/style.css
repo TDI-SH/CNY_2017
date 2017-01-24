@@ -200,10 +200,7 @@ html, body {
 	height: 380px;
 	overflow-y: scroll;
 	left: 40px;
-	top: 130px;
-	scrollbar-3dlight-color:gold;
-    scrollbar-arrow-color:blue;
-    scrollbar-darkshadow-color:blue;
+	top: 130px;	
 }
 /*chrome scroll*/
 ::-webkit-scrollbar {
