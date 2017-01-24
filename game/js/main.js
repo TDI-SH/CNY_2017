@@ -109,13 +109,14 @@
 
             nearestObj = null;
             spawnDis = spawnDisVar.min;
-            //背景音乐
-            INME.Sound.bg.play();
             //物理引擎，需要多边形碰撞所以从Arcade切换成了P2
             this.game.physics.startSystem(Phaser.Physics.P2JS);
             this.game.physics.p2.gravity.y = worldGravity;
             this.game.physics.p2.setImpactEvents(true);//开启碰撞时回调函数派发
             this.game.physics.p2.setPostBroadphaseCallback(this.overlap, this);//借此模拟overlap
+            //背景音乐
+            if (!INME.Sound.bg.isPlaying)
+                INME.Sound.bg.play();
             //背景
             this.game.add.image(0, 0, 'images', 'ingame/bg');
             this.cloud = new ParallaxSprite(this.game, 'images', 'ingame/cloud');

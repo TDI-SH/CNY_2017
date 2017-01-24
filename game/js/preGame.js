@@ -148,6 +148,8 @@
 
     INME.State.StartGame = {
         create: function () {
+            //背景音乐
+            INME.Sound.bg.play();
             //角色选择
             new CharacterSelector(this.game, this.getCSImages(), this.getCSPositions(), this.selectCharacter, INME.Vars.characterIndex);
             //前景
