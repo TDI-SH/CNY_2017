@@ -282,7 +282,7 @@
                 anchorX: 0,
                 anchorY: 1,
                 x: 20,
-                y: 100,
+                y: 90,
             }
             new TopBoard(this.game, img, position);
         },
