@@ -224,8 +224,8 @@
                 }
             }, this)
         },
-        checkPlayAni: function (contion, sprite, aniName) {
-            if (contion && sprite[aniName] === undefined) {
+        checkPlayAni: function (condition, sprite, aniName) {
+            if (condition && sprite[aniName] === undefined) {
                 var aniSprite = sprite.children[0];
                 if (sprite.animations && sprite.animations.getAnimation(aniName)) {
                     aniSprite = sprite;
@@ -535,27 +535,35 @@
         //player与障碍物碰撞
         playerCollideObstacle: function (playerBody, obstacleBody) {
             if (obstacleBody.hasCollided == undefined) {
-                if (obstacleBody.sprite.obstacleType === ObstacleType.MinusScore) {
+                var obstacle = obstacleBody.sprite;
+                if (obstacle.obstacleType === ObstacleType.MinusScore) {
                     this.updateScore('minus');
                 }
                 else {
-                    this.game.world.bringToTop(this.player);//将player放在最前
-                    this.makePlayerIn(obstacleBody.sprite);
+                    this.game.world.bringToTop(this.player);//将player放在最前  
+                    this.checkPlayAni(true, obstacle, 'miss');//obstacle_4的miss动画同时作为碰撞动画播放                                      
+                    this.makePlayerIn(obstacle);
                     this.gameOver();
                 }
                 obstacleBody.hasCollided = true;
             }
         },
-        gameOver: function () {//手动让游戏暂停会停掉所有的声音，为了播放gameover音效，暂决定不用游戏暂停模拟gameover
+        gameOver: function () {//手动让游戏暂停会停掉所有的声音，为了播放gameover音效，决定不用游戏暂停模拟gameover
             isDead = true;
             this.player.play('dead');
             INME.Sound.bg.stop();
             INME.Sound.dead.play();
             INME.Vars.score = score;//更新分数
 
-            this.game.world.children.forEach(function (child) {//销毁所有对象的body和动画
-                if (child.animations)
-                    child.animations.stop();
+            this.game.world.children.forEach(function (child) {//销毁所有对象的body,停掉所有动画(正在播放的播放结束再停掉)
+                if (child.animations && child.animations.currentAnim) {
+                    child.animations.currentAnim.onComplete.add(function () {
+                        child.animations.stop();
+                    });
+                    child.animations.currentAnim.onLoop.add(function () {
+                        child.animations.stop();
+                    })
+                }
                 if (child.body)
                     child.body.destroy();
             });
