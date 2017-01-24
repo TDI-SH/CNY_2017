@@ -37,11 +37,6 @@
             "type": "audio",
             "key": "dead",
             "urls": "assets/sound/dead.mp3"
-        },
-        {
-            "type": "video",
-            "key": "backstory",
-            "urls": "assets/video/backstory.mp4"
-        }
+        }        
     ]
 }

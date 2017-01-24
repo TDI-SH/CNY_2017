@@ -267,7 +267,7 @@
             var position = {
                 anchorX: 1,
                 anchorY: 1,
-                x: this.game.width - 20,
+                x: this.game.width - 70,
                 y: 100
             }
             this.scoreBoard = new ScoreBoard(this.game, characterImg, nameImg, position)
