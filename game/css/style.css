@@ -38,6 +38,10 @@ html, body {
 	font-family: Helvetica, Arial, sans-serif;
 	font-weight: bold;
 }
+body
+{
+    background-image: url('../assets/bg/bg2.png');    
+}
 /*container*/
 .container {
 	display: none;
