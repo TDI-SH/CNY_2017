@@ -10,6 +10,8 @@ var OverGame = (function () {
 
     var scoreboard = document.querySelector('.scoreboard');
 
+    var emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
     var game;
 
     (function addListeners() {
@@ -83,7 +85,8 @@ var OverGame = (function () {
     function addPlayer(e) {
         name = inputName.value;
         email = inputEmail.value;
-        if (name !== '' && email !== '') {
+        if (name !== '' && emailRegex.test(email)) {
+            console.log('新用户表单验证成功');
             var data = {
                 name: name,
                 email: email,
@@ -205,7 +208,7 @@ var OverGame = (function () {
 
         document.querySelector('.wechat__bg').src = 'assets/overgame/wechatBg_' + mark + format;
         document.querySelector('.wechat__msg').src = 'assets/overgame/wechatMsg_' + mark + '_' + INME.Vars.language + format;
-        
+
 
         if (mark === 'nowechat') {
             document.querySelector('.wechat__qrcode').style.display = 'block';
