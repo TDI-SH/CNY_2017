@@ -10,6 +10,8 @@
             this.game.scale.pageAlignVertically = true;
             if (this.game.device.desktop) {
                 console.log('桌面');
+                document.querySelector('canvas').style.boxSizing='border-box';
+                document.querySelector('canvas').style.border='solid 1px #873623';
 
                 this.game.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
             }
